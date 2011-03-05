@@ -1,0 +1,5 @@
+*~
+*.o
+*.a
+.directory
+bin/*_test
