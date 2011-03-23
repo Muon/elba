@@ -8,7 +8,6 @@ extern "C"
 }
 
 #include <stdexcept>
-#include <iostream>
 
 namespace elba
 {

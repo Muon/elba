@@ -26,8 +26,10 @@ clean:
 	$(RM) $(TESTS) depend
 
 depend: $(TESTS_SRC)
-	$(RM) depend
-	$(foreach FILE,$(TESTS_SRC), $(CPP) $(CPPFLAGS) -MM $(TOP_DIR)/$(TEST_DIR)/$(FILE) >> depend;)
+	@$(ECHO) -n "Building dependencies... "
+	@> depend
+	@$(foreach FILE,$(TESTS_SRC), $(CPP) $(CPPFLAGS) -MM $(TOP_DIR)/$(TEST_DIR)/$(FILE) >> depend;)
+	@$(ECHO) "done."
 
 include depend
 

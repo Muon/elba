@@ -26,8 +26,10 @@ clean:
 	$(RM) $(ELBA_SO) $(ELBA_A) $(ELBA_O) depend
 
 depend: $(ELBA_SRC)
-	$(RM) depend
-	$(foreach FILE,$(ELBA_SRC), $(CPP) $(CPPFLAGS) -MM $(TOP_DIR)/$(SRC_DIR)/$(FILE) >> depend;)
+	@$(ECHO) -n "Building dependencies... "
+	@> depend
+	@$(foreach FILE,$(ELBA_SRC), $(CPP) $(CPPFLAGS) -MM $(TOP_DIR)/$(SRC_DIR)/$(FILE) >> depend;)
+	@$(ECHO) "done."
 
 include depend
 
