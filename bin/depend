@@ -1,0 +1,6 @@
+print_test.o: ../tests/print_test.cpp ../include/elba.hpp \
+ ../include/elba_state.hpp ../include/elba_table.hpp \
+ ../include/elba_stack.hpp
+set_test.o: ../tests/set_test.cpp ../include/elba.hpp \
+ ../include/elba_state.hpp ../include/elba_table.hpp \
+ ../include/elba_stack.hpp

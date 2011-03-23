@@ -3,3 +3,7 @@
 *.a
 .directory
 bin/*_test
+.kdev4
+.kdev_include_paths
+Elba.kdev4
+*.so

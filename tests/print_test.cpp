@@ -2,11 +2,11 @@
 
 int main()
 {
-	elba::interpreter lua;
+	elba::state lua;
 
-	lua.openLibs();
+	lua.open_libs();
 
-	lua.doString("print(3*2)");
+	lua.do_string("print(3*2)");
 	
 	return 0;
 }

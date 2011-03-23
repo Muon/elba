@@ -1,12 +1,17 @@
+TOP_DIR = .
+
+include Makefile.defaults
+
 all: lib
 
 lib:
 	$(MAKE) -C lib
 
-test:
+test: lib
 	$(MAKE) -C bin
 
 clean:
-	$(RM) lib/*.o lib/*.a  bin/*_test
+	$(MAKE) -C lib clean
+	$(MAKE) -C bin clean
 
-.PHONY: all lib test
+.PHONY: all lib test clean

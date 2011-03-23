@@ -1,0 +1,13 @@
+ECHO = echo -e
+RANLIB = ranlib
+
+LIB_DIR = lib
+OBJ_DIR = lib
+BIN_DIR = bin
+SRC_DIR = src
+INC_DIR = include
+TEST_DIR = tests
+
+
+CPPFLAGS = -I$(TOP_DIR)/$(INC_DIR)
+CXXFLAGS = -g -Wall -Wextra -pedantic -std=c++98

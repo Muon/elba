@@ -1,13 +1,34 @@
-VPATH = ../tests
-LIBS = -L../lib -lelba -llua
-INCLUDES = -I../include
-TESTS = print_test
-ECHO = echo -e
+TOP_DIR = ..
+
+include $(TOP_DIR)/Makefile.defaults
+
+VPATH = $(TOP_DIR)/$(INC_DIR) $(TOP_DIR)/$(TEST_DIR)
+
+CXXFLAGS += -L$(TOP_DIR)/$(LIB_DIR)
+
+LIBS = -lelba
+
+TESTS_SRC = print_test.cpp set_test.cpp
+
+TESTS =  $(TESTS_SRC:%.cpp=%)
 
 test: $(TESTS)
+	@$(foreach TEST,$(TESTS),\
+		$(ECHO) $(TEST)\ ; \
+		((LD_LIBRARY_PATH=$(TOP_DIR)/$(LIB_DIR) ./$(TEST)) \
+		&& $(ECHO) passed) \
+		|| ($(ECHO) failed && false);)
 
 %_test: %_test.cpp
-	@$(ECHO) -------"\n"$@"\n"-------
-	@($(CXX) $(INCLUDES) $(CXXFLAGS) $< $(LIBS) -o $@ && ./$@ && $(ECHO) -------"\n"passed) || ($(ECHO) -------"\n"failed && false)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LIBS) $< -o $@
 
-.PHONY: tests
+clean:
+	$(RM) $(TESTS) depend
+
+depend: $(TESTS_SRC)
+	$(RM) depend
+	$(foreach FILE,$(TESTS_SRC), $(CPP) $(CPPFLAGS) -MM $(TOP_DIR)/$(TEST_DIR)/$(FILE) >> depend;)
+
+include depend
+
+.PHONY: test clean
