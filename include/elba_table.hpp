@@ -71,8 +71,8 @@ private:
 	int stack_index;
 	stack cur_stack;
 	
-	friend class index<int>;
-	friend class index<const char*>;
+	template <typename T>
+	friend class index;
 };
 
 }
