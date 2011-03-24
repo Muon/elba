@@ -30,7 +30,7 @@ public:
 		{
 			const stack& st = owner_table.cur_stack;
 			st.push(key);
-			owner_table.get_table_field(key);
+			owner_table.get_table_field();
 
 			U value;
 			st.get(value, stack::top);

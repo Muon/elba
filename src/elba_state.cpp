@@ -7,6 +7,8 @@ extern "C"
 #include <lualib.h>
 }
 
+#include <stdexcept>
+
 namespace elba
 {
 
@@ -47,7 +49,25 @@ void state::do_string(const char* string) const
 		}
 		else
 		{
-			throw;
+			const char* error = lua_tostring(L, -1);
+			throw std::runtime_error(error);
+			
+			if(ret == LUA_ERRRUN)
+			{
+				throw std::runtime_error("runtime error executing string");
+			}
+			else if(ret == LUA_ERRMEM)
+			{
+				throw std::runtime_error("ran out of memory executing string");
+			}
+			else if(ret == LUA_ERRERR)
+			{
+				throw std::runtime_error("error occurred running the error handler while executing string");
+			}
+			else
+			{
+				throw std::runtime_error("unknown error occurred executing string");
+			}
 		}
 	}
 	else

@@ -9,7 +9,7 @@ int main()
 	lua.globals["greeting"] = "Hello, world!";
 	lua.globals["num"] = 15;
 	
-	lua.do_string("print(greeting); print(\"You are number: \", num);");
+	lua.do_string("print(greeting)\nprint(\"You are number: \", num);");
 
 	return 0;
 }
