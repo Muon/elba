@@ -49,16 +49,20 @@ void state::do_string(const char* string) const
 		}
 		else
 		{
-			const char* error = lua_tostring(L, -1);
-			throw std::runtime_error(error);
+			size_t len;
+			const char* error = lua_tolstring(L, -1, &len);
+			if(len > 0)
+			{
+				throw std::runtime_error(error);
+			}
 			
 			if(ret == LUA_ERRRUN)
 			{
-				throw std::runtime_error("runtime error executing string");
+				throw std::runtime_error("runtime error while executing string");
 			}
 			else if(ret == LUA_ERRMEM)
 			{
-				throw std::runtime_error("ran out of memory executing string");
+				throw std::runtime_error("ran out of memory while executing string");
 			}
 			else if(ret == LUA_ERRERR)
 			{
@@ -66,13 +70,31 @@ void state::do_string(const char* string) const
 			}
 			else
 			{
-				throw std::runtime_error("unknown error occurred executing string");
+				throw std::runtime_error("unknown error occurred while executing string");
 			}
 		}
 	}
 	else
 	{
-		throw;
+		size_t len;
+		const char* error = lua_tolstring(L, -1, &len);
+		if(len > 0)
+		{
+			throw std::runtime_error(error);
+		}
+		
+		if(ret == LUA_ERRSYNTAX)
+		{
+			throw std::runtime_error("syntax error in string");
+		}
+		else if(ret == LUA_ERRMEM)
+		{
+			throw std::runtime_error("ran out of memory while parsing string");
+		}
+		else
+		{
+			throw std::runtime_error("unknown error occurred while parsing string");
+		}
 	}
 }
 

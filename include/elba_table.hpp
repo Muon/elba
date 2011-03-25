@@ -25,20 +25,29 @@ public:
 		{
 		}
 		
-		template<typename U>
-		operator U()
+		operator std::string()
 		{
-			const stack& st = owner_table.cur_stack;
-			st.push(key);
-			owner_table.get_table_field();
-
-			U value;
-			st.get(value, stack::top);
-
-			st.pop(1);
-			
-
-			return value;
+			return convert<std::string>();
+		}
+		
+		operator int()
+		{
+			return convert<int>();
+		}
+		
+		operator double()
+		{
+			return convert<double>();
+		}
+		
+		operator float()
+		{
+			return convert<float>();
+		}
+		
+		operator bool()
+		{
+			return convert<bool>();
 		}
 		
 		template<typename U>
@@ -55,6 +64,21 @@ public:
 	private:
 		const table& owner_table;
 		const T& key;
+		
+		template<typename U>
+		U convert()
+		{
+			const stack& st = owner_table.cur_stack;
+			st.push(key);
+			owner_table.get_table_field();
+
+			U value;
+			st.get(value, stack::top);
+
+			st.pop(1);
+			
+			return value;
+		}
 	};
 
 	template <typename T>

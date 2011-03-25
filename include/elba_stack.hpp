@@ -51,15 +51,22 @@ public:
 	
 	void push(double number) const;
 	void get(double& number, int index = stack::top) const;
+	
+	void push(float number) const;
+	void get(float& number, int index = stack::top) const;
 
 	void push(const std::string& string) const;
 	void get(std::string& string, int index = stack::top) const;
 	
 	void push(const char* string) const;
 	void get(const char*& string, int index = stack::top) const;
+	void get(const char*& string, int index, size_t& len) const;
 	
-	void push(bindable_funcptr ptr, int num_upvalues = 0) const;
+	void push(const bindable_funcptr ptr, int num_upvalues = 0) const;
 	void get(bindable_funcptr& ptr, int index = stack::top) const;
+	
+	void push(bool boolean) const;
+	void get(bool& boolean, int index = stack::top);
 	
 	template<typename R, typename T1>
 	void push(R (*func_ptr)(T1)) const
