@@ -66,7 +66,7 @@ public:
 	void get(bindable_funcptr& ptr, int index = stack::top) const;
 	
 	void push(bool boolean) const;
-	void get(bool& boolean, int index = stack::top);
+	void get(bool& boolean, int index = stack::top) const;
 	
 	template<typename R, typename T1>
 	void push(R (*func_ptr)(T1)) const

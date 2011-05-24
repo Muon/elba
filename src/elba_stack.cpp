@@ -100,7 +100,7 @@ void stack::push(bool boolean) const
 	lua_pushboolean(L, boolean);
 }
 
-void stack::get(bool& boolean, int index)
+void stack::get(bool& boolean, int index) const
 {
 	boolean = lua_toboolean(L, index);
 }
