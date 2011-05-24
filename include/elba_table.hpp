@@ -53,12 +53,7 @@ public:
 		template<typename U>
 		index& operator=(const U& value)
 		{
-			const stack& st = owner_table.cur_stack;
-			st.push(key);
-			st.push(value);
-			
-			owner_table.set_table_field();
-			
+			owner_table.set(key, value);
 			return *this;
 		}
 	private:
@@ -68,16 +63,9 @@ public:
 		template<typename U>
 		U convert()
 		{
-			const stack& st = owner_table.cur_stack;
-			st.push(key);
-			owner_table.get_table_field();
-
-			U value;
-			st.get(value, stack::top);
-
-			st.pop(1);
-			
-			return value;
+			U tmp;
+			owner_table.get(key, tmp);
+			return tmp;
 		}
 	};
 
@@ -85,6 +73,25 @@ public:
 	index<T> operator[](const T& key) const
 	{
 		return index<T>(*this, key);
+	}
+	
+	template<typename T, typename U>
+	void get(const T& key, U& value) const
+	{
+		cur_stack.push(key);
+		get_table_field();
+
+		cur_stack.get(value, stack::top);
+
+		cur_stack.pop(1);
+	}
+	
+	template<typename T, typename U>
+	void set(const T& key, const U& value) const
+	{
+		cur_stack.push(key);
+		cur_stack.push(value);
+		set_table_field();
 	}
 private:
 	void get_table_field() const;
