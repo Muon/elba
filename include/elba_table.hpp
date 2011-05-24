@@ -2,13 +2,14 @@
 #define ELBA_TABLE_HPP
 
 #include "elba_stack.hpp"
+#include "elba_reference.hpp"
 
 struct lua_State;
 
 namespace elba
 {
 
-class table
+class table : public reference
 {
 public:
 	table(lua_State* L);
@@ -99,7 +100,6 @@ private:
 
 	lua_State* L;
 	
-	int stack_index;
 	stack cur_stack;
 	
 	template <typename T>
