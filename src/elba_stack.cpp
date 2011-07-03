@@ -1,10 +1,12 @@
 #include "../include/elba_stack.hpp"
-
+#include "../include/elba_reference.hpp"
 
 extern "C"
 {
 #include <lua.h>
 }
+
+#include <cassert>
 
 namespace elba
 {
@@ -105,6 +107,17 @@ void stack::get(bool& boolean, int index) const
 	boolean = lua_toboolean(L, index);
 }
 
+void stack::push(const reference& ref) const
+{
+	ref.push_ref();
+}
+
+void stack::get(reference& ref, int index) const
+{
+	lua_pushvalue(L, index);
+	ref.set_ref();
+}
+
 void stack::get(stack::bindable_funcptr& ptr, int index) const
 {
 	ptr = lua_tocfunction(L, index);
@@ -118,6 +131,16 @@ int stack::size() const
 bool stack::is_valid_index(int index) const
 {
 	return !lua_isnone(L, index);
+}
+
+int stack::normalize_index(int index) const
+{
+	assert(index != 0);
+
+	if(index > 0)
+		return index;
+
+	return size() +  index - 1;
 }
 
 stack::type stack::element_type(int index) const

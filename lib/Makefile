@@ -8,7 +8,7 @@ ELBA_SRC = elba_state.cpp elba_stack.cpp elba_table.cpp elba_reference.cpp
 ELBA_O = $(ELBA_SRC:%.cpp=%.o)
 ELBA_A = libelba.a
 ELBA_SO = libelba.so
-LIBS = -llua
+LIBS = ../liblua.a -ldl
 
 lib: shared static
 
@@ -17,7 +17,7 @@ shared: $(ELBA_SO)
 static: $(ELBA_A)
 
 $(ELBA_SO): $(ELBA_O)
-	$(CXX) -shared $(LIBS) $(ELBA_O) -o $@
+	$(CXX) -shared $(ELBA_O) $(LIBS) -o $@
 
 $(ELBA_A): $(ELBA_A)($(ELBA_O))
 	$(RANLIB) $@

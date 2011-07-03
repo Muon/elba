@@ -8,45 +8,48 @@ extern "C"
 }
 
 #include <stdexcept>
-
 namespace elba
 {
 
 table::table(lua_State* L)
 	: reference(L)
 	, L(L)
-	, cur_stack(L)
 {
 	lua_newtable(L);
+	set_ref();
 }
 
 table::table(lua_State* L, int index)
-	: reference(L, index)
+	: reference(L)
 	, L(L)
-	, cur_stack(L)
 {
-	if(cur_stack.element_type(index) != stack::table)
+	stack st(L);
+
+	if(st.element_type(index) != stack::table)
 	{
 		throw std::runtime_error("stack index given not a table");
 	}
+
+	lua_pushvalue(L, index);
+	set_ref();
 }
 
 table::table(lua_State* L, int num_array, int num_assoc)
 	: reference(L)
 	, L(L)
-	, cur_stack(L)
 {
 	lua_createtable(L, num_array, num_assoc);
+	set_ref();
 }
 
-void table::get_table_field() const
+void table::get_table_field(int index) const
 {
-	lua_gettable(L, get_index());
+	lua_gettable(L, index);
 }
 
-void table::set_table_field() const
+void table::set_table_field(int index) const
 {
-	lua_settable(L, get_index());
+	lua_settable(L, index);
 }
 
 }

@@ -3,51 +3,47 @@
 extern "C"
 {
 #include <lua.h>
+#include <lauxlib.h>
 }
-
-#include <cassert>
-#include <stdexcept>
 
 namespace elba
 {
 
+reference& reference::operator=(const reference& other)
+{
+	other.push_ref();
+	set_ref();
+	return *this;
+}
+
 reference::reference(lua_State* L)
-	: cur_stack(L)
-	, stack_index(cur_stack.size() + 1)
+	: L(L)
+	, ref(LUA_REFNIL)
 {
 }
 
-reference::reference(lua_State* L, int index)
-	: cur_stack(L)
+reference::reference(const reference& other)
+	: L(other.L)
+	, ref(LUA_REFNIL)
 {
-	if(index <= LUA_REGISTRYINDEX) // if it's a special index, set it
-	{
-		stack_index = index;
-	}
-	else if(index < 0) // if it's a relative index, calculate the real one
-	{
-		stack_index = cur_stack.size() + index + 1;
-	}
-	else
-	{
-		stack_index = index;
-	}
-	
-	// make sure that it exists
-	if(!cur_stack.is_valid_index(stack_index))
-	{
-		throw std::runtime_error("invalid stack index");
-	}
+	*this = other;
 }
 
 reference::~reference()
 {
-	// ignore special indices
-	if(stack_index > 0)
-	{
-		assert(cur_stack.size() == stack_index);
-		cur_stack.pop(1);
-	}
+	luaL_unref(L, LUA_REGISTRYINDEX, ref);
+}
+
+void reference::set_ref()
+{
+	luaL_unref(L, LUA_REGISTRYINDEX, ref);
+
+	ref = luaL_ref(L, LUA_REGISTRYINDEX);
+}
+
+void reference::push_ref() const
+{
+	lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
 }
 
 }
