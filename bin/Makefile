@@ -20,6 +20,11 @@ test: $(TESTS)
 		&& $(ECHO) passed) \
 		|| ($(ECHO) failed && false);)
 
+$(TESTS): $(TOP_DIR)/$(LIB_DIR)/libelba.a
+
+$(TOP_DIR)/$(LIB_DIR)/libelba.a:
+	$(MAKE) -C $(TOP_DIR)/$(LIB_DIR)
+
 %_test: %_test.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< $(LIBS) -o $@
 
