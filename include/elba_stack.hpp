@@ -73,25 +73,72 @@ public:
 	void push(const reference& ref) const;
 	void get(reference& ref, int index = stack::top) const;
 
-	template<typename R, typename T1>
-	void push(R (*func_ptr)(T1)) const
-	{
-		typedef R (*wrapped_funcptr)(T1);
+	void push(void (*func_ptr)()) const;
 
+	template<typename R>
+	void push(R (*func_ptr)()) const
+	{
 		struct wrapper_creator
 		{
+			typedef R (*wrapped_funcptr)();
+
 			static int wrapper(lua_State* L)
 			{
 				stack st(L);
 
-				if(st.size() != 1)
-					throw;
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
 
-				bindable_funcptr function;
-				st.get(function, -10002 - 1);
+				st.push(function_real());
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(function);
+				return 1;
+			}
+		};
 
+		push(reinterpret_cast<bindable_funcptr>(func_ptr));
+		push(wrapper_creator::wrapper, 1);
+	}
+
+	template<typename T1>
+	void push(void (*func_ptr)(T1)) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (*wrapped_funcptr)(T1);
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+
+				T1 arg1;
+				st.get(arg1, 1);
+
+				st.pop(1);
+
+				function_real(arg1);
+
+				return 0;
+			}
+		};
+
+		push(reinterpret_cast<bindable_funcptr>(func_ptr));
+		push(wrapper_creator::wrapper, 1);
+	}
+
+
+	template<typename R, typename T1>
+	void push(R (*func_ptr)(T1)) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (*wrapped_funcptr)(T1);
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
 
 				T1 arg1;
 				st.get(arg1, 1);
@@ -107,6 +154,8 @@ public:
 		push(reinterpret_cast<bindable_funcptr>(func_ptr));
 		push(wrapper_creator::wrapper, 1);
 	}
+
+	bindable_funcptr get_wrapped_function() const;
 
 	void pop(int num) const;
 

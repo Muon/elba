@@ -10,6 +10,10 @@ const char* g(const char* str)
 	return str;
 }
 
+void h(int a)
+{
+}
+
 int main()
 {
 	elba::state L;
@@ -17,8 +21,9 @@ int main()
 
 	L.globals["f"] = f;
 	L.globals["g"] = g;
+	L.globals["h"] = h;
 
-	L.do_string("print(f(12))\nprint(g(\"I am bound!\"))");
+	L.do_string("print(f(12))\nprint(g(\"I am bound!\"))\nprint(h())");
 
 	return 0;
 }

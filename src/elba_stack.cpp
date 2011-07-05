@@ -123,6 +123,36 @@ void stack::get(stack::bindable_funcptr& ptr, int index) const
 	ptr = lua_tocfunction(L, index);
 }
 
+void stack::push(void (*func_ptr)()) const
+{
+	struct wrapper_creator
+	{
+		typedef void (*wrapped_funcptr)();
+
+		static int wrapper(lua_State* L)
+		{
+			stack st(L);
+
+			wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+
+			function_real();
+
+			return 0;
+		}
+	};
+
+	push(reinterpret_cast<bindable_funcptr>(func_ptr));
+	push(wrapper_creator::wrapper, 1);
+}
+
+stack::bindable_funcptr stack::get_wrapped_function() const
+{
+	bindable_funcptr function;
+	get(function, lua_upvalueindex(1));
+
+	return function;
+}
+
 int stack::size() const
 {
 	return lua_gettop(L);
