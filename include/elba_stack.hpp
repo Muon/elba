@@ -105,7 +105,7 @@ public:
 		};
 
 		push(reinterpret_cast<bindable_funcptr>(func_ptr));
-		push(&wrapper_creator::wrapper, 1);
+		push(wrapper_creator::wrapper, 1);
 	}
 
 	void pop(int num) const;
