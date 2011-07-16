@@ -45,11 +45,29 @@ public:
 		return tmp;
 	}
 
+	void push(char c) const;
+	void get(char& c, int index = stack::top) const;
+
+	void push(short integer) const;
+	void get(short& integer, int index = stack::top) const;
+
 	void push(int integer) const;
 	void get(int& integer, int index = stack::top) const;
 
 	void push(long integer) const;
 	void get(long& integer, int index = stack::top) const;
+
+	void push(unsigned char c) const;
+	void get(unsigned char& c, int index = stack::top) const;
+
+	void push(unsigned short integer) const;
+	void get(unsigned short& integer, int index = stack::top) const;
+
+	void push(unsigned int integer) const;
+	void get(unsigned int& integer, int index = stack::top) const;
+
+	void push(unsigned long integer) const;
+	void get(unsigned long& integer, int index = stack::top) const;
 
 	void push(double number) const;
 	void get(double& number, int index = stack::top) const;

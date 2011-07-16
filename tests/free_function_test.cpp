@@ -1,6 +1,6 @@
 #include <elba.hpp>
 
-int f(int a)
+unsigned int f(unsigned int a)
 {
 	return a;
 }
@@ -23,7 +23,7 @@ int main()
 	L.globals["g"] = g;
 	L.globals["h"] = h;
 
-	L.do_string("print(f(12))\nprint(g(\"I am bound!\"))\nprint(h())");
+	L.do_string("print(f(-12))\nprint(g(\"I am bound!\"))\nprint(h())");
 
 	return 0;
 }

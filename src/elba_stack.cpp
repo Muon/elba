@@ -44,6 +44,26 @@ void stack::get(const char*& string, int index, size_t& len) const
 	string = lua_tolstring(L, index, &len);
 }
 
+void stack::push(char c) const
+{
+	lua_pushlstring(L, &c, sizeof c);
+}
+
+void stack::get(char& c, int index) const
+{
+	const char* str = lua_tostring(L, index);
+	c = str[0];
+}
+
+void stack::push(short integer) const
+{
+	lua_pushinteger(L, integer);
+}
+
+void stack::get(short& integer, int index) const
+{
+	integer = lua_tointeger(L, index);
+}
 
 void stack::push(int integer) const
 {
@@ -65,6 +85,45 @@ void stack::get(long int& integer, int index) const
 	integer = lua_tointeger(L, index);
 }
 
+void stack::push(unsigned char c) const
+{
+	lua_pushinteger(L, c);
+}
+
+void stack::get(unsigned char& c, int index) const
+{
+	c = lua_tointeger(L, index);
+}
+
+void stack::push(unsigned short integer) const
+{
+	lua_pushinteger(L, integer);
+}
+
+void stack::get(unsigned short& integer, int index) const
+{
+	integer = lua_tointeger(L, index);
+}
+
+void stack::push(unsigned int integer) const
+{
+	lua_pushinteger(L, integer);
+}
+
+void stack::get(unsigned int& integer, int index) const
+{
+	integer = lua_tointeger(L, index);
+}
+
+void stack::push(unsigned long int integer) const
+{
+	lua_pushinteger(L, integer);
+}
+
+void stack::get(unsigned long int& integer, int index) const
+{
+	integer = lua_tointeger(L, index);
+}
 
 void stack::push(double number) const
 {
