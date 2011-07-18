@@ -3,6 +3,7 @@
 
 #include "elba_stack.hpp"
 #include "elba_reference.hpp"
+#include "elba_function.hpp"
 
 struct lua_State;
 
@@ -12,6 +13,7 @@ namespace elba
 class table : public reference
 {
 public:
+	table();
 	table(lua_State* L);
 	table(lua_State* L, int index);
 	table(lua_State* L, int num_array, int num_assoc);
@@ -53,8 +55,6 @@ public:
 private:
 	void get_table_field(int index) const;
 	void set_table_field(int index) const;
-
-	lua_State* L;
 
 	template <typename T>
 	friend class index;
@@ -99,6 +99,14 @@ public:
 	{
 		table tmp(owner_table.L);
 		owner_table.get(key, tmp);
+		return tmp;
+	}
+
+	operator function()
+	{
+		function tmp(owner_table.L);
+		owner_table.get(key, tmp);
+
 		return tmp;
 	}
 

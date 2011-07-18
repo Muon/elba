@@ -10,18 +10,20 @@ class reference
 {
 public:
 	reference& operator=(const reference& other);
-	
+
 protected:
+	reference();
 	reference(lua_State* L);
 	reference(const reference& other);
 	~reference();
-	
+
 	void set_ref();
 	void push_ref() const;
-private:
+
 	lua_State* L;
+private:
 	int ref;
-	
+
 	friend class stack;
 };
 

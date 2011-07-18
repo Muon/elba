@@ -11,9 +11,12 @@ extern "C"
 namespace elba
 {
 
+table::table()
+{
+}
+
 table::table(lua_State* L)
 	: reference(L)
-	, L(L)
 {
 	lua_newtable(L);
 	set_ref();
@@ -21,7 +24,6 @@ table::table(lua_State* L)
 
 table::table(lua_State* L, int index)
 	: reference(L)
-	, L(L)
 {
 	stack st(L);
 
@@ -36,7 +38,6 @@ table::table(lua_State* L, int index)
 
 table::table(lua_State* L, int num_array, int num_assoc)
 	: reference(L)
-	, L(L)
 {
 	lua_createtable(L, num_array, num_assoc);
 	set_ref();

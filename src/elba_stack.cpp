@@ -173,6 +173,8 @@ void stack::push(const reference& ref) const
 
 void stack::get(reference& ref, int index) const
 {
+	ref = reference(L);
+
 	lua_pushvalue(L, index);
 	ref.set_ref();
 }

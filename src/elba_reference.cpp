@@ -11,9 +11,16 @@ namespace elba
 
 reference& reference::operator=(const reference& other)
 {
+	L = other.L;
 	other.push_ref();
 	set_ref();
 	return *this;
+}
+
+reference::reference()
+	: L(NULL)
+	, ref(LUA_REFNIL)
+{
 }
 
 reference::reference(lua_State* L)

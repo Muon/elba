@@ -1,4 +1,6 @@
 #include <elba.hpp>
+#include <iostream>
+#include <string>
 
 unsigned int f(unsigned int a)
 {
@@ -24,6 +26,23 @@ int main()
 	L.globals["h"] = h;
 
 	L.do_string("print(f(-12))\nprint(g(\"I am bound!\"))\nprint(h())");
+
+	elba::function print = L.globals["print"];
+
+	int p = print("I am being called from C++!");
+	p = print("I am being called from C++, too!");
+
+	short t = print("barley");
+	t = print("hot chocolate");
+
+	elba::table tab = print("coconut");
+	tab = print("cheese");
+
+	print("apple");
+
+	// needs fixing
+	//std::string str;
+	//str = print("lemon");
 
 	return 0;
 }
