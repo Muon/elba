@@ -15,6 +15,4 @@ value_ref::value_ref(lua_State* L, int index)
 	set_ref();
 }
 
-template<> value_ref::operator std::string() { return get<std::string>(); }
-
 }

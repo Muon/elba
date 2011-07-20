@@ -30,12 +30,7 @@ public:
 	}
 
 	template<typename T> operator T() { return get<T>(); }
-
-	//operator int() { return get<int>(); }
 };
-
-template<> value_ref::operator std::string();
-template<> value_ref::operator reference();
 
 }
 
