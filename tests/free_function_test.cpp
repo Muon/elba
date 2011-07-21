@@ -40,9 +40,8 @@ int main()
 
 	print("apple");
 
-	// needs fixing
-	//std::string str;
-	//str = print("lemon");
+	std::string str = print("lemon");
+	str = print("orange").get<std::string>();
 
 	return 0;
 }
