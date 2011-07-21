@@ -30,6 +30,8 @@ public:
 	template<typename T> operator T() { return get<T>(); }
 };
 
+template<> value_ref::operator const char*();
+
 }
 
 #endif // ELBA_VALUEREF_HPP
