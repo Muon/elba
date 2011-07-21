@@ -4,8 +4,6 @@
 #include "elba_reference.hpp"
 #include "elba_stack.hpp"
 
-#include <string>
-
 namespace elba
 {
 
