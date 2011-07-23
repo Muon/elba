@@ -38,7 +38,7 @@ int main()
 	elba::table tab = print("coconut");
 	tab = print("cheese");
 
-	print("apple");
+	print("apple", "granny smith", "crab apple", "pineapple?!?!");
 
 	std::string str = print("lemon");
 	str = print("orange").get<std::string>();
