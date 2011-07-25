@@ -32,6 +32,21 @@ function::function(lua_State* L, int index)
 	set_ref();
 }
 
+value_ref function::operator()()
+{
+	push_ref();
+
+	stack st(L);
+
+	call(0, 1);
+
+	value_ref ref(L, stack::top);
+
+	st.pop(1);
+
+	return ref;
+}
+
 void function::call(int nargs, int nresults)
 {
 	lua_call(L, nargs, nresults);

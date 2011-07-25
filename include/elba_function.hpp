@@ -14,6 +14,8 @@ public:
 	function(lua_State* L);
 	function(lua_State* L, int index);
 
+	value_ref operator()();
+
 // START LUA FUNC GLUE
 	template<typename T1>
 	value_ref operator()(const T1& arg1)
