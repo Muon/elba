@@ -8,6 +8,8 @@ extern "C"
 }
 
 #include <stdexcept>
+#include <cstring>
+
 namespace elba
 {
 
@@ -51,6 +53,21 @@ void table::get_table_field(int index) const
 void table::set_table_field(int index) const
 {
 	lua_settable(L, index);
+}
+
+template<>
+void table::get_top<const char*>(const char*& str) const
+{
+	stack st(L);
+
+	const char* a;
+	size_t len;
+	st.get(a, stack::top, len);
+
+	char* b = new char[len];
+	std::memcpy(b, a, len);
+
+	str = b;
 }
 
 }

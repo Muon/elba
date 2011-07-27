@@ -36,7 +36,8 @@ public:
 		st.push(key);
 		get_table_field(-2);
 
-		st.get(value, stack::top);
+		get_top(value);
+
 		st.pop(1);
 	}
 
@@ -58,7 +59,16 @@ private:
 
 	template <typename T>
 	friend class index;
+
+	template<typename T>
+	void get_top(T& val) const
+	{
+		stack st(L);
+		st.get(val, stack::top);
+	}
 };
+
+template<> void table::get_top<const char*>(const char*& str) const;
 
 template<typename T>
 class table::index
