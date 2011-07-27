@@ -33,7 +33,8 @@ int main()
 		"print(one.two)\n"
 	);
 
-	std::cout << "The greeting is \"" << std::string(lua.globals["greeting"]) << "\"!" << std::endl;
+	std::string tmp = lua.globals["greeting"];
+	std::cout << "The greeting is \"" << tmp << "\"!" << std::endl;
 	std::cout << "The number is " << int(lua.globals["num"]) << std::endl;
 	std::cout << "The float is " << float(lua.globals["float"]) << std::endl;
 

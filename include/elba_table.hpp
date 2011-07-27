@@ -80,70 +80,31 @@ public:
 	{
 	}
 
-	operator std::string()
+	template<typename U>
+	operator U() const
 	{
-		return convert<std::string>();
-	}
-
-	operator int()
-	{
-		return convert<int>();
-	}
-
-	operator double()
-	{
-		return convert<double>();
-	}
-
-	operator float()
-	{
-		return convert<float>();
-	}
-
-	operator bool()
-	{
-		return convert<bool>();
-	}
-
-	operator table()
-	{
-		table tmp(owner_table.L);
-		owner_table.get(key, tmp);
-		return tmp;
-	}
-
-	operator function()
-	{
-		function tmp(owner_table.L);
+		U tmp;
 		owner_table.get(key, tmp);
 
 		return tmp;
 	}
 
 	template<typename U>
-	index& operator=(const U& value)
+	const index& operator=(const U& value) const
 	{
 		owner_table.set(key, value);
 		return *this;
 	}
 
 	template<typename U>
-	index<U> operator[](const U& key)
+	index<U> operator[](const U& key) const
 	{
-		table tmp(*this);
+		table tmp = *this;
 		return tmp[key];
 	}
 private:
 	table owner_table;
 	const T& key;
-
-	template<typename U>
-	U convert()
-	{
-		U tmp;
-		owner_table.get(key, tmp);
-		return tmp;
-	}
 };
 
 }
