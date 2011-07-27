@@ -12,13 +12,11 @@ namespace elba
 
 function::function(lua_State* L)
 	: reference(L)
-	, L(L)
 {
 }
 
 function::function(lua_State* L, int index)
 	: reference(L)
-	, L(L)
 {
 	stack st(L);
 

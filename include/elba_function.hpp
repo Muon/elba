@@ -190,7 +190,6 @@ public:
 	}
 // END LUA FUNC GLUE
 private:
-	lua_State* L;
 	void call(int nargs, int nresults);
 };
 
