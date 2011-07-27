@@ -5,6 +5,8 @@
 #include "elba_reference.hpp"
 #include "elba_function.hpp"
 
+#include <iosfwd>
+
 struct lua_State;
 
 namespace elba
@@ -106,6 +108,14 @@ private:
 	table owner_table;
 	const T& key;
 };
+
+template<typename T>
+std::ostream& operator<<(std::ostream& stream, const table::index<T>& idx)
+{
+	std::string str = idx;
+	stream << str;
+	return stream;
+}
 
 }
 
