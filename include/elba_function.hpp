@@ -11,6 +11,7 @@ namespace elba
 class function : public reference
 {
 public:
+	function();
 	function(lua_State* L);
 	function(lua_State* L, int index);
 

@@ -10,6 +10,8 @@ extern "C"
 namespace elba
 {
 
+function::function() {}
+
 function::function(lua_State* L)
 	: reference(L)
 {
