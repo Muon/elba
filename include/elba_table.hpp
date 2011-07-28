@@ -55,6 +55,9 @@ public:
 
 		st.pop(1);
 	}
+
+	void set_metatable(const table& t) const;
+	table get_metatable() const;
 private:
 	void get_table_field(int index) const;
 	void set_table_field(int index) const;

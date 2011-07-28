@@ -45,6 +45,32 @@ table::table(lua_State* L, int num_array, int num_assoc)
 	set_ref();
 }
 
+void table::set_metatable(const table& t) const
+{
+	push_ref();
+	t.push_ref();
+
+	lua_setmetatable(L, -2);
+}
+
+table table::get_metatable() const
+{
+	stack st(L);
+	push_ref();
+	if(lua_getmetatable(L, -1))
+	{
+		table tmp(L, -1);
+
+
+		st.pop(2);
+
+		return tmp;
+	}
+
+	st.pop(1);
+	throw std::runtime_error("table does not have a metatable");
+}
+
 void table::get_table_field(int index) const
 {
 	lua_gettable(L, index);
