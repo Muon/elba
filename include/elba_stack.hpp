@@ -83,6 +83,10 @@ public:
 	void push(const reference& ref) const;
 	void get(reference& ref, int index = stack::top) const;
 
+	void push(void* data) const;
+	void push(void*& data, size_t len) const;
+	void get(void*& data, int index = stack::top) const;
+
 	void push(void (*func_ptr)()) const;
 
 	template<typename R>

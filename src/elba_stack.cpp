@@ -179,6 +179,23 @@ void stack::get(reference& ref, int index) const
 	ref.set_ref();
 }
 
+void stack::push(void* data) const
+{
+	lua_pushlightuserdata(L, data);
+}
+
+void stack::push(void*& data, size_t len) const
+{
+	data = lua_newuserdata(L, len);
+}
+
+void stack::get(void*& data, int index) const
+{
+	data = lua_touserdata(L, index);
+}
+
+void get(void*&, int index = stack::top);
+
 void stack::get(stack::bindable_funcptr& ptr, int index) const
 {
 	ptr = lua_tocfunction(L, index);
