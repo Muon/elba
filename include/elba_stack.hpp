@@ -37,14 +37,6 @@ public:
 
 	stack(lua_State* L);
 
-	template<typename T>
-	T operator[](int index) const
-	{
-		T tmp;
-		get(tmp, index);
-		return tmp;
-	}
-
 	void push(char c) const;
 	void get(char& c, int index = stack::top) const;
 
