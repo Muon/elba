@@ -11,6 +11,10 @@ ELBA_SO = libelba.so
 LIBS = $(shell pkg-config lua --libs)
 CXXFLAGS += $(shell pkg-config lua --cflags)
 
+ifeq ($(shell uname -m),x86_64)
+  CXXFLAGS += -fPIC
+endif
+
 lib: shared static
 
 shared: $(ELBA_SO)
