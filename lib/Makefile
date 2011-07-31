@@ -8,7 +8,8 @@ ELBA_SRC = elba_state.cpp elba_stack.cpp elba_table.cpp elba_reference.cpp elba_
 ELBA_O = $(ELBA_SRC:%.cpp=%.o)
 ELBA_A = libelba.a
 ELBA_SO = libelba.so
-LIBS = ../liblua.a -ldl
+LIBS = $(shell pkg-config lua --libs)
+CXXFLAGS += $(shell pkg-config lua --cflags)
 
 lib: shared static
 
