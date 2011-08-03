@@ -10,6 +10,8 @@ extern "C"
 namespace elba
 {
 
+value_ref::value_ref(lua_State* L) : reference(L) {}
+
 value_ref::value_ref(lua_State* L, int index)
 	: reference(L)
 {

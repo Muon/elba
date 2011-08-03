@@ -10,6 +10,7 @@ namespace elba
 class value_ref : public reference
 {
 public:
+	value_ref(lua_State* L);
 	value_ref(lua_State* L, int index);
 
 	template<typename T>
