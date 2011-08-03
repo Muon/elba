@@ -649,6 +649,7 @@ public:
 	int size() const;
 	bool is_valid_index(int index) const;
 	int normalize_index(int index) const;
+	int upvalue_index(int index) const;
 
 	type element_type(int index) const;
 private:
