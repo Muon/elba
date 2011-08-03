@@ -71,8 +71,27 @@ private:
 		stack st(L);
 		st.get(val, stack::top);
 	}
+	
+	template<typename T>
+	void get_top(T*& val) const
+	{
+		stack st(L);
+		void* p;
+		st.get(p, stack::top);
+		val = static_cast<T*>(p);
+	}
+	
+	template<typename T>
+	void get_top(const T*& val) const
+	{
+		stack st(L);
+		void* p;
+		st.get(p, stack::top);
+		val = static_cast<T*>(p);
+	}
 };
 
+template<> void table::get_top<char*>(char*& str) const;
 template<> void table::get_top<const char*>(const char*& str) const;
 
 template<typename T>

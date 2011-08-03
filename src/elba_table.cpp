@@ -82,7 +82,7 @@ void table::set_table_field(int index) const
 }
 
 template<>
-void table::get_top<const char*>(const char*& str) const
+void table::get_top<char*>(char*& str) const
 {
 	stack st(L);
 
@@ -94,6 +94,14 @@ void table::get_top<const char*>(const char*& str) const
 	std::memcpy(b, a, len);
 
 	str = b;
+}
+
+template<>
+void table::get_top<const char*>(const char*& str) const
+{
+	char* p;
+	get_top(p);
+	str = p;
 }
 
 }
