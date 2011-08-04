@@ -2,7 +2,7 @@
 #define ELBA_TABLE_HPP
 
 #include "elba_stack.hpp"
-#include "elba_reference.hpp"
+#include "elba_valueref.hpp"
 #include "elba_function.hpp"
 
 #include <iosfwd>
@@ -19,15 +19,11 @@ public:
 	table(lua_State* L);
 	table(lua_State* L, int index);
 	table(lua_State* L, int num_array, int num_assoc);
-
-	template<typename T>
+	
 	class index;
 
-	template <typename T>
-	index<T> operator[](const T& key) const
-	{
-		return index<T>(*this, key);
-	}
+	template<typename T>
+	index operator[](const T& key) const;
 
 	template<typename T, typename U>
 	void get(const T& key, U& value) const
@@ -62,7 +58,6 @@ private:
 	void get_table_field(int index) const;
 	void set_table_field(int index) const;
 
-	template <typename T>
 	friend class index;
 
 	template<typename T>
@@ -91,24 +86,22 @@ private:
 	}
 };
 
-template<> void table::get_top<char*>(char*& str) const;
-template<> void table::get_top<const char*>(const char*& str) const;
-
-template<typename T>
 class table::index
 {
 public:
+	template<typename T>
 	index(const table& owner, const T& key)
 		: owner_table(owner)
-		, key(key)
+		, ref(owner_table.L)
 	{
+		ref.set_ref(key);
 	}
 
 	template<typename U>
 	operator U() const
 	{
 		U tmp;
-		owner_table.get(key, tmp);
+		owner_table.get(ref, tmp);
 
 		return tmp;
 	}
@@ -116,28 +109,31 @@ public:
 	template<typename U>
 	const index& operator=(const U& value) const
 	{
-		owner_table.set(key, value);
+		owner_table.set(ref, value);
 		return *this;
 	}
 
 	template<typename U>
-	index<U> operator[](const U& key) const
+	index operator[](const U& key) const
 	{
 		table tmp = *this;
 		return tmp[key];
 	}
 private:
 	table owner_table;
-	const T& key;
+	value_ref ref;
 };
 
 template<typename T>
-std::ostream& operator<<(std::ostream& stream, const table::index<T>& idx)
+table::index table::operator[](const T& key) const
 {
-	std::string str = idx;
-	stream << str;
-	return stream;
+	return index(*this, key);
 }
+
+template<> void table::get_top<char*>(char*& str) const;
+template<> void table::get_top<const char*>(const char*& str) const;
+
+std::ostream& operator<<(std::ostream& stream, const table::index& idx);
 
 }
 
