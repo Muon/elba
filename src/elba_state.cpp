@@ -21,7 +21,7 @@ state::state_destruction_deferral::state_destruction_deferral()
 	: L(luaL_newstate())
 {
 	if(!L)
-		throw;
+		throw std::runtime_error("ran out of memory while creating Lua state");
 
 	lua_atpanic(L, panic);
 }
