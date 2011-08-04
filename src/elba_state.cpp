@@ -1,4 +1,5 @@
 #include "../include/elba_state.hpp"
+#include "../include/elba_stack.hpp"
 
 extern "C"
 {
@@ -14,7 +15,13 @@ namespace elba
 
 static int panic(lua_State* L)
 {
-	throw std::runtime_error(lua_tostring(L, -1));
+	stack st(L);
+	
+	std::string error_message;
+	st.get(error_message, stack::top);
+	st.pop(1);
+	
+	throw std::runtime_error(error_message);
 }
 
 state::state_destruction_deferral::state_destruction_deferral()
