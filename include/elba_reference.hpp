@@ -1,6 +1,8 @@
 #ifndef ELBA_REFERENCE_HPP
 #define ELBA_REFERENCE_HPP
 
+#include "elba_stack.hpp"
+
 struct lua_State;
 
 namespace elba
@@ -10,6 +12,16 @@ class reference
 {
 public:
 	reference& operator=(const reference& other);
+	
+	template<typename T>
+	reference& set_ref(const T& val)
+	{
+		stack st(L);
+		st.push(val);
+		set_ref();
+		
+		return *this;
+	}
 
 protected:
 	reference();
