@@ -1,5 +1,6 @@
 #include "../include/elba_stack.hpp"
 #include "../include/elba_reference.hpp"
+#include "../include/elba_table.hpp"
 
 extern "C"
 {
@@ -177,6 +178,12 @@ void stack::get(reference& ref, int index) const
 
 	lua_pushvalue(L, index);
 	ref.set_ref();
+}
+
+void stack::push(const object_index& idx) const
+{
+	reference ref = idx;
+	push(ref);
 }
 
 void stack::push(void* data) const

@@ -3,7 +3,9 @@ elba_state.o: ../src/elba_state.cpp ../src/../include/elba_state.hpp \
  ../src/../include/elba_reference.hpp ../src/../include/elba_function.hpp \
  ../src/../include/elba_stack.hpp
 elba_stack.o: ../src/elba_stack.cpp ../src/../include/elba_stack.hpp \
- ../src/../include/elba_reference.hpp ../src/../include/elba_stack.hpp
+ ../src/../include/elba_reference.hpp ../src/../include/elba_stack.hpp \
+ ../src/../include/elba_table.hpp ../src/../include/elba_reference.hpp \
+ ../src/../include/elba_function.hpp
 elba_table.o: ../src/elba_table.cpp ../src/../include/elba_table.hpp \
  ../src/../include/elba_stack.hpp ../src/../include/elba_reference.hpp \
  ../src/../include/elba_function.hpp ../src/../include/elba_stack.hpp

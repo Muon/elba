@@ -9,6 +9,7 @@ namespace elba
 {
 
 class reference;
+class object_index;
 
 class stack
 {
@@ -82,6 +83,8 @@ public:
 
 	void push(const reference& ref) const;
 	void get(reference& ref, int index = stack::top) const;
+	
+	void push(const object_index& ref) const;
 
 	void push(void* data) const;
 	void push(void*& data, size_t len) const;
