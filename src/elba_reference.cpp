@@ -6,8 +6,24 @@ extern "C"
 #include <lauxlib.h>
 }
 
+#include <cstring>
+
 namespace elba
 {
+
+reference::reference(lua_State* L)
+	: L(L)
+	, ref(LUA_REFNIL)
+{
+}
+
+reference::reference(lua_State* L, int index)
+	: L(L)
+	, ref(LUA_REFNIL)
+{
+	lua_pushvalue(L, index);
+	set_ref();
+}
 
 reference& reference::operator=(const reference& other)
 {
@@ -19,12 +35,6 @@ reference& reference::operator=(const reference& other)
 
 reference::reference()
 	: L(NULL)
-	, ref(LUA_REFNIL)
-{
-}
-
-reference::reference(lua_State* L)
-	: L(L)
 	, ref(LUA_REFNIL)
 {
 }
@@ -51,6 +61,25 @@ void reference::set_ref()
 void reference::push_ref() const
 {
 	lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
+}
+
+
+template<> reference::operator const char*() const
+{
+	stack st(L);
+
+	push_ref();
+
+	const char* tmp;
+	size_t len;
+	st.get(tmp, stack::top, len);
+
+	char* str = new char[len + 1];
+	std::memcpy(str, tmp, len + 1);
+
+	st.pop(1);
+
+	return str;
 }
 
 }

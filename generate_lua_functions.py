@@ -22,7 +22,7 @@ for n in range(1, total + 1):
 	typenames = list('T{0}'.format(i) for i in range(1, n + 1))
 
 	functions.append("""	template<{}>
-	value_ref operator()({})
+	reference operator()({})
 	{{
 		push_ref();
 
@@ -32,7 +32,7 @@ for n in range(1, total + 1):
 
 		call({}, 1);
 
-		value_ref ref(L, stack::top);
+		reference ref(L, stack::top);
 
 		st.pop(1);
 

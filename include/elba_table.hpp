@@ -2,7 +2,7 @@
 #define ELBA_TABLE_HPP
 
 #include "elba_stack.hpp"
-#include "elba_valueref.hpp"
+#include "elba_reference.hpp"
 #include "elba_function.hpp"
 
 #include <iosfwd>
@@ -121,7 +121,7 @@ public:
 	}
 private:
 	table owner_table;
-	value_ref ref;
+	reference ref;
 };
 
 template<typename T>

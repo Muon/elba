@@ -3,7 +3,6 @@
 
 #include "elba_reference.hpp"
 #include "elba_stack.hpp"
-#include "elba_valueref.hpp"
 
 namespace elba
 {
@@ -15,11 +14,11 @@ public:
 	function(lua_State* L);
 	function(lua_State* L, int index);
 
-	value_ref operator()();
+	reference operator()();
 
 // START LUA FUNC GLUE
 	template<typename T1>
-	value_ref operator()(const T1& arg1)
+	reference operator()(const T1& arg1)
 	{
 		push_ref();
 
@@ -29,7 +28,7 @@ public:
 
 		call(1, 1);
 
-		value_ref ref(L, stack::top);
+		reference ref(L, stack::top);
 
 		st.pop(1);
 
@@ -37,7 +36,7 @@ public:
 	}
 
 	template<typename T1, typename T2>
-	value_ref operator()(const T1& arg1, const T2& arg2)
+	reference operator()(const T1& arg1, const T2& arg2)
 	{
 		push_ref();
 
@@ -48,7 +47,7 @@ public:
 
 		call(2, 1);
 
-		value_ref ref(L, stack::top);
+		reference ref(L, stack::top);
 
 		st.pop(1);
 
@@ -56,7 +55,7 @@ public:
 	}
 
 	template<typename T1, typename T2, typename T3>
-	value_ref operator()(const T1& arg1, const T2& arg2, const T3& arg3)
+	reference operator()(const T1& arg1, const T2& arg2, const T3& arg3)
 	{
 		push_ref();
 
@@ -68,7 +67,7 @@ public:
 
 		call(3, 1);
 
-		value_ref ref(L, stack::top);
+		reference ref(L, stack::top);
 
 		st.pop(1);
 
@@ -76,7 +75,7 @@ public:
 	}
 
 	template<typename T1, typename T2, typename T3, typename T4>
-	value_ref operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4)
+	reference operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4)
 	{
 		push_ref();
 
@@ -89,7 +88,7 @@ public:
 
 		call(4, 1);
 
-		value_ref ref(L, stack::top);
+		reference ref(L, stack::top);
 
 		st.pop(1);
 
@@ -97,7 +96,7 @@ public:
 	}
 
 	template<typename T1, typename T2, typename T3, typename T4, typename T5>
-	value_ref operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5)
+	reference operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5)
 	{
 		push_ref();
 
@@ -111,7 +110,7 @@ public:
 
 		call(5, 1);
 
-		value_ref ref(L, stack::top);
+		reference ref(L, stack::top);
 
 		st.pop(1);
 
@@ -119,7 +118,7 @@ public:
 	}
 
 	template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-	value_ref operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5, const T6& arg6)
+	reference operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5, const T6& arg6)
 	{
 		push_ref();
 
@@ -134,7 +133,7 @@ public:
 
 		call(6, 1);
 
-		value_ref ref(L, stack::top);
+		reference ref(L, stack::top);
 
 		st.pop(1);
 
@@ -142,7 +141,7 @@ public:
 	}
 
 	template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
-	value_ref operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5, const T6& arg6, const T7& arg7)
+	reference operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5, const T6& arg6, const T7& arg7)
 	{
 		push_ref();
 
@@ -158,7 +157,7 @@ public:
 
 		call(7, 1);
 
-		value_ref ref(L, stack::top);
+		reference ref(L, stack::top);
 
 		st.pop(1);
 
@@ -166,7 +165,7 @@ public:
 	}
 
 	template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
-	value_ref operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5, const T6& arg6, const T7& arg7, const T8& arg8)
+	reference operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5, const T6& arg6, const T7& arg7, const T8& arg8)
 	{
 		push_ref();
 
@@ -183,7 +182,7 @@ public:
 
 		call(8, 1);
 
-		value_ref ref(L, stack::top);
+		reference ref(L, stack::top);
 
 		st.pop(1);
 

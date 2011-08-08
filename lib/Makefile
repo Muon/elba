@@ -4,7 +4,7 @@ include $(TOP_DIR)/Makefile.defaults
 
 VPATH = $(TOP_DIR)/$(INC_DIR) $(TOP_DIR)/$(SRC_DIR)
 
-ELBA_SRC = elba_state.cpp elba_stack.cpp elba_table.cpp elba_reference.cpp elba_function.cpp elba_valueref.cpp
+ELBA_SRC = elba_state.cpp elba_stack.cpp elba_table.cpp elba_reference.cpp elba_function.cpp
 ELBA_O = $(ELBA_SRC:%.cpp=%.o)
 ELBA_A = libelba.a
 ELBA_SO = libelba.so

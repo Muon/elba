@@ -32,7 +32,7 @@ function::function(lua_State* L, int index)
 	set_ref();
 }
 
-value_ref function::operator()()
+reference function::operator()()
 {
 	push_ref();
 
@@ -40,7 +40,7 @@ value_ref function::operator()()
 
 	call(0, 1);
 
-	value_ref ref(L, stack::top);
+	reference ref(L, stack::top);
 
 	st.pop(1);
 

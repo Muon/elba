@@ -11,6 +11,11 @@ namespace elba
 class reference
 {
 public:
+	reference(lua_State* L);
+	reference(lua_State* L, int index);
+	reference(const reference& other);
+	~reference();
+	
 	reference& operator=(const reference& other);
 	
 	template<typename T>
@@ -22,12 +27,26 @@ public:
 		
 		return *this;
 	}
+	
+	template<typename T>
+	T get() const
+	{
+		stack st(L);
+
+		push_ref();
+
+		T tmp;
+		st.get(tmp, stack::top);
+
+		st.pop(1);
+
+		return tmp;
+	}
+
+	template<typename T> operator T() const { return get<T>(); }
 
 protected:
 	reference();
-	reference(lua_State* L);
-	reference(const reference& other);
-	~reference();
 
 	void set_ref();
 	void push_ref() const;
@@ -38,6 +57,8 @@ private:
 
 	friend class stack;
 };
+
+template<> reference::operator const char*() const;
 
 }
 
