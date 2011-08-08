@@ -107,7 +107,7 @@ public:
 	}
 
 	template<typename U>
-	const index& operator=(const U& value) const
+	const index& operator=(const U& value)
 	{
 		owner_table.set(ref, value);
 		return *this;
