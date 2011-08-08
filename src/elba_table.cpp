@@ -104,7 +104,7 @@ void table::get_top<const char*>(const char*& str) const
 	str = p;
 }
 
-std::ostream& operator<<(std::ostream& stream, const table::index& idx)
+std::ostream& operator<<(std::ostream& stream, const index& idx)
 {
 	std::string str = idx;
 	stream << str;

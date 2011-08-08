@@ -12,6 +12,8 @@ struct lua_State;
 namespace elba
 {
 
+class index;
+
 class table : public reference
 {
 public:
@@ -19,8 +21,6 @@ public:
 	table(lua_State* L);
 	table(lua_State* L, int index);
 	table(lua_State* L, int num_array, int num_assoc);
-	
-	class index;
 
 	template<typename T>
 	index operator[](const T& key) const;
@@ -86,7 +86,7 @@ private:
 	}
 };
 
-class table::index
+class index
 {
 public:
 	template<typename T>
@@ -125,7 +125,7 @@ private:
 };
 
 template<typename T>
-table::index table::operator[](const T& key) const
+index table::operator[](const T& key) const
 {
 	return index(*this, key);
 }
@@ -133,7 +133,7 @@ table::index table::operator[](const T& key) const
 template<> void table::get_top<char*>(char*& str) const;
 template<> void table::get_top<const char*>(const char*& str) const;
 
-std::ostream& operator<<(std::ostream& stream, const table::index& idx);
+std::ostream& operator<<(std::ostream& stream, const index& idx);
 
 }
 
