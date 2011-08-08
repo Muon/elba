@@ -12,7 +12,7 @@ struct lua_State;
 namespace elba
 {
 
-class index;
+class object_index;
 
 class table : public reference
 {
@@ -23,7 +23,7 @@ public:
 	table(lua_State* L, int num_array, int num_assoc);
 
 	template<typename T>
-	index operator[](const T& key) const;
+	object_index operator[](const T& key) const;
 
 	template<typename T, typename U>
 	void get(const T& key, U& value) const
@@ -58,7 +58,7 @@ private:
 	void get_table_field(int index) const;
 	void set_table_field(int index) const;
 
-	friend class index;
+	friend class object_index;
 
 	template<typename T>
 	void get_top(T& val) const
@@ -86,11 +86,11 @@ private:
 	}
 };
 
-class index
+class object_index
 {
 public:
 	template<typename T>
-	index(const table& owner, const T& key)
+	object_index(const table& owner, const T& key)
 		: owner_table(owner)
 		, ref(owner_table.L)
 	{
@@ -107,14 +107,14 @@ public:
 	}
 
 	template<typename U>
-	const index& operator=(const U& value)
+	const object_index& operator=(const U& value)
 	{
 		owner_table.set(ref, value);
 		return *this;
 	}
 
 	template<typename U>
-	index operator[](const U& key) const
+	object_index operator[](const U& key) const
 	{
 		table tmp = *this;
 		return tmp[key];
@@ -125,15 +125,15 @@ private:
 };
 
 template<typename T>
-index table::operator[](const T& key) const
+object_index table::operator[](const T& key) const
 {
-	return index(*this, key);
+	return object_index(*this, key);
 }
 
 template<> void table::get_top<char*>(char*& str) const;
 template<> void table::get_top<const char*>(const char*& str) const;
 
-std::ostream& operator<<(std::ostream& stream, const index& idx);
+std::ostream& operator<<(std::ostream& stream, const object_index& idx);
 
 }
 
