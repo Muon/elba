@@ -11,6 +11,7 @@ namespace elba
 class reference
 {
 public:
+	reference();
 	reference(lua_State* L);
 	reference(lua_State* L, int index);
 	reference(const reference& other);
@@ -46,8 +47,6 @@ public:
 	template<typename T> operator T() const { return get<T>(); }
 
 protected:
-	reference();
-
 	void set_ref();
 	void push_ref() const;
 
