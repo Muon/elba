@@ -14,6 +14,7 @@ const char* g(const char* str)
 
 void h(int a)
 {
+	static_cast<void>(a);
 }
 
 int main()
