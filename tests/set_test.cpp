@@ -6,7 +6,7 @@
 
 struct A
 {
-	A() {}
+	A() : v(123) {}
 	A(int x) : v(x) {}
 	
 	int v;
@@ -23,10 +23,14 @@ int main()
 	lua.globals["float"] = 1.5f;
 	lua.globals["truth"] = true;
 	
+	A x(1);
 	lua.globals["struct"] = A(2);
+	lua.globals["struct1"] = &x;
 	A ref = lua.globals["struct"];
 	A* ref1 = lua.globals["struct"];
+	A* ref2 = lua.globals["struct1"];
 	std::cout << "The magic number is " << ref.v << ", " << ref1->v << std::endl;
+	std::cout << "More magic: " << ref2->v << std::endl;
 
 	lua.globals.set("foo", elba::table(lua));
 	elba::table t = lua.globals["foo"];

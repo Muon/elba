@@ -4,6 +4,7 @@
 #include <boost/utility/enable_if.hpp>
 #include <boost/type_traits/is_base_of.hpp>
 #include <string>
+#include <iostream>
 
 struct lua_State;
 
@@ -98,6 +99,12 @@ public:
 		void* p;
 		push(p, sizeof(T));
 		*(static_cast<T*>(p)) = val;
+	}
+	
+	template<typename T>
+	void push(T* ptr) const
+	{
+		push(static_cast<void*>(ptr));
 	}
 	
 	template<typename T>
