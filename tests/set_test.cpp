@@ -4,6 +4,14 @@
 
 #include <string>
 
+struct A
+{
+	A() {}
+	A(int x) : v(x) {}
+	
+	int v;
+};
+
 int main()
 {
 	elba::state lua;
@@ -14,6 +22,11 @@ int main()
 	lua.globals["num"] = 15;
 	lua.globals["float"] = 1.5f;
 	lua.globals["truth"] = true;
+	
+	lua.globals["struct"] = A(2);
+	A ref = lua.globals["struct"];
+	A* ref1 = lua.globals["struct"];
+	std::cout << "The magic number is " << ref.v << ", " << ref1->v << std::endl;
 
 	lua.globals.set("foo", elba::table(lua));
 	elba::table t = lua.globals["foo"];

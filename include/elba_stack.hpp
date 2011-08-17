@@ -1,6 +1,8 @@
 #ifndef ELBA_STACK_HPP
 #define ELBA_STACK_HPP
 
+#include <boost/utility/enable_if.hpp>
+#include <boost/type_traits/is_base_of.hpp>
 #include <string>
 
 struct lua_State;
@@ -89,6 +91,23 @@ public:
 	void push(void* data) const;
 	void push(void*& data, size_t len) const;
 	void get(void*& data, int index = stack::top) const;
+	
+	template<typename T>
+	typename boost::disable_if<boost::is_base_of<reference, T>, void>::type push(const T& val) const
+	{
+		void* p;
+		push(p, sizeof(T));
+		*(static_cast<T*>(p)) = val;
+	}
+	
+	template<typename T>
+	typename boost::disable_if<boost::is_base_of<reference, T>, void>::type get(T& val, int index = stack::top) const
+	{
+		void* p;
+		get(p, index);
+		
+		val = *(static_cast<T*>(p));
+	}
 
 	void push(void (*func_ptr)()) const;
 
