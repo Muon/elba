@@ -115,6 +115,15 @@ public:
 		val = *(static_cast<T*>(p));
 	}
 
+	template<typename T>
+	void get(T*& val, int index = stack::top) const
+	{
+		void* p;
+		get(p, index);
+
+		val = static_cast<T*>(p);
+	}
+
 	void push(void (*func_ptr)()) const;
 
 	template<typename R>
