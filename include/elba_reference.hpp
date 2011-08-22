@@ -46,6 +46,19 @@ public:
 
 	template<typename T> operator T() const { return get<T>(); }
 
+	stack::type type() const
+	{
+		stack st(L);
+		
+		push_ref();
+
+		stack::type t = st.element_type(stack::top);
+
+		st.pop(1);
+
+		return t;
+	}
+
 protected:
 	void set_ref();
 	void push_ref() const;
