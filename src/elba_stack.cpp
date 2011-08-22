@@ -269,6 +269,7 @@ stack::type stack::element_type(int index) const
 reference stack::create_userdata(size_t size) const
 {
 	void* data = lua_newuserdata(L, size);
+	assert(data != NULL);
 	reference ud(L, stack::top);
 	pop(1);
 
