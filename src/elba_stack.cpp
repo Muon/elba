@@ -196,8 +196,6 @@ void stack::get(void*& data, int index) const
 	data = lua_touserdata(L, index);
 }
 
-void get(void*&, int index = stack::top);
-
 void stack::get(stack::bindable_funcptr& ptr, int index) const
 {
 	ptr = lua_tocfunction(L, index);
