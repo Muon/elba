@@ -51,6 +51,32 @@ reference::~reference()
 	luaL_unref(L, LUA_REGISTRYINDEX, ref);
 }
 
+void reference::metatable(const elba::reference& mt) const
+{
+	push_ref();
+	mt.push_ref();
+
+	lua_setmetatable(L, -2);
+}
+
+reference reference::metatable() const
+{
+	stack st(L);
+	
+	push_ref();
+	
+	if(!lua_getmetatable(L, -1))
+	{
+		st.pop(1);
+		return reference(L);
+	}
+
+	reference mt(L, -1);
+	st.pop(2);
+
+	return mt;
+}
+
 void reference::set_ref()
 {
 	luaL_unref(L, LUA_REGISTRYINDEX, ref);

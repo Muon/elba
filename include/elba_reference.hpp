@@ -46,6 +46,9 @@ public:
 
 	template<typename T> operator T() const { return get<T>(); }
 
+	void metatable(const reference& mt) const;
+	reference metatable() const;
+	
 	stack::type type() const
 	{
 		stack st(L);
