@@ -85,33 +85,34 @@ public:
 
 	void push(const reference& ref) const;
 	void get(reference& ref, int index = stack::top) const;
-	
+
 	void push(const object_index& ref) const;
 
 	void push(void* data) const;
-	void push(void*& data, size_t len) const;
 	void get(void*& data, int index = stack::top) const;
-	
+
 	template<typename T>
 	typename boost::disable_if<boost::is_base_of<reference, T>, void>::type push(const T& val) const
 	{
-		void* p;
-		push(p, sizeof(T));
+		reference ud = create_userdata(sizeof(T));
+		void* p = ud;
 		*(static_cast<T*>(p)) = val;
+
+		push(ud);
 	}
-	
+
 	template<typename T>
 	void push(T* ptr) const
 	{
 		push(static_cast<void*>(ptr));
 	}
-	
+
 	template<typename T>
 	typename boost::disable_if<boost::is_base_of<reference, T>, void>::type get(T& val, int index = stack::top) const
 	{
 		void* p;
 		get(p, index);
-		
+
 		val = *(static_cast<T*>(p));
 	}
 
@@ -691,6 +692,8 @@ public:
 	int upvalue_index(int index) const;
 
 	type element_type(int index) const;
+
+	reference create_userdata(size_t size) const;
 private:
 	lua_State* L;
 };

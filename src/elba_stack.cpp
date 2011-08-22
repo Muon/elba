@@ -191,11 +191,6 @@ void stack::push(void* data) const
 	lua_pushlightuserdata(L, data);
 }
 
-void stack::push(void*& data, size_t len) const
-{
-	data = lua_newuserdata(L, len);
-}
-
 void stack::get(void*& data, int index) const
 {
 	data = lua_touserdata(L, index);
@@ -271,6 +266,15 @@ int stack::upvalue_index(int index) const
 stack::type stack::element_type(int index) const
 {
 	return static_cast<stack::type>(lua_type(L, index));
+}
+
+reference stack::create_userdata(size_t size) const
+{
+	void* data = lua_newuserdata(L, size);
+	reference ud(L, stack::top);
+	pop(1);
+
+	return ud;
 }
 
 }
