@@ -238,6 +238,11 @@ stack::bindable_funcptr stack::get_wrapped_function() const
 	return function;
 }
 
+void stack::repush(int index) const
+{
+	lua_pushvalue(L, index);
+}
+
 int stack::size() const
 {
 	return lua_gettop(L);

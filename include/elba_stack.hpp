@@ -681,6 +681,8 @@ public:
 
 	bindable_funcptr get_wrapped_function() const;
 
+	void repush(int index) const;
+
 	void pop(int num) const;
 
 	int size() const;
