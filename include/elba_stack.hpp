@@ -125,6 +125,1300 @@ public:
 		val = static_cast<T*>(p);
 	}
 
+	template<typename R, typename C>
+	void push(R (C::*func_ptr)()) const
+	{
+		typedef R (C::*memfunptr)() const;
+		struct wrapper_creator
+		{
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)());
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(&wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C>
+	void push(R (C::*func_ptr)() const) const
+	{
+		typedef R (C::*memfunptr)() const;
+		struct wrapper_creator
+		{
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)());
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(&wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename C>
+	void push(void (C::*func_ptr)()) const
+	{
+		typedef void (C::*memfunptr)() const;
+		struct wrapper_creator
+		{
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)());
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(&wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename C>
+	void push(void (C::*func_ptr)() const) const
+	{
+		typedef void (C::*memfunptr)() const;
+		struct wrapper_creator
+		{
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)());
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(&wrapper_creator::wrapper, func_ptr);
+	}
+
+// START MEM FUNC GLUE
+	template<typename R, typename C, typename T1>
+	void push(R (C::*func_ptr)(T1) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1>
+	void push(R (C::*func_ptr)(T1) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1>
+	void push(void (C::*func_ptr)(T1) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1>
+	void push(void (C::*func_ptr)(T1) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2>
+	void push(R (C::*func_ptr)(T1, T2) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1, T2) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2>
+	void push(R (C::*func_ptr)(T1, T2) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1, T2) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2>
+	void push(void (C::*func_ptr)(T1, T2) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1, T2) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2>
+	void push(void (C::*func_ptr)(T1, T2) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1, T2) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3>
+	void push(R (C::*func_ptr)(T1, T2, T3) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1, T2, T3) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3>
+	void push(R (C::*func_ptr)(T1, T2, T3) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1, T2, T3) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3>
+	void push(void (C::*func_ptr)(T1, T2, T3) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1, T2, T3) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3>
+	void push(void (C::*func_ptr)(T1, T2, T3) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1, T2, T3) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4>
+	void push(R (C::*func_ptr)(T1, T2, T3, T4) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1, T2, T3, T4) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4>
+	void push(R (C::*func_ptr)(T1, T2, T3, T4) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1, T2, T3, T4) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4>
+	void push(void (C::*func_ptr)(T1, T2, T3, T4) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1, T2, T3, T4) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4>
+	void push(void (C::*func_ptr)(T1, T2, T3, T4) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1, T2, T3, T4) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5>
+	void push(R (C::*func_ptr)(T1, T2, T3, T4, T5) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1, T2, T3, T4, T5) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5>
+	void push(R (C::*func_ptr)(T1, T2, T3, T4, T5) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1, T2, T3, T4, T5) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5>
+	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1, T2, T3, T4, T5) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5>
+	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1, T2, T3, T4, T5) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+	void push(R (C::*func_ptr)(T1, T2, T3, T4, T5, T6) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1, T2, T3, T4, T5, T6) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+				T6 arg6;
+				st.get(arg6, 7);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+	void push(R (C::*func_ptr)(T1, T2, T3, T4, T5, T6) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1, T2, T3, T4, T5, T6) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+				T6 arg6;
+				st.get(arg6, 7);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5, T6) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1, T2, T3, T4, T5, T6) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+				T6 arg6;
+				st.get(arg6, 7);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5, T6) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1, T2, T3, T4, T5, T6) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+				T6 arg6;
+				st.get(arg6, 7);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+	void push(R (C::*func_ptr)(T1, T2, T3, T4, T5, T6, T7) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1, T2, T3, T4, T5, T6, T7) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+				T6 arg6;
+				st.get(arg6, 7);
+				T7 arg7;
+				st.get(arg7, 8);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+	void push(R (C::*func_ptr)(T1, T2, T3, T4, T5, T6, T7) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1, T2, T3, T4, T5, T6, T7) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+				T6 arg6;
+				st.get(arg6, 7);
+				T7 arg7;
+				st.get(arg7, 8);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5, T6, T7) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1, T2, T3, T4, T5, T6, T7) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+				T6 arg6;
+				st.get(arg6, 7);
+				T7 arg7;
+				st.get(arg7, 8);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5, T6, T7) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1, T2, T3, T4, T5, T6, T7) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+				T6 arg6;
+				st.get(arg6, 7);
+				T7 arg7;
+				st.get(arg7, 8);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+	void push(R (C::*func_ptr)(T1, T2, T3, T4, T5, T6, T7, T8) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1, T2, T3, T4, T5, T6, T7, T8) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+				T6 arg6;
+				st.get(arg6, 7);
+				T7 arg7;
+				st.get(arg7, 8);
+				T8 arg8;
+				st.get(arg8, 9);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+	void push(R (C::*func_ptr)(T1, T2, T3, T4, T5, T6, T7, T8) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef R (C::*memfunptr)(T1, T2, T3, T4, T5, T6, T7, T8) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+				T6 arg6;
+				st.get(arg6, 7);
+				T7 arg7;
+				st.get(arg7, 8);
+				T8 arg8;
+				st.get(arg8, 9);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5, T6, T7, T8) ) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1, T2, T3, T4, T5, T6, T7, T8) ;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+				T6 arg6;
+				st.get(arg6, 7);
+				T7 arg7;
+				st.get(arg7, 8);
+				T8 arg8;
+				st.get(arg8, 9);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+
+	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5, T6, T7, T8) const) const
+	{
+		struct wrapper_creator
+		{
+			typedef void (C::*memfunptr)(T1, T2, T3, T4, T5, T6, T7, T8) const;
+
+			static int wrapper(lua_State* L)
+			{
+				stack st(L);
+
+				memfunptr* func_ptrptr;
+				st.get(func_ptrptr, st.upvalue_index(1));
+
+				C* object = NULL;
+				st.get(object, 1);
+				T1 arg1;
+				st.get(arg1, 2);
+				T2 arg2;
+				st.get(arg2, 3);
+				T3 arg3;
+				st.get(arg3, 4);
+				T4 arg4;
+				st.get(arg4, 5);
+				T5 arg5;
+				st.get(arg5, 6);
+				T6 arg6;
+				st.get(arg6, 7);
+				T7 arg7;
+				st.get(arg7, 8);
+				T8 arg8;
+				st.get(arg8, 9);
+
+				memfunptr func = *func_ptrptr;
+
+				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+
+				return 1;
+			}
+		};
+
+		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
+	}
+// END MEM FUNC GLUE
+
 	void push(void (*func_ptr)()) const;
 
 	template<typename R>
@@ -696,6 +1990,18 @@ public:
 	reference create_userdata(std::size_t size) const;
 private:
 	lua_State* L;
+
+	template<typename Memfun>
+	void push_memfun_wrapper(bindable_funcptr wrapper, Memfun memfun) const
+	{
+		void* ptr = NULL;
+		reference ud = create_userdata(sizeof(memfun));
+		ptr = ud;
+		*(static_cast<Memfun*>(ptr)) = memfun;
+
+		push(ud);
+		push(wrapper, 1);
+	}
 };
 
 }
