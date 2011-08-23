@@ -52,6 +52,32 @@ public:
 		st.pop(1);
 	}
 
+	template<typename T, typename U>
+	void raw_get(const T& key, U& value) const
+	{
+		stack st(L);
+
+		push_ref();
+		st.push(key);
+		st.raw_get_table_field(-2);
+
+		get_top(value);
+
+		st.pop(1);
+	}
+
+	template<typename T, typename U>
+	void raw_set(const T& key, const U& value) const
+	{
+		stack st(L);
+
+		push_ref();
+		st.push(key);
+		st.push(value);
+		st.raw_set_table_field(-3);
+
+		st.pop(1);
+	}
 private:
 	friend class object_index;
 

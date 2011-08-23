@@ -286,4 +286,14 @@ void stack::set_table_field(int t) const
 	lua_settable(L, t);
 }
 
+void stack::raw_get_table_field(int t) const
+{
+	lua_rawget(L, t);
+}
+
+void stack::raw_set_table_field(int t) const
+{
+	lua_rawset(L, t);
+}
+
 }

@@ -1991,6 +1991,9 @@ public:
 
 	void get_table_field(int t) const;
 	void set_table_field(int t) const;
+
+	void raw_get_table_field(int t) const;
+	void raw_set_table_field(int t) const;
 private:
 	lua_State* L;
 
