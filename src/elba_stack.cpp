@@ -40,7 +40,7 @@ void stack::get(const char*& string, int index) const
 	string = lua_tostring(L, index);
 }
 
-void stack::get(const char*& string, int index, size_t& len) const
+void stack::get(const char*& string, int index, std::size_t& len) const
 {
 	string = lua_tolstring(L, index, &len);
 }
@@ -266,7 +266,7 @@ stack::type stack::element_type(int index) const
 	return static_cast<stack::type>(lua_type(L, index));
 }
 
-reference stack::create_userdata(size_t size) const
+reference stack::create_userdata(std::size_t size) const
 {
 	void* data = lua_newuserdata(L, size);
 	assert(data != NULL);

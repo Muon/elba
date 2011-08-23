@@ -62,9 +62,9 @@ void reference::metatable(const elba::reference& mt) const
 reference reference::metatable() const
 {
 	stack st(L);
-	
+
 	push_ref();
-	
+
 	if(!lua_getmetatable(L, -1))
 	{
 		st.pop(1);
@@ -97,7 +97,7 @@ template<> reference::operator const char*() const
 	push_ref();
 
 	const char* tmp;
-	size_t len;
+	std::size_t len;
 	st.get(tmp, stack::top, len);
 
 	char* str = new char[len + 1];

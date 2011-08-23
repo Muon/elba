@@ -16,11 +16,11 @@ namespace elba
 static int panic(lua_State* L)
 {
 	stack st(L);
-	
+
 	std::string error_message;
 	st.get(error_message, stack::top);
 	st.pop(1);
-	
+
 	throw std::runtime_error(error_message);
 }
 
@@ -66,7 +66,7 @@ void state::do_string(const char* string) const
 		}
 		else
 		{
-			size_t len;
+			std::size_t len;
 			const char* error = lua_tolstring(state_container.L, -1, &len);
 			if(len > 0)
 			{
@@ -93,7 +93,7 @@ void state::do_string(const char* string) const
 	}
 	else
 	{
-		size_t len;
+		std::size_t len;
 		const char* error = lua_tolstring(state_container.L, -1, &len);
 		if(len > 0)
 		{

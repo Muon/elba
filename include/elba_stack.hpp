@@ -75,7 +75,7 @@ public:
 
 	void push(const char* string) const;
 	void get(const char*& string, int index = stack::top) const;
-	void get(const char*& string, int index, size_t& len) const;
+	void get(const char*& string, int index, std::size_t& len) const;
 
 	void push(const bindable_funcptr ptr, int num_upvalues = 0) const;
 	void get(bindable_funcptr& ptr, int index = stack::top) const;
@@ -693,7 +693,7 @@ public:
 
 	type element_type(int index) const;
 
-	reference create_userdata(size_t size) const;
+	reference create_userdata(std::size_t size) const;
 private:
 	lua_State* L;
 };
