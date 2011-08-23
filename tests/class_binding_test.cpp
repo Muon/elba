@@ -1,12 +1,20 @@
 #include <elba.hpp>
 #include <iostream>
 
+struct B
+{
+	B() : truth(false) {}
+
+	bool truth;
+};
+
 struct A
 {
 	A() : a(1) { std::cout << "initializing" << std::endl; }
 	~A() { std::cout << "finalizing" << std::endl; }
 
-	int get() const { return a; }
+	int assess_truth(B b) const { return b.truth ? a : 0; }
+	bool determine(B b) { return b.truth; }
 
 	int a;
 };
@@ -16,12 +24,13 @@ int main()
 	elba::state L;
 	L.open_libs();
 
-	elba::class_binder binder(L);
-
 	L.globals["A"] = L.bind_class<A>()
 		.constructor<A>()
-		.method("get", &A::get);
+		.method("assess_truth", &A::assess_truth)
+		.method("determine", &A::determine);
 
-	L.do_string("a = A.new()\nprint(a)\nprint(a.get)\nprint(a:get())");
+	L.globals["B"] = L.bind_class<B>()
+		.constructor<B>();
 
+	L.do_string("a = A.new()\nb = B.new()\nprint(a:assess_truth(b))\nprint(not a:determine(b))");
 }
