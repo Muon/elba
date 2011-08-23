@@ -13,11 +13,16 @@ Features
 * primitive type and std::string assignment/retrieval
 * binding free functions (Python script generates the template functions)
 * retrieval of functions from the Lua state
+* class binding
 
 Todo
 ----
 
-* class binding
+* class properties
+* table iterators
+* write more unit tests
+* review code
+* write documentation
 
 License
 -------
