@@ -16,19 +16,19 @@ public:
 	reference(lua_State* L, int index);
 	reference(const reference& other);
 	~reference();
-	
+
 	reference& operator=(const reference& other);
-	
+
 	template<typename T>
 	reference& set_ref(const T& val)
 	{
 		stack st(L);
 		st.push(val);
 		set_ref();
-		
+
 		return *this;
 	}
-	
+
 	template<typename T>
 	T get() const
 	{
@@ -48,11 +48,11 @@ public:
 
 	void metatable(const reference& mt) const;
 	reference metatable() const;
-	
+
 	stack::type type() const
 	{
 		stack st(L);
-		
+
 		push_ref();
 
 		stack::type t = st.element_type(stack::top);

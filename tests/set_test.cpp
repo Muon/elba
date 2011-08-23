@@ -8,7 +8,7 @@ struct A
 {
 	A() : v(123) {}
 	A(int x) : v(x) {}
-	
+
 	int v;
 };
 
@@ -22,7 +22,7 @@ int main()
 	lua.globals["num"] = 15;
 	lua.globals["float"] = 1.5f;
 	lua.globals["truth"] = true;
-	
+
 	A x(1);
 	lua.globals["struct"] = A(2);
 	lua.globals["struct1"] = &x;
