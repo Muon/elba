@@ -32,7 +32,7 @@ public:
 
 		push_ref();
 		st.push(key);
-		get_table_field(-2);
+		st.get_table_field(-2);
 
 		get_top(value);
 
@@ -47,15 +47,12 @@ public:
 		push_ref();
 		st.push(key);
 		st.push(value);
-		set_table_field(-3);
+		st.set_table_field(-3);
 
 		st.pop(1);
 	}
 
 private:
-	void get_table_field(int index) const;
-	void set_table_field(int index) const;
-
 	friend class object_index;
 
 	template<typename T>
@@ -64,7 +61,7 @@ private:
 		stack st(L);
 		st.get(val, stack::top);
 	}
-	
+
 	template<typename T>
 	void get_top(T*& val) const
 	{
@@ -73,7 +70,7 @@ private:
 		st.get(p, stack::top);
 		val = static_cast<T*>(p);
 	}
-	
+
 	template<typename T>
 	void get_top(const T*& val) const
 	{

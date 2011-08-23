@@ -276,4 +276,14 @@ reference stack::create_userdata(std::size_t size) const
 	return ud;
 }
 
+void stack::get_table_field(int t) const
+{
+	lua_gettable(L, t);
+}
+
+void stack::set_table_field(int t) const
+{
+	lua_settable(L, t);
+}
+
 }

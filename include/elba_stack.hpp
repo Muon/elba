@@ -1988,6 +1988,9 @@ public:
 	type element_type(int index) const;
 
 	reference create_userdata(std::size_t size) const;
+
+	void get_table_field(int t) const;
+	void set_table_field(int t) const;
 private:
 	lua_State* L;
 
