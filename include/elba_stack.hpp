@@ -12,6 +12,7 @@ namespace elba
 
 class reference;
 class object_index;
+class class_binder;
 
 class stack
 {
@@ -90,6 +91,8 @@ public:
 
 	void push(void* data) const;
 	void get(void*& data, int index = stack::top) const;
+
+	void push(const class_binder& binder) const;
 
 	template<typename T>
 	typename boost::disable_if<boost::is_base_of<reference, T>, void>::type push(const T& val) const

@@ -2,6 +2,7 @@
 #define ELBA_STATE_HPP
 
 #include "elba_table.hpp"
+#include "elba_classbinder.hpp"
 
 struct lua_State;
 
@@ -17,6 +18,16 @@ public:
 
 	void open_libs() const;
 	void do_string(const char* string) const;
+
+	template<typename T>
+	class_binder bind_class() const
+	{
+		class_binder binder(state_container.L);
+
+		binder.destructor<T>();
+
+		return binder;
+	}
 private:
 
 	// ensure that the state is destroyed after the table

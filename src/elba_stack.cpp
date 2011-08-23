@@ -1,6 +1,7 @@
 #include "../include/elba_stack.hpp"
 #include "../include/elba_reference.hpp"
 #include "../include/elba_table.hpp"
+#include "../include/elba_classbinder.hpp"
 
 extern "C"
 {
@@ -184,6 +185,11 @@ void stack::push(const object_index& idx) const
 {
 	reference ref = idx;
 	push(ref);
+}
+
+void stack::push(const class_binder& binder) const
+{
+	push(binder.methods);
 }
 
 void stack::push(void* data) const
