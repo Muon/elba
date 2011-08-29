@@ -30,7 +30,7 @@ for n in range(1, total + 1):
 
 {}
 
-		call({}, 1);
+		st.call({}, 1);
 
 		reference ref(L, stack::top);
 

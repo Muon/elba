@@ -1,20 +1,16 @@
 elba_state.o: ../src/elba_state.cpp ../src/../include/elba_state.hpp \
  ../src/../include/elba_table.hpp ../src/../include/elba_stack.hpp \
- ../src/../include/elba_reference.hpp ../src/../include/elba_function.hpp \
+ ../src/../include/elba_reference.hpp \
  ../src/../include/elba_classbinder.hpp ../src/../include/elba_stack.hpp
 elba_stack.o: ../src/elba_stack.cpp ../src/../include/elba_stack.hpp \
  ../src/../include/elba_reference.hpp ../src/../include/elba_stack.hpp \
  ../src/../include/elba_table.hpp ../src/../include/elba_reference.hpp \
- ../src/../include/elba_function.hpp \
  ../src/../include/elba_classbinder.hpp ../src/../include/elba_table.hpp
 elba_table.o: ../src/elba_table.cpp ../src/../include/elba_table.hpp \
  ../src/../include/elba_stack.hpp ../src/../include/elba_reference.hpp \
- ../src/../include/elba_function.hpp ../src/../include/elba_stack.hpp
+ ../src/../include/elba_stack.hpp
 elba_reference.o: ../src/elba_reference.cpp ../include/elba_reference.hpp \
  ../include/elba_stack.hpp
-elba_function.o: ../src/elba_function.cpp ../include/elba_function.hpp \
- ../include/elba_reference.hpp ../include/elba_stack.hpp
 elba_classbinder.o: ../src/elba_classbinder.cpp \
  ../include/elba_classbinder.hpp ../include/elba_table.hpp \
- ../include/elba_stack.hpp ../include/elba_reference.hpp \
- ../include/elba_function.hpp
+ ../include/elba_stack.hpp ../include/elba_reference.hpp

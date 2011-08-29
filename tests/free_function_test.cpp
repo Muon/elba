@@ -28,7 +28,7 @@ int main()
 
 	L.do_string("print(f(-12))\nprint(g(\"I am bound!\"))\nprint(h())");
 
-	elba::function print = L.globals["print"];
+	elba::reference print = L.globals["print"];
 
 	int p = print("I am being called from C++!");
 	p = print("I am being called from C++, too!");

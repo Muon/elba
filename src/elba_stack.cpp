@@ -302,4 +302,9 @@ void stack::raw_set_table_field(int t) const
 	lua_rawset(L, t);
 }
 
+void stack::call(int nargs, int nresults) const
+{
+	lua_call(L, nargs, nresults);
+}
+
 }
