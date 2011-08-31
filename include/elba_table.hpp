@@ -6,12 +6,6 @@
 
 #include <iosfwd>
 
-#include <boost/utility/enable_if.hpp>
-#include <boost/type_traits/is_pointer.hpp>
-#include <boost/type_traits/is_same.hpp>
-#include <boost/type_traits/remove_cv.hpp>
-#include <boost/type_traits/remove_pointer.hpp>
-
 struct lua_State;
 
 namespace elba

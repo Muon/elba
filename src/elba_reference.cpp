@@ -104,23 +104,4 @@ void reference::push_ref() const
 	lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
 }
 
-
-template<> reference::operator const char*() const
-{
-	stack st(L);
-
-	push_ref();
-
-	const char* tmp;
-	std::size_t len;
-	st.get(tmp, stack::top, len);
-
-	char* str = new char[len + 1];
-	std::memcpy(str, tmp, len + 1);
-
-	st.pop(1);
-
-	return str;
-}
-
 }

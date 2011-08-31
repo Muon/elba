@@ -3,6 +3,12 @@
 
 #include "elba_stack.hpp"
 
+#include <boost/utility/enable_if.hpp>
+#include <boost/type_traits/is_pointer.hpp>
+#include <boost/type_traits/is_same.hpp>
+#include <boost/type_traits/remove_cv.hpp>
+#include <boost/type_traits/remove_pointer.hpp>
+
 struct lua_State;
 
 namespace elba
@@ -30,7 +36,10 @@ public:
 	}
 
 	template<typename T>
-	T get() const
+	typename boost::disable_if_c<
+		boost::is_pointer<T>::value &&
+		boost::is_same<typename boost::remove_cv<typename boost::remove_pointer<T>::type>::type, char>::value
+	, T>::type get() const
 	{
 		stack st(L);
 
@@ -248,8 +257,6 @@ private:
 
 	friend class stack;
 };
-
-template<> reference::operator const char*() const;
 
 }
 
