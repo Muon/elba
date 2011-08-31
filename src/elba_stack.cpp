@@ -1,6 +1,5 @@
 #include "../include/elba_stack.hpp"
 #include "../include/elba_reference.hpp"
-#include "../include/elba_table.hpp"
 #include "../include/elba_classbinder.hpp"
 
 extern "C"
@@ -280,6 +279,15 @@ reference stack::create_userdata(std::size_t size) const
 	pop(1);
 
 	return ud;
+}
+
+reference stack::create_table() const
+{
+	lua_newtable(L);
+	reference t(L, stack::top);
+	pop(1);
+
+	return t;
 }
 
 void stack::get_table_field(int t) const

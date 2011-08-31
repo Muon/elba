@@ -36,7 +36,7 @@ int main()
 	short t = print("barley");
 	t = print("hot chocolate");
 
-	elba::table tab = print("coconut");
+	elba::reference tab = print("coconut");
 	tab = print("cheese");
 
 	print("apple", "granny smith", "crab apple", "pineapple?!?!");

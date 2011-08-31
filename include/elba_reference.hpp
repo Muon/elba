@@ -14,6 +14,8 @@ struct lua_State;
 namespace elba
 {
 
+class object_index;
+
 class reference
 {
 public:
@@ -54,6 +56,68 @@ public:
 	}
 
 	template<typename T> operator T() const { return get<T>(); }
+
+
+	template<typename T>
+	object_index operator[](const T& key) const;
+
+	template<typename T, typename U>
+	typename boost::disable_if_c<
+		boost::is_pointer<U>::value &&
+		boost::is_same<typename boost::remove_cv<typename boost::remove_pointer<U>::type>::type, char>::value
+	, void>::type get(const T& key, U& value) const
+	{
+		stack st(L);
+
+		push_ref();
+		st.push(key);
+		st.get_table_field(-2);
+
+		st.get(value, stack::top);
+
+		st.pop(1);
+	}
+
+	template<typename T, typename U>
+	void set(const T& key, const U& value) const
+	{
+		stack st(L);
+
+		push_ref();
+		st.push(key);
+		st.push(value);
+		st.set_table_field(-3);
+
+		st.pop(1);
+	}
+
+	template<typename T, typename U>
+	void raw_get(const T& key, U& value) const
+	{
+		stack st(L);
+
+		push_ref();
+		st.push(key);
+		st.raw_get_table_field(-2);
+
+		st.get(value, stack::top);
+
+		st.pop(1);
+	}
+
+	template<typename T, typename U>
+	void raw_set(const T& key, const U& value) const
+	{
+		stack st(L);
+
+		push_ref();
+		st.push(key);
+		st.push(value);
+		st.raw_set_table_field(-3);
+
+		st.pop(1);
+	}
+
 
 	reference operator()();
 
@@ -252,11 +316,59 @@ protected:
 	void push_ref() const;
 
 	lua_State* L;
+
+	friend class object_index;
 private:
 	int ref;
 
 	friend class stack;
 };
+
+class object_index
+{
+public:
+	template<typename T>
+	object_index(const reference& owner, const T& key)
+		: owner_table(owner)
+		, ref(owner_table.L)
+	{
+		ref.set_ref(key);
+	}
+
+	template<typename T>
+	operator T() const
+	{
+		T tmp;
+		owner_table.get(ref, tmp);
+
+		return tmp;
+	}
+
+	template<typename T>
+	const object_index& operator=(const T& value)
+	{
+		owner_table.set(ref, value);
+		return *this;
+	}
+
+	template<typename T>
+	object_index operator[](const T& key) const
+	{
+		reference tmp = *this;
+		return tmp[key];
+	}
+private:
+	reference owner_table;
+	reference ref;
+};
+
+template<typename T>
+object_index reference::operator[](const T& key) const
+{
+	return object_index(*this, key);
+}
+
+std::ostream& operator<<(std::ostream& stream, const object_index& idx);
 
 }
 

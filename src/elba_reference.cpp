@@ -104,4 +104,10 @@ void reference::push_ref() const
 	lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
 }
 
+std::ostream& operator<<(std::ostream& stream, const object_index& idx)
+{
+	std::string str = idx;
+	return stream << str;
+}
+
 }

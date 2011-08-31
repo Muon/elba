@@ -32,11 +32,11 @@ int main()
 	std::cout << "The magic number is " << ref.v << ", " << ref1->v << std::endl;
 	std::cout << "More magic: " << ref2->v << std::endl;
 
-	lua.globals.set("foo", elba::table(lua));
-	elba::table t = lua.globals["foo"];
+	lua.globals.set("foo", lua.create_table());
+	elba::reference t = lua.globals["foo"];
 	t["bar"] = "baz";
 
-	lua.globals["one"] = elba::table(lua);
+	lua.globals["one"] = lua.create_table();
 	lua.globals["one"]["two"] = "three";
 
 	lua.do_string(

@@ -1,7 +1,7 @@
 #ifndef ELBA_STATE_HPP
 #define ELBA_STATE_HPP
 
-#include "elba_table.hpp"
+#include "elba_reference.hpp"
 #include "elba_classbinder.hpp"
 
 struct lua_State;
@@ -28,6 +28,8 @@ public:
 
 		return binder;
 	}
+
+	reference create_table() const;
 private:
 
 	// ensure that the state is destroyed after the table
@@ -40,7 +42,7 @@ private:
 	} state_container;
 
 public: // avoiding init order complaints with -pedantic
-	table globals;
+	reference globals;
 };
 
 }

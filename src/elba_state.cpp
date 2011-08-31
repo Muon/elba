@@ -115,4 +115,9 @@ void state::do_string(const char* string) const
 	}
 }
 
+reference state::create_table() const
+{
+	return stack(*this).create_table();
+}
+
 }

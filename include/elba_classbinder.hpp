@@ -1,7 +1,7 @@
 #ifndef ELBA_CLASSBINDER_HPP
 #define ELBA_CLASSBINDER_HPP
 
-#include "elba_table.hpp"
+#include "elba_reference.hpp"
 
 namespace elba
 {
@@ -81,8 +81,8 @@ public:
 		metatable["__gc"] = finalizer;
 	}
 
-	table metatable;
-	table methods;
+	reference metatable;
+	reference methods;
 private:
 	lua_State* L;
 

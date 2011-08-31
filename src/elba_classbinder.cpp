@@ -8,7 +8,10 @@ class_binder::class_binder(lua_State* L)
 	, methods(L)
 	, L(L)
 {
-	metatable["__index"] = methods;
+	stack st(L);
+	metatable = st.create_table();
+	metatable["__index"] = st.create_table();
+	methods = metatable["__index"];
 }
 
 }
