@@ -20,7 +20,7 @@ class reference
 {
 public:
 	reference();
-	reference(lua_State* L);
+	explicit reference(lua_State* L);
 	reference(lua_State* L, int index);
 	reference(const reference& other);
 	~reference();
