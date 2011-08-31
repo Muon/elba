@@ -6,6 +6,12 @@
 
 #include <iosfwd>
 
+#include <boost/utility/enable_if.hpp>
+#include <boost/type_traits/is_pointer.hpp>
+#include <boost/type_traits/is_same.hpp>
+#include <boost/type_traits/remove_cv.hpp>
+#include <boost/type_traits/remove_pointer.hpp>
+
 struct lua_State;
 
 namespace elba
@@ -25,7 +31,10 @@ public:
 	object_index operator[](const T& key) const;
 
 	template<typename T, typename U>
-	void get(const T& key, U& value) const
+	typename boost::disable_if_c<
+		boost::is_pointer<U>::value &&
+		boost::is_same<typename boost::remove_cv<typename boost::remove_pointer<U>::type>::type, char>::value
+	, void>::type get(const T& key, U& value) const
 	{
 		stack st(L);
 
@@ -33,7 +42,7 @@ public:
 		st.push(key);
 		st.get_table_field(-2);
 
-		get_top(value);
+		st.get(value, stack::top);
 
 		st.pop(1);
 	}
@@ -60,7 +69,7 @@ public:
 		st.push(key);
 		st.raw_get_table_field(-2);
 
-		get_top(value);
+		st.get(value, stack::top);
 
 		st.pop(1);
 	}
@@ -79,31 +88,6 @@ public:
 	}
 private:
 	friend class object_index;
-
-	template<typename T>
-	void get_top(T& val) const
-	{
-		stack st(L);
-		st.get(val, stack::top);
-	}
-
-	template<typename T>
-	void get_top(T*& val) const
-	{
-		stack st(L);
-		void* p;
-		st.get(p, stack::top);
-		val = static_cast<T*>(p);
-	}
-
-	template<typename T>
-	void get_top(const T*& val) const
-	{
-		stack st(L);
-		void* p;
-		st.get(p, stack::top);
-		val = static_cast<T*>(p);
-	}
 };
 
 class object_index
@@ -149,9 +133,6 @@ object_index table::operator[](const T& key) const
 {
 	return object_index(*this, key);
 }
-
-template<> void table::get_top<char*>(char*& str) const;
-template<> void table::get_top<const char*>(const char*& str) const;
 
 std::ostream& operator<<(std::ostream& stream, const object_index& idx);
 

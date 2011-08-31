@@ -45,29 +45,6 @@ table::table(lua_State* L, int num_array, int num_assoc)
 	set_ref();
 }
 
-template<>
-void table::get_top<char*>(char*& str) const
-{
-	stack st(L);
-
-	const char* a;
-	std::size_t len;
-	st.get(a, stack::top, len);
-
-	char* b = new char[len];
-	std::memcpy(b, a, len);
-
-	str = b;
-}
-
-template<>
-void table::get_top<const char*>(const char*& str) const
-{
-	char* p;
-	get_top(p);
-	str = p;
-}
-
 std::ostream& operator<<(std::ostream& stream, const object_index& idx)
 {
 	std::string str = idx;
