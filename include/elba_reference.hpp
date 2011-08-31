@@ -324,6 +324,8 @@ private:
 	friend class stack;
 };
 
+std::ostream& operator<<(std::ostream& stream, const reference& ref);
+
 class object_index
 {
 public:
