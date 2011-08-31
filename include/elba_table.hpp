@@ -101,24 +101,24 @@ public:
 		ref.set_ref(key);
 	}
 
-	template<typename U>
-	operator U() const
+	template<typename T>
+	operator T() const
 	{
-		U tmp;
+		T tmp;
 		owner_table.get(ref, tmp);
 
 		return tmp;
 	}
 
-	template<typename U>
-	const object_index& operator=(const U& value)
+	template<typename T>
+	const object_index& operator=(const T& value)
 	{
 		owner_table.set(ref, value);
 		return *this;
 	}
 
-	template<typename U>
-	object_index operator[](const U& key) const
+	template<typename T>
+	object_index operator[](const T& key) const
 	{
 		table tmp = *this;
 		return tmp[key];
