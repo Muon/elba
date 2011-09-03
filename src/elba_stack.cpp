@@ -22,11 +22,13 @@ void stack::push(const std::string& string) const
 	lua_pushlstring(L, string.data(), string.size());
 }
 
-void stack::get(std::string& string, int index) const
+template<>
+std::string stack::get<std::string>(int idx) const
 {
 	std::string::size_type len;
-	const char* str = lua_tolstring(L, index, &len);
-	string.assign(str, len);
+	const char* str = lua_tolstring(L, idx, &len);
+
+	return std::string(str, len);
 }
 
 
@@ -35,14 +37,10 @@ void stack::push(const char* string) const
 	lua_pushstring(L, string);
 }
 
-void stack::get(const char*& string, int index) const
+template<>
+const char* stack::get<const char*>(int idx) const
 {
-	string = lua_tostring(L, index);
-}
-
-void stack::get(const char*& string, int index, std::size_t& len) const
-{
-	string = lua_tolstring(L, index, &len);
+	return lua_tostring(L, idx);
 }
 
 void stack::push(char c) const
@@ -50,10 +48,10 @@ void stack::push(char c) const
 	lua_pushlstring(L, &c, sizeof c);
 }
 
-void stack::get(char& c, int index) const
+template<>
+char stack::get<char>(int idx) const
 {
-	const char* str = lua_tostring(L, index);
-	c = str[0];
+	return get<const char*>(idx)[0];
 }
 
 void stack::push(short integer) const
@@ -61,9 +59,10 @@ void stack::push(short integer) const
 	lua_pushinteger(L, integer);
 }
 
-void stack::get(short& integer, int index) const
+template<>
+short stack::get<short>(int idx) const
 {
-	integer = lua_tointeger(L, index);
+	return lua_tointeger(L, idx);
 }
 
 void stack::push(int integer) const
@@ -71,9 +70,10 @@ void stack::push(int integer) const
 	lua_pushinteger(L, integer);
 }
 
-void stack::get(int& integer, int index) const
+template<>
+int stack::get<int>(int idx) const
 {
-	integer = lua_tointeger(L, index);
+	return lua_tointeger(L, idx);
 }
 
 void stack::push(long int integer) const
@@ -81,9 +81,10 @@ void stack::push(long int integer) const
 	lua_pushinteger(L, integer);
 }
 
-void stack::get(long int& integer, int index) const
+template<>
+long stack::get<long>(int idx) const
 {
-	integer = lua_tointeger(L, index);
+	return lua_tointeger(L, idx);
 }
 
 void stack::push(unsigned char c) const
@@ -91,9 +92,10 @@ void stack::push(unsigned char c) const
 	lua_pushinteger(L, c);
 }
 
-void stack::get(unsigned char& c, int index) const
+template<>
+unsigned char stack::get<unsigned char>(int idx) const
 {
-	c = lua_tointeger(L, index);
+	return lua_tointeger(L, idx);
 }
 
 void stack::push(unsigned short integer) const
@@ -101,9 +103,10 @@ void stack::push(unsigned short integer) const
 	lua_pushinteger(L, integer);
 }
 
-void stack::get(unsigned short& integer, int index) const
+template<>
+unsigned short stack::get<unsigned short>(int idx) const
 {
-	integer = lua_tointeger(L, index);
+	return lua_tointeger(L, idx);
 }
 
 void stack::push(unsigned int integer) const
@@ -111,9 +114,10 @@ void stack::push(unsigned int integer) const
 	lua_pushinteger(L, integer);
 }
 
-void stack::get(unsigned int& integer, int index) const
+template<>
+unsigned int stack::get<unsigned int>(int idx) const
 {
-	integer = lua_tointeger(L, index);
+	return lua_tointeger(L, idx);
 }
 
 void stack::push(unsigned long int integer) const
@@ -121,9 +125,10 @@ void stack::push(unsigned long int integer) const
 	lua_pushinteger(L, integer);
 }
 
-void stack::get(unsigned long int& integer, int index) const
+template<>
+unsigned long stack::get<unsigned long>(int idx) const
 {
-	integer = lua_tointeger(L, index);
+	return lua_tointeger(L, idx);
 }
 
 void stack::push(double number) const
@@ -131,9 +136,10 @@ void stack::push(double number) const
 	lua_pushnumber(L, number);
 }
 
-void stack::get(double& number, int index) const
+template<>
+double stack::get<double>(int idx) const
 {
-	number = lua_tonumber(L, index);
+	return lua_tonumber(L, idx);
 }
 
 
@@ -142,9 +148,10 @@ void stack::push(float number) const
 	lua_pushnumber(L, number);
 }
 
-void stack::get(float& number, int index) const
+template<>
+float stack::get<float>(int idx) const
 {
-	number = lua_tonumber(L, index);
+	return lua_tonumber(L, idx);
 }
 
 void stack::pop(int num) const
@@ -162,9 +169,10 @@ void stack::push(bool boolean) const
 	lua_pushboolean(L, boolean);
 }
 
-void stack::get(bool& boolean, int index) const
+template<>
+bool stack::get<bool>(int idx) const
 {
-	boolean = lua_toboolean(L, index);
+	return lua_toboolean(L, idx);
 }
 
 void stack::push(const reference& ref) const
@@ -172,12 +180,10 @@ void stack::push(const reference& ref) const
 	ref.push_ref();
 }
 
-void stack::get(reference& ref, int index) const
+template<>
+reference stack::get<reference>(int idx) const
 {
-	ref = reference(L);
-
-	lua_pushvalue(L, index);
-	ref.set_ref();
+	return reference(L, idx);
 }
 
 void stack::push(const object_index& idx) const
@@ -196,14 +202,16 @@ void stack::push(void* data) const
 	lua_pushlightuserdata(L, data);
 }
 
-void stack::get(void*& data, int index) const
+template<>
+void* stack::get<void*>(int idx) const
 {
-	data = lua_touserdata(L, index);
+	return lua_touserdata(L, idx);
 }
 
-void stack::get(stack::bindable_funcptr& ptr, int index) const
+template<>
+stack::bindable_funcptr stack::get<stack::bindable_funcptr>(int idx) const
 {
-	ptr = lua_tocfunction(L, index);
+	return lua_tocfunction(L, idx);
 }
 
 void stack::push(void (*func_ptr)()) const
@@ -216,7 +224,7 @@ void stack::push(void (*func_ptr)()) const
 		{
 			stack st(L);
 
-			wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+			wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
 			function_real();
 
@@ -226,14 +234,6 @@ void stack::push(void (*func_ptr)()) const
 
 	push(reinterpret_cast<bindable_funcptr>(func_ptr));
 	push(wrapper_creator::wrapper, 1);
-}
-
-stack::bindable_funcptr stack::get_wrapped_function() const
-{
-	bindable_funcptr function;
-	get(function, lua_upvalueindex(1));
-
-	return function;
 }
 
 void stack::repush(int index) const

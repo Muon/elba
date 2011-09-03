@@ -35,9 +35,7 @@ for n in range(1, total + 1):
 			{{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
-
-{}
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
 				st.push(function_real({}));
 
@@ -51,9 +49,7 @@ for n in range(1, total + 1):
 		", ".join("typename {}".format(T) for T in typenames),
 		funcptr_signature("func_ptr"),
 		funcptr_signature("wrapped_funcptr"),
-		"\n".join("""				T{0} arg{0};
-				st.get(arg{0}, {0});""".format(i) for i in range(1, n+1)),
-		", ".join("arg{}".format(i) for i in range(1, n + 1))
+		", ".join("st.get<T{0}>({0})".format(i) for i in range(1, n + 1))
 	))
 
 	functions.append("""	template<{}>
@@ -67,9 +63,7 @@ for n in range(1, total + 1):
 			{{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
-
-{}
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
 				function_real({});
 
@@ -83,9 +77,7 @@ for n in range(1, total + 1):
 		", ".join("typename {}".format(T) for T in typenames),
 		funcptr_signature("func_ptr", True),
 		funcptr_signature("wrapped_funcptr", True),
-		"\n".join("""				T{0} arg{0};
-				st.get(arg{0}, {0});""".format(i) for i in range(1, n+1)),
-		", ".join("arg{}".format(i) for i in range(1, n + 1))
+		", ".join("st.get<T{0}>({0})".format(i) for i in range(1, n + 1))
 	))
 
 f = open(sys.argv[1], "r")

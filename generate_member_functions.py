@@ -36,12 +36,9 @@ for n in range(1, total + 1):
 			{{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-{}
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
@@ -56,9 +53,7 @@ for n in range(1, total + 1):
 			", ".join("typename {}".format(T) for T in typenames),
 			funcptr_signature("func_ptr", returns_void, is_const),
 			funcptr_signature("memfunptr", returns_void, is_const),
-			"\n".join("""				T{0} arg{0};
-				st.get(arg{0}, {1});""".format(i, i + 1) for i in range(1, n + 1)),
-			", ".join("arg{}".format(i) for i in range(1, n + 1))
+			", ".join("st.get<T{0}>({1})".format(i, i + 1) for i in range(1, n + 1))
 		))
 
 	add_pusher(False, False)

@@ -40,55 +40,29 @@ public:
 	stack(lua_State* L);
 
 	void push(char c) const;
-	void get(char& c, int index = stack::top) const;
-
 	void push(short integer) const;
-	void get(short& integer, int index = stack::top) const;
-
 	void push(int integer) const;
-	void get(int& integer, int index = stack::top) const;
-
 	void push(long integer) const;
-	void get(long& integer, int index = stack::top) const;
 
 	void push(unsigned char c) const;
-	void get(unsigned char& c, int index = stack::top) const;
-
 	void push(unsigned short integer) const;
-	void get(unsigned short& integer, int index = stack::top) const;
-
 	void push(unsigned int integer) const;
-	void get(unsigned int& integer, int index = stack::top) const;
-
 	void push(unsigned long integer) const;
-	void get(unsigned long& integer, int index = stack::top) const;
 
 	void push(double number) const;
-	void get(double& number, int index = stack::top) const;
-
 	void push(float number) const;
-	void get(float& number, int index = stack::top) const;
 
 	void push(const std::string& string) const;
-	void get(std::string& string, int index = stack::top) const;
-
 	void push(const char* string) const;
-	void get(const char*& string, int index = stack::top) const;
-	void get(const char*& string, int index, std::size_t& len) const;
 
 	void push(const bindable_funcptr ptr, int num_upvalues = 0) const;
-	void get(bindable_funcptr& ptr, int index = stack::top) const;
 
 	void push(bool boolean) const;
-	void get(bool& boolean, int index = stack::top) const;
 
 	void push(const reference& ref) const;
-	void get(reference& ref, int index = stack::top) const;
-
-	void push(const object_index& ref) const;
+	void push(const object_index& idx) const;
 
 	void push(void* data) const;
-	void get(void*& data, int index = stack::top) const;
 
 	void push(const class_binder& binder) const;
 
@@ -109,21 +83,9 @@ public:
 	}
 
 	template<typename T>
-	void get(T& val, int index = stack::top) const
+	T get(int idx = stack::top) const
 	{
-		void* p;
-		get(p, index);
-
-		val = *(static_cast<T*>(p));
-	}
-
-	template<typename T>
-	void get(T*& val, int index = stack::top) const
-	{
-		void* p;
-		get(p, index);
-
-		val = static_cast<T*>(p);
+		return get_resolver<T>::get(*this, idx);
 	}
 
 	template<typename R, typename C>
@@ -136,11 +98,9 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
@@ -163,11 +123,9 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
@@ -190,11 +148,9 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
@@ -217,11 +173,9 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
@@ -246,17 +200,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1));
+				st.push((object->*func)(st.get<T1>(2)));
 
 				return 1;
 			}
@@ -276,17 +226,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1));
+				st.push((object->*func)(st.get<T1>(2)));
 
 				return 1;
 			}
@@ -306,17 +252,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1));
+				st.push((object->*func)(st.get<T1>(2)));
 
 				return 1;
 			}
@@ -336,17 +278,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1));
+				st.push((object->*func)(st.get<T1>(2)));
 
 				return 1;
 			}
@@ -366,19 +304,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3)));
 
 				return 1;
 			}
@@ -398,19 +330,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3)));
 
 				return 1;
 			}
@@ -430,19 +356,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3)));
 
 				return 1;
 			}
@@ -462,19 +382,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3)));
 
 				return 1;
 			}
@@ -494,21 +408,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4)));
 
 				return 1;
 			}
@@ -528,21 +434,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4)));
 
 				return 1;
 			}
@@ -562,21 +460,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4)));
 
 				return 1;
 			}
@@ -596,21 +486,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4)));
 
 				return 1;
 			}
@@ -630,23 +512,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5)));
 
 				return 1;
 			}
@@ -666,23 +538,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5)));
 
 				return 1;
 			}
@@ -702,23 +564,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5)));
 
 				return 1;
 			}
@@ -738,23 +590,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5)));
 
 				return 1;
 			}
@@ -774,25 +616,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6)));
 
 				return 1;
 			}
@@ -812,25 +642,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6)));
 
 				return 1;
 			}
@@ -850,25 +668,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6)));
 
 				return 1;
 			}
@@ -888,25 +694,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6)));
 
 				return 1;
 			}
@@ -926,27 +720,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
-				T6 arg6;
-				st.get(arg6, 7);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7)));
 
 				return 1;
 			}
@@ -966,27 +746,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
-				T6 arg6;
-				st.get(arg6, 7);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7)));
 
 				return 1;
 			}
@@ -1006,27 +772,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
-				T6 arg6;
-				st.get(arg6, 7);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7)));
 
 				return 1;
 			}
@@ -1046,27 +798,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
-				T6 arg6;
-				st.get(arg6, 7);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7)));
 
 				return 1;
 			}
@@ -1086,29 +824,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
-				T6 arg6;
-				st.get(arg6, 7);
-				T7 arg7;
-				st.get(arg7, 8);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8)));
 
 				return 1;
 			}
@@ -1128,29 +850,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
-				T6 arg6;
-				st.get(arg6, 7);
-				T7 arg7;
-				st.get(arg7, 8);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8)));
 
 				return 1;
 			}
@@ -1170,29 +876,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
-				T6 arg6;
-				st.get(arg6, 7);
-				T7 arg7;
-				st.get(arg7, 8);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8)));
 
 				return 1;
 			}
@@ -1212,29 +902,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
-				T6 arg6;
-				st.get(arg6, 7);
-				T7 arg7;
-				st.get(arg7, 8);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8)));
 
 				return 1;
 			}
@@ -1254,31 +928,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
-				T6 arg6;
-				st.get(arg6, 7);
-				T7 arg7;
-				st.get(arg7, 8);
-				T8 arg8;
-				st.get(arg8, 9);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8), st.get<T8>(9)));
 
 				return 1;
 			}
@@ -1298,31 +954,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
-				T6 arg6;
-				st.get(arg6, 7);
-				T7 arg7;
-				st.get(arg7, 8);
-				T8 arg8;
-				st.get(arg8, 9);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8), st.get<T8>(9)));
 
 				return 1;
 			}
@@ -1342,31 +980,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
-				T6 arg6;
-				st.get(arg6, 7);
-				T7 arg7;
-				st.get(arg7, 8);
-				T8 arg8;
-				st.get(arg8, 9);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8), st.get<T8>(9)));
 
 				return 1;
 			}
@@ -1386,31 +1006,13 @@ public:
 			{
 				stack st(L);
 
-				memfunptr* func_ptrptr;
-				st.get(func_ptrptr, st.upvalue_index(1));
+				memfunptr* func_ptrptr = st.get<memfunptr*>(st.upvalue_index(1));
 
-				C* object = NULL;
-				st.get(object, 1);
-				T1 arg1;
-				st.get(arg1, 2);
-				T2 arg2;
-				st.get(arg2, 3);
-				T3 arg3;
-				st.get(arg3, 4);
-				T4 arg4;
-				st.get(arg4, 5);
-				T5 arg5;
-				st.get(arg5, 6);
-				T6 arg6;
-				st.get(arg6, 7);
-				T7 arg7;
-				st.get(arg7, 8);
-				T8 arg8;
-				st.get(arg8, 9);
+				C* object = st.get<C*>(1);
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8), st.get<T8>(9)));
 
 				return 1;
 			}
@@ -1433,7 +1035,7 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
 				st.push(function_real());
 
@@ -1457,12 +1059,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-
-				st.push(function_real(arg1));
+				st.push(function_real(st.get<T1>(1)));
 
 				return 1;
 			}
@@ -1483,12 +1082,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-
-				function_real(arg1);
+				function_real(st.get<T1>(1));
 
 				return 0;
 			}
@@ -1509,14 +1105,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-				T2 arg2;
-				st.get(arg2, 2);
-
-				st.push(function_real(arg1, arg2));
+				st.push(function_real(st.get<T1>(1), st.get<T2>(2)));
 
 				return 1;
 			}
@@ -1537,14 +1128,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-				T2 arg2;
-				st.get(arg2, 2);
-
-				function_real(arg1, arg2);
+				function_real(st.get<T1>(1), st.get<T2>(2));
 
 				return 0;
 			}
@@ -1565,16 +1151,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-				T2 arg2;
-				st.get(arg2, 2);
-				T3 arg3;
-				st.get(arg3, 3);
-
-				st.push(function_real(arg1, arg2, arg3));
+				st.push(function_real(st.get<T1>(1), st.get<T2>(2), st.get<T3>(3)));
 
 				return 1;
 			}
@@ -1595,16 +1174,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-				T2 arg2;
-				st.get(arg2, 2);
-				T3 arg3;
-				st.get(arg3, 3);
-
-				function_real(arg1, arg2, arg3);
+				function_real(st.get<T1>(1), st.get<T2>(2), st.get<T3>(3));
 
 				return 0;
 			}
@@ -1625,18 +1197,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-				T2 arg2;
-				st.get(arg2, 2);
-				T3 arg3;
-				st.get(arg3, 3);
-				T4 arg4;
-				st.get(arg4, 4);
-
-				st.push(function_real(arg1, arg2, arg3, arg4));
+				st.push(function_real(st.get<T1>(1), st.get<T2>(2), st.get<T3>(3), st.get<T4>(4)));
 
 				return 1;
 			}
@@ -1657,18 +1220,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-				T2 arg2;
-				st.get(arg2, 2);
-				T3 arg3;
-				st.get(arg3, 3);
-				T4 arg4;
-				st.get(arg4, 4);
-
-				function_real(arg1, arg2, arg3, arg4);
+				function_real(st.get<T1>(1), st.get<T2>(2), st.get<T3>(3), st.get<T4>(4));
 
 				return 0;
 			}
@@ -1689,20 +1243,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-				T2 arg2;
-				st.get(arg2, 2);
-				T3 arg3;
-				st.get(arg3, 3);
-				T4 arg4;
-				st.get(arg4, 4);
-				T5 arg5;
-				st.get(arg5, 5);
-
-				st.push(function_real(arg1, arg2, arg3, arg4, arg5));
+				st.push(function_real(st.get<T1>(1), st.get<T2>(2), st.get<T3>(3), st.get<T4>(4), st.get<T5>(5)));
 
 				return 1;
 			}
@@ -1723,20 +1266,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-				T2 arg2;
-				st.get(arg2, 2);
-				T3 arg3;
-				st.get(arg3, 3);
-				T4 arg4;
-				st.get(arg4, 4);
-				T5 arg5;
-				st.get(arg5, 5);
-
-				function_real(arg1, arg2, arg3, arg4, arg5);
+				function_real(st.get<T1>(1), st.get<T2>(2), st.get<T3>(3), st.get<T4>(4), st.get<T5>(5));
 
 				return 0;
 			}
@@ -1757,22 +1289,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-				T2 arg2;
-				st.get(arg2, 2);
-				T3 arg3;
-				st.get(arg3, 3);
-				T4 arg4;
-				st.get(arg4, 4);
-				T5 arg5;
-				st.get(arg5, 5);
-				T6 arg6;
-				st.get(arg6, 6);
-
-				st.push(function_real(arg1, arg2, arg3, arg4, arg5, arg6));
+				st.push(function_real(st.get<T1>(1), st.get<T2>(2), st.get<T3>(3), st.get<T4>(4), st.get<T5>(5), st.get<T6>(6)));
 
 				return 1;
 			}
@@ -1793,22 +1312,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-				T2 arg2;
-				st.get(arg2, 2);
-				T3 arg3;
-				st.get(arg3, 3);
-				T4 arg4;
-				st.get(arg4, 4);
-				T5 arg5;
-				st.get(arg5, 5);
-				T6 arg6;
-				st.get(arg6, 6);
-
-				function_real(arg1, arg2, arg3, arg4, arg5, arg6);
+				function_real(st.get<T1>(1), st.get<T2>(2), st.get<T3>(3), st.get<T4>(4), st.get<T5>(5), st.get<T6>(6));
 
 				return 0;
 			}
@@ -1829,24 +1335,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-				T2 arg2;
-				st.get(arg2, 2);
-				T3 arg3;
-				st.get(arg3, 3);
-				T4 arg4;
-				st.get(arg4, 4);
-				T5 arg5;
-				st.get(arg5, 5);
-				T6 arg6;
-				st.get(arg6, 6);
-				T7 arg7;
-				st.get(arg7, 7);
-
-				st.push(function_real(arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+				st.push(function_real(st.get<T1>(1), st.get<T2>(2), st.get<T3>(3), st.get<T4>(4), st.get<T5>(5), st.get<T6>(6), st.get<T7>(7)));
 
 				return 1;
 			}
@@ -1867,24 +1358,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-				T2 arg2;
-				st.get(arg2, 2);
-				T3 arg3;
-				st.get(arg3, 3);
-				T4 arg4;
-				st.get(arg4, 4);
-				T5 arg5;
-				st.get(arg5, 5);
-				T6 arg6;
-				st.get(arg6, 6);
-				T7 arg7;
-				st.get(arg7, 7);
-
-				function_real(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+				function_real(st.get<T1>(1), st.get<T2>(2), st.get<T3>(3), st.get<T4>(4), st.get<T5>(5), st.get<T6>(6), st.get<T7>(7));
 
 				return 0;
 			}
@@ -1905,26 +1381,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-				T2 arg2;
-				st.get(arg2, 2);
-				T3 arg3;
-				st.get(arg3, 3);
-				T4 arg4;
-				st.get(arg4, 4);
-				T5 arg5;
-				st.get(arg5, 5);
-				T6 arg6;
-				st.get(arg6, 6);
-				T7 arg7;
-				st.get(arg7, 7);
-				T8 arg8;
-				st.get(arg8, 8);
-
-				st.push(function_real(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+				st.push(function_real(st.get<T1>(1), st.get<T2>(2), st.get<T3>(3), st.get<T4>(4), st.get<T5>(5), st.get<T6>(6), st.get<T7>(7), st.get<T8>(8)));
 
 				return 1;
 			}
@@ -1945,26 +1404,9 @@ public:
 			{
 				stack st(L);
 
-				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get_wrapped_function());
+				wrapped_funcptr function_real = reinterpret_cast<wrapped_funcptr>(st.get<bindable_funcptr>(st.upvalue_index(1)));
 
-				T1 arg1;
-				st.get(arg1, 1);
-				T2 arg2;
-				st.get(arg2, 2);
-				T3 arg3;
-				st.get(arg3, 3);
-				T4 arg4;
-				st.get(arg4, 4);
-				T5 arg5;
-				st.get(arg5, 5);
-				T6 arg6;
-				st.get(arg6, 6);
-				T7 arg7;
-				st.get(arg7, 7);
-				T8 arg8;
-				st.get(arg8, 8);
-
-				function_real(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+				function_real(st.get<T1>(1), st.get<T2>(2), st.get<T3>(3), st.get<T4>(4), st.get<T5>(5), st.get<T6>(6), st.get<T7>(7), st.get<T8>(8));
 
 				return 0;
 			}
@@ -1974,8 +1416,6 @@ public:
 		push(wrapper_creator::wrapper, 1);
 	}
 // END FREE FUNC GLUE
-
-	bindable_funcptr get_wrapped_function() const;
 
 	void repush(int index) const;
 
@@ -2012,7 +1452,80 @@ private:
 		push(ud);
 		push(wrapper, 1);
 	}
+
+	template<typename T>
+	struct get_resolver
+	{
+		static T get(const stack& st, int idx)
+		{
+			T* p = st.get<T*>(idx);
+			return *p;
+		}
+	};
 };
+
+template<typename T>
+struct stack::get_resolver<T*>
+{
+	static T* get(const stack& st, int idx)
+	{
+		return static_cast<T*>(st.get<void*>(idx));
+	}
+};
+
+template<typename T>
+struct stack::get_resolver<T* const>
+{
+	static T* get(const stack& st, int idx)
+	{
+		return static_cast<T* const>(st.get<void*>(idx));
+	}
+};
+
+template<typename T>
+struct stack::get_resolver<T* volatile>
+{
+	static T* get(const stack& st, int idx)
+	{
+		return static_cast<T* volatile>(st.get<void*>(idx));
+	}
+};
+
+template<typename T>
+struct stack::get_resolver<T* const volatile>
+{
+	static T* get(const stack& st, int idx)
+	{
+		return static_cast<T* const volatile>(st.get<void*>(idx));
+	}
+};
+
+template<typename T>
+struct stack::get_resolver<T&>
+{
+	static T& get(const stack& st, int idx)
+	{
+		return *(st.get<T*>(idx));
+	}
+};
+
+template<> std::string stack::get<std::string>(int idx) const;
+template<> const char* stack::get<const char*>(int idx) const;
+template<> reference stack::get<reference>(int idx) const;
+template<> void* stack::get<void*>(int idx) const;
+template<> char stack::get<char>(int idx) const;
+template<> int stack::get<int>(int idx) const;
+template<> short stack::get<short>(int idx) const;
+template<> long stack::get<long>(int idx) const;
+template<> unsigned char stack::get<unsigned char>(int idx) const;
+template<> unsigned short stack::get<unsigned short>(int idx) const;
+template<> unsigned int stack::get<unsigned int>(int idx) const;
+template<> unsigned long stack::get<unsigned long>(int idx) const;
+template<> float stack::get<float>(int idx) const;
+template<> bool stack::get<bool>(int idx) const;
+template<> stack::bindable_funcptr stack::get<stack::bindable_funcptr>(int idx) const;
+
+
 
 }
 

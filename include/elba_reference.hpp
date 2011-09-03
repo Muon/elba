@@ -47,8 +47,7 @@ public:
 
 		push_ref();
 
-		T tmp;
-		st.get(tmp, stack::top);
+		T tmp = st.get<T>(stack::top);
 
 		st.pop(1);
 
@@ -61,11 +60,11 @@ public:
 	template<typename T>
 	object_index operator[](const T& key) const;
 
-	template<typename T, typename U>
+	template<typename Value, typename Key>
 	typename boost::disable_if_c<
-		boost::is_pointer<U>::value &&
-		boost::is_same<typename boost::remove_cv<typename boost::remove_pointer<U>::type>::type, char>::value
-	, void>::type get(const T& key, U& value) const
+		boost::is_pointer<Value>::value &&
+		boost::is_same<typename boost::remove_cv<typename boost::remove_pointer<Value>::type>::type, char>::value
+	, Value>::type get(const Key& key) const
 	{
 		stack st(L);
 
@@ -73,9 +72,11 @@ public:
 		st.push(key);
 		st.get_table_field(-2);
 
-		st.get(value, stack::top);
+		Value val = st.get<Value>(stack::top);
 
 		st.pop(1);
+
+		return val;
 	}
 
 	template<typename T, typename U>
@@ -340,10 +341,7 @@ public:
 	template<typename T>
 	operator T() const
 	{
-		T tmp;
-		owner_table.get(ref, tmp);
-
-		return tmp;
+		return owner_table.get<T>(ref);
 	}
 
 	template<typename T>

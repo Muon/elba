@@ -17,8 +17,7 @@ static int panic(lua_State* L)
 {
 	stack st(L);
 
-	std::string error_message;
-	st.get(error_message, stack::top);
+	std::string error_message = st.get<std::string>(stack::top);
 	st.pop(1);
 
 	throw std::runtime_error(error_message);
