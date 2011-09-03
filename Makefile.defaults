@@ -10,4 +10,4 @@ TEST_DIR = tests
 
 
 CPPFLAGS = -I$(TOP_DIR)/$(INC_DIR)
-CXXFLAGS = -g -Wall -Wextra -pedantic -std=c++98
+CXXFLAGS = -g -Wall -Wextra -pedantic -std=c++98 -pipe
