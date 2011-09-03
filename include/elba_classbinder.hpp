@@ -84,7 +84,7 @@ public:
 	reference metatable;
 	reference methods;
 private:
-	lua_State* L;
+	lua_State* const L;
 
 };
 

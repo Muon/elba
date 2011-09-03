@@ -19,7 +19,6 @@ class object_index;
 class reference
 {
 public:
-	reference();
 	explicit reference(lua_State* L);
 	reference(lua_State* L, int index);
 	reference(const reference& other);
@@ -316,7 +315,7 @@ protected:
 	void set_ref();
 	void push_ref() const;
 
-	lua_State* L;
+	lua_State* const L;
 
 	friend class object_index;
 private:

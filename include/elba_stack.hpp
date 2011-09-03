@@ -1439,7 +1439,7 @@ public:
 
 	void call(int nargs, int nresults) const;
 private:
-	lua_State* L;
+	lua_State* const L;
 
 	template<typename Memfun>
 	void push_memfun_wrapper(bindable_funcptr wrapper, Memfun memfun) const

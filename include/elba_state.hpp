@@ -38,7 +38,7 @@ private:
 		state_destruction_deferral();
 		~state_destruction_deferral();
 
-		lua_State* L;
+		lua_State* const L;
 	} state_container;
 
 public: // avoiding init order complaints with -pedantic
