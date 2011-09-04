@@ -33,4 +33,6 @@ int main()
 		.constructor<B>();
 
 	L.do_string("a = A.new()\nb = B.new()\nprint(a:assess_truth(b))\nprint(not a:determine(b))");
+
+	std::cout << L.globals["a"]["assess_truth"](L.globals["a"], L.globals["b"]) << std::endl;
 }
