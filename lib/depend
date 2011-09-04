@@ -1,10 +1,9 @@
-elba_state.o: ../src/elba_state.cpp ../src/../include/elba_state.hpp \
- ../src/../include/elba_reference.hpp ../src/../include/elba_stack.hpp \
- ../src/../include/elba_classbinder.hpp ../src/../include/elba_stack.hpp
-elba_stack.o: ../src/elba_stack.cpp ../src/../include/elba_stack.hpp \
- ../src/../include/elba_reference.hpp ../src/../include/elba_stack.hpp \
- ../src/../include/elba_classbinder.hpp \
- ../src/../include/elba_reference.hpp
+elba_state.o: ../src/elba_state.cpp ../include/elba_state.hpp \
+ ../include/elba_reference.hpp ../include/elba_stack.hpp \
+ ../include/elba_classbinder.hpp ../include/elba_stack.hpp
+elba_stack.o: ../src/elba_stack.cpp ../include/elba_stack.hpp \
+ ../include/elba_reference.hpp ../include/elba_stack.hpp \
+ ../include/elba_classbinder.hpp ../include/elba_reference.hpp
 elba_reference.o: ../src/elba_reference.cpp ../include/elba_reference.hpp \
  ../include/elba_stack.hpp
 elba_classbinder.o: ../src/elba_classbinder.cpp \

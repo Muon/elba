@@ -1,6 +1,6 @@
-#include "../include/elba_stack.hpp"
-#include "../include/elba_reference.hpp"
-#include "../include/elba_classbinder.hpp"
+#include <elba_stack.hpp>
+#include <elba_reference.hpp>
+#include <elba_classbinder.hpp>
 
 extern "C"
 {

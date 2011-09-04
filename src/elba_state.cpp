@@ -1,5 +1,5 @@
-#include "../include/elba_state.hpp"
-#include "../include/elba_stack.hpp"
+#include <elba_state.hpp>
+#include <elba_stack.hpp>
 
 extern "C"
 {
