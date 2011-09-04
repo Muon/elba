@@ -36,11 +36,9 @@ public:
 		st.push(metatable);
 		st.push(initializer::initialize, 1);
 
-		reference init_ref(L, stack::top);
+		methods["new"] = reference(L, stack::top);
 
 		st.pop(1);
-
-		methods["new"] = init_ref;
 
 		return *this;
 	}
