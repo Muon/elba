@@ -11,7 +11,7 @@ namespace elba
 class reference;
 class object_index;
 class class_binder;
-class nil_type;
+struct nil_type;
 
 class stack
 {

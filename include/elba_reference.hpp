@@ -15,7 +15,7 @@ namespace elba
 {
 
 class object_index;
-class nil_type;
+struct nil_type;
 
 class reference
 {
