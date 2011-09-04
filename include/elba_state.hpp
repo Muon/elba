@@ -22,11 +22,7 @@ public:
 	template<typename T>
 	class_binder bind_class() const
 	{
-		class_binder binder(state_container.L);
-
-		binder.destructor<T>();
-
-		return binder;
+		return class_binder(state_container.L).destructor<T>();
 	}
 
 	reference create_table() const;
