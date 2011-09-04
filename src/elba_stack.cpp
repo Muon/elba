@@ -194,6 +194,7 @@ void stack::push(const object_index& idx) const
 
 void stack::push(const nil_type& n) const
 {
+	static_cast<void>(n);
 	lua_pushnil(L);
 }
 
