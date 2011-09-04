@@ -344,6 +344,15 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& stream, const reference& ref);
+template<typename T>
+void stack::push(const T& val) const
+{
+	reference ud = create_userdata(sizeof(T));
+	void* p = ud;
+	*(static_cast<T*>(p)) = val;
+
+	push(ud);
+}
 
 class object_index
 {

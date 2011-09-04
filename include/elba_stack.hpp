@@ -69,14 +69,7 @@ public:
 	void push(const class_binder& binder) const;
 
 	template<typename T>
-	void push(const T& val) const
-	{
-		reference ud = create_userdata(sizeof(T));
-		void* p = ud;
-		*(static_cast<T*>(p)) = val;
-
-		push(ud);
-	}
+	void push(const T& val) const;
 
 	template<typename T>
 	void push(T* ptr) const
@@ -1447,12 +1440,7 @@ private:
 	template<typename Memfun>
 	void push_memfun_wrapper(bindable_funcptr wrapper, Memfun memfun) const
 	{
-		void* ptr = NULL;
-		reference ud = create_userdata(sizeof(memfun));
-		ptr = ud;
-		*(static_cast<Memfun*>(ptr)) = memfun;
-
-		push(ud);
+		push<Memfun>(memfun);
 		push(wrapper, 1);
 	}
 
