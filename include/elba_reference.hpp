@@ -348,8 +348,8 @@ template<typename T>
 void stack::push(const T& val) const
 {
 	reference ud = create_userdata(sizeof(T));
-	void* p = ud;
-	*(static_cast<T*>(p)) = val;
+
+	new(static_cast<void*>(ud)) T(val);
 
 	push(ud);
 }
