@@ -92,7 +92,7 @@ public:
 
 		Value val = st.get<Value>(stack::top);
 
-		st.pop(1);
+		st.pop(2);
 
 		return val;
 	}
