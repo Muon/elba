@@ -44,6 +44,19 @@ reference::~reference()
 	luaL_unref(L, LUA_REGISTRYINDEX, ref);
 }
 
+bool reference::operator==(const reference& other) const
+{
+	push_ref();
+	other.push_ref();
+
+	stack st(L);
+	bool result = st.are_equal(-1, -2);
+
+	st.pop(2);
+
+	return result;
+}
+
 reference reference::operator()()
 {
 	push_ref();

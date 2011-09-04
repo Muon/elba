@@ -271,6 +271,11 @@ int stack::upvalue_index(int index) const
 	return lua_upvalueindex(index);
 }
 
+bool stack::are_equal(int idx1, int idx2) const
+{
+	return lua_equal(L, idx1, idx2);
+}
+
 stack::type stack::element_type(int index) const
 {
 	return static_cast<stack::type>(lua_type(L, index));

@@ -15,6 +15,7 @@ namespace elba
 {
 
 class object_index;
+class nil_type;
 
 class reference
 {
@@ -25,6 +26,24 @@ public:
 	~reference();
 
 	reference& operator=(const reference& other);
+
+	template<typename T>
+	bool operator==(const T& val) const
+	{
+		stack st(L);
+		st.push(val);
+		push_ref();
+
+		bool result = st.are_equal(-1, -2);
+
+		st.pop(2);
+
+		return result;
+	}
+	bool operator==(const reference& other) const;
+	bool operator==(const nil_type& n) const { static_cast<void>(n); return type() == stack::nil; }
+
+	template<typename T> bool operator!=(const T& val) const { return !(*this == val); }
 
 	template<typename T>
 	reference& set_ref(const T& val)
@@ -355,6 +374,12 @@ public:
 	{
 		reference tmp = *this;
 		return tmp[key];
+	}
+
+	template<typename T>
+	bool operator==(const T& val) const
+	{
+		return owner_table.get<reference>(ref) == val;
 	}
 private:
 	reference owner_table;
