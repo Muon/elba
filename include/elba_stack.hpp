@@ -11,6 +11,7 @@ namespace elba
 class reference;
 class object_index;
 class class_binder;
+class nil_type;
 
 class stack
 {
@@ -61,6 +62,7 @@ public:
 
 	void push(const reference& ref) const;
 	void push(const object_index& idx) const;
+	void push(const nil_type& n) const;
 
 	void push(void* data) const;
 

@@ -192,6 +192,11 @@ void stack::push(const object_index& idx) const
 	push(ref);
 }
 
+void stack::push(const nil_type& n) const
+{
+	lua_pushnil(L);
+}
+
 void stack::push(const class_binder& binder) const
 {
 	push(binder.methods);

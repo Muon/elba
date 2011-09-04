@@ -9,7 +9,7 @@ CXXFLAGS += -L$(TOP_DIR)/$(LIB_DIR)
 #LIBS = -lelba
 LIBS = $(TOP_DIR)/$(LIB_DIR)/libelba.a -llua
 
-TESTS_SRC = print_test.cpp set_test.cpp free_function_test.cpp class_binding_test.cpp
+TESTS_SRC = print_test.cpp set_test.cpp free_function_test.cpp class_binding_test.cpp nil_test.cpp
 
 TESTS =  $(TESTS_SRC:%.cpp=%)
 
