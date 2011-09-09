@@ -264,7 +264,7 @@ int stack::normalize_index(int index) const
 	if(index > 0)
 		return index;
 
-	return size() +  index - 1;
+	return size() + index + 1;
 }
 
 int stack::upvalue_index(int index) const
