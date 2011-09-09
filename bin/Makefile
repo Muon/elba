@@ -6,8 +6,8 @@ VPATH = $(TOP_DIR)/$(INC_DIR) $(TOP_DIR)/$(TEST_DIR)
 
 CXXFLAGS += -L$(TOP_DIR)/$(LIB_DIR)
 
-#LIBS = -lelba
-LIBS = $(TOP_DIR)/$(LIB_DIR)/libelba.a -llua
+LIBS = -lelba
+#LIBS = $(TOP_DIR)/$(LIB_DIR)/libelba.a -llua
 
 TESTS_SRC = print_test.cpp set_test.cpp free_function_test.cpp class_binding_test.cpp nil_test.cpp
 
@@ -20,9 +20,9 @@ test: $(TESTS)
 		&& $(ECHO) passed) \
 		|| ($(ECHO) failed && false);)
 
-$(TESTS): $(TOP_DIR)/$(LIB_DIR)/libelba.a
+$(TESTS): $(TOP_DIR)/$(LIB_DIR)/libelba.so
 
-$(TOP_DIR)/$(LIB_DIR)/libelba.a:
+$(TOP_DIR)/$(LIB_DIR)/libelba.so:
 	$(MAKE) -C $(TOP_DIR)/$(LIB_DIR)
 
 %_test: %_test.cpp
