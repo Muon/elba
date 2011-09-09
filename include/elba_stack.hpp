@@ -38,7 +38,7 @@ public:
 		thread
 	};
 
-	stack(lua_State* L);
+	stack(lua_State* L) : L(L) {}
 
 	void push(char c) const;
 	void push(short integer) const;

@@ -12,11 +12,6 @@ extern "C"
 namespace elba
 {
 
-stack::stack(lua_State* L)
-	: L(L)
-{
-}
-
 void stack::push(const std::string& string) const
 {
 	lua_pushlstring(L, string.data(), string.size());
