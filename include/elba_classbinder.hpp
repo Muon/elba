@@ -20,11 +20,9 @@ public:
 			{
 				stack st(L);
 
-				void* mem = NULL;
 				reference ud = st.create_userdata(sizeof(T));
-				mem = ud;
 
-				new(mem) T();
+				new(static_cast<void*>(ud)) T();
 
 				ud.metatable(reference(L, st.upvalue_index(1)));
 
@@ -36,7 +34,7 @@ public:
 		st.push(metatable);
 		st.push(initializer::initialize, 1);
 
-		methods["new"] = reference(L, stack::top);
+		methods.set("new", reference(L, stack::top));;
 
 		st.pop(1);
 
@@ -46,15 +44,14 @@ public:
 	template<typename T, typename U>
 	class_binder& set(T name, U val)
 	{
-		methods[name] = val;
+		methods.set(name, val);
 		return *this;
 	}
 
 	template<typename T, typename U>
 	class_binder& method(T name, U func)
 	{
-		methods[name] = func;
-		return *this;
+		return set(name, func);
 	}
 
 	template<typename T>
@@ -76,7 +73,7 @@ public:
 	template<typename T>
 	void destructor(void (*finalizer)(T*))
 	{
-		metatable["__gc"] = finalizer;
+		metatable.set("__gc", finalizer);
 	}
 
 	reference metatable;
