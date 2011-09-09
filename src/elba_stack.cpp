@@ -25,10 +25,18 @@ void stack::push(const std::string& string) const
 template<>
 std::string stack::get<std::string>(int idx) const
 {
-	std::string::size_type len;
-	const char* str = lua_tolstring(L, idx, &len);
+	idx = normalize_index(idx);
+	lua_getglobal(L, "tostring");
+	repush(idx);
+	call(1, 1);
 
-	return std::string(str, len);
+	std::string::size_type len;
+	const char* str = lua_tolstring(L, -1, &len);
+	std::string tmp(str, len);
+
+	pop(1);
+
+	return tmp;
 }
 
 
