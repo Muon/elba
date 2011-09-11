@@ -5,9 +5,37 @@
 extern "C"
 {
 #include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
 }
 
 #include <cassert>
+
+// copied verbatim from Lua's source; see Lua 5.1 license for copyright info
+// needed for tostring stringification semantics
+static int luaB_tostring (lua_State *L) {
+  luaL_checkany(L, 1);
+  if (luaL_callmeta(L, 1, "__tostring"))  /* is there a metafield? */
+    return 1;  /* use its value */
+  switch (lua_type(L, 1)) {
+    case LUA_TNUMBER:
+      lua_pushstring(L, lua_tostring(L, 1));
+      break;
+    case LUA_TSTRING:
+      lua_pushvalue(L, 1);
+      break;
+    case LUA_TBOOLEAN:
+      lua_pushstring(L, (lua_toboolean(L, 1) ? "true" : "false"));
+      break;
+    case LUA_TNIL:
+      lua_pushliteral(L, "nil");
+      break;
+    default:
+      lua_pushfstring(L, "%s: %p", luaL_typename(L, 1), lua_topointer(L, 1));
+      break;
+  }
+  return 1;
+}
 
 namespace elba
 {
@@ -21,7 +49,7 @@ template<>
 std::string stack::get<std::string>(int idx) const
 {
 	idx = normalize_index(idx);
-	lua_getglobal(L, "tostring");
+	lua_pushcfunction(L, luaB_tostring);
 	repush(idx);
 	call(1, 1);
 
