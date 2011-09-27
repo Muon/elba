@@ -1,8 +1,8 @@
 #include <elba.hpp>
 #include <cassert>
 
-#define assert_equal(a, b) assert(a == b), assert(b == a)
-#define assert_not_equal(a, b) assert(a != b), assert(b != a)
+#define assert_equal(a, b) assert((a) == (b)), assert((b) == (a))
+#define assert_not_equal(a, b) assert((a) != (b)), assert((b) != (a))
 
 int main()
 {
