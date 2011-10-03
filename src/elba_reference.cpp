@@ -27,9 +27,7 @@ reference::reference(lua_State* L, int index)
 
 reference& reference::operator=(const reference& other)
 {
-	other.push_ref();
-	set_ref();
-	return *this;
+	return operator=<reference>(other);
 }
 
 reference::reference(const reference& other)

@@ -26,6 +26,15 @@ public:
 	~reference();
 
 	reference& operator=(const reference& other);
+	template<typename T>
+	reference& operator=(const T& val)
+	{
+		stack st(L);
+		st.push(val);
+		set_ref();
+
+		return *this;
+	}
 
 	template<typename T>
 	bool operator==(const T& val) const
@@ -44,16 +53,6 @@ public:
 	bool operator==(const nil_type& n) const { static_cast<void>(n); return type() == stack::nil; }
 
 	template<typename T> bool operator!=(const T& val) const { return !(*this == val); }
-
-	template<typename T>
-	reference& set_ref(const T& val)
-	{
-		stack st(L);
-		st.push(val);
-		set_ref();
-
-		return *this;
-	}
 
 	template<typename T>
 	typename boost::disable_if_c<
@@ -362,7 +361,7 @@ public:
 		: owner_table(owner)
 		, ref(owner_table.L)
 	{
-		ref.set_ref(key);
+		ref = key;
 	}
 
 	template<typename T>
