@@ -49,7 +49,7 @@ template<>
 std::string stack::get<std::string>(int idx) const
 {
 	idx = normalize_index(idx);
-	lua_pushcfunction(L, luaB_tostring);
+	push(luaB_tostring);
 	repush(idx);
 	call(1, 1);
 
