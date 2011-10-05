@@ -24,9 +24,8 @@ for n in range(1, total + 1):
 	functions.append("""	template<{}>
 	reference operator()({})
 	{{
-		push_ref();
-
 		stack st(L);
+		st.push(*this);
 
 {}
 

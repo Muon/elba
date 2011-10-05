@@ -206,32 +206,16 @@ bool stack::get<bool>(int idx) const
 	return lua_toboolean(L, idx);
 }
 
-void stack::push(const reference& ref) const
-{
-	ref.push_ref();
-}
-
 template<>
 reference stack::get<reference>(int idx) const
 {
 	return reference(L, idx);
 }
 
-void stack::push(const object_index& idx) const
-{
-	reference ref = idx;
-	push(ref);
-}
-
 void stack::push(const nil_type& n) const
 {
 	static_cast<void>(n);
 	lua_pushnil(L);
-}
-
-void stack::push(const class_binder& binder) const
-{
-	push(binder.methods);
 }
 
 void stack::push(void* data) const

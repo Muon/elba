@@ -60,13 +60,9 @@ public:
 
 	void push(bool boolean) const;
 
-	void push(const reference& ref) const;
-	void push(const object_index& idx) const;
 	void push(const nil_type& n) const;
 
 	void push(void* data) const;
-
-	void push(const class_binder& binder) const;
 
 	template<typename T>
 	void push(const T& val) const;
@@ -1515,8 +1511,6 @@ template<> unsigned long stack::get<unsigned long>(int idx) const;
 template<> float stack::get<float>(int idx) const;
 template<> bool stack::get<bool>(int idx) const;
 template<> stack::bindable_funcptr stack::get<stack::bindable_funcptr>(int idx) const;
-
-
 
 }
 

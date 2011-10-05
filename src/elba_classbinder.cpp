@@ -14,4 +14,10 @@ class_binder::class_binder(lua_State* L)
 	methods = metatable.get<reference>("__index");
 }
 
+template<>
+void stack::push<class_binder>(const class_binder& binder) const
+{
+	push(binder.methods);
+}
+
 }

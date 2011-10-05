@@ -6,6 +6,10 @@
 namespace elba
 {
 
+class class_binder;
+
+template<> void stack::push<class_binder>(const class_binder& binder) const;
+
 class class_binder
 {
 public:
@@ -80,7 +84,8 @@ public:
 	reference methods;
 private:
 	lua_State* const L;
-
+	// FIXME: Why can't I make this more specific on GCC?
+	template<typename T> friend void stack::push(const T& binder) const;
 };
 
 }

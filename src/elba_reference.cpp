@@ -11,6 +11,12 @@ extern "C"
 namespace elba
 {
 
+template<>
+void stack::push<reference>(const reference& ref) const
+{
+	lua_rawgeti(L, LUA_REGISTRYINDEX, ref.ref);
+}
+
 reference::reference(lua_State* L)
 	: L(L)
 	, ref(LUA_REFNIL)
@@ -44,10 +50,10 @@ reference::~reference()
 
 bool reference::operator==(const reference& other) const
 {
-	push_ref();
-	other.push_ref();
-
 	stack st(L);
+	st.push(*this);
+	st.push(other);
+
 	bool result = st.are_equal(-1, -2);
 
 	st.pop(2);
@@ -57,9 +63,9 @@ bool reference::operator==(const reference& other) const
 
 reference reference::operator()()
 {
-	push_ref();
-
 	stack st(L);
+
+	st.push(*this);
 
 	st.call(0, 1);
 
@@ -72,8 +78,9 @@ reference reference::operator()()
 
 void reference::metatable(const elba::reference& mt) const
 {
-	push_ref();
-	mt.push_ref();
+	stack st(L);
+	st.push(*this);
+	st.push(mt);
 
 	lua_setmetatable(L, -2);
 }
@@ -82,7 +89,7 @@ reference reference::metatable() const
 {
 	stack st(L);
 
-	push_ref();
+	st.push(*this);
 
 	if(!lua_getmetatable(L, -1))
 	{
@@ -103,15 +110,16 @@ void reference::set_ref()
 	ref = luaL_ref(L, LUA_REGISTRYINDEX);
 }
 
-void reference::push_ref() const
-{
-	lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
-}
-
 std::ostream& operator<<(std::ostream& stream, const reference& ref)
 {
 	std::string str = ref;
 	return stream << str;
+}
+
+template<>
+void stack::push<object_index>(const object_index& idx) const
+{
+	push(idx.operator reference());
 }
 
 std::ostream& operator<<(std::ostream& stream, const object_index& idx)
@@ -119,5 +127,6 @@ std::ostream& operator<<(std::ostream& stream, const object_index& idx)
 	std::string str = idx;
 	return stream << str;
 }
+
 
 }

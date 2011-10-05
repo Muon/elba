@@ -16,6 +16,9 @@ namespace elba
 
 class object_index;
 struct nil_type;
+class reference;
+
+template<> void stack::push<reference>(const reference& ref) const;
 
 class reference
 {
@@ -41,7 +44,7 @@ public:
 	{
 		stack st(L);
 		st.push(val);
-		push_ref();
+		st.push(*this);
 
 		bool result = st.are_equal(-1, -2);
 
@@ -62,7 +65,7 @@ public:
 	{
 		stack st(L);
 
-		push_ref();
+		st.push(*this);
 
 		T tmp = st.get<T>(stack::top);
 
@@ -85,7 +88,7 @@ public:
 	{
 		stack st(L);
 
-		push_ref();
+		st.push(*this);
 		st.push(key);
 		st.get_table_field(-2);
 
@@ -101,7 +104,7 @@ public:
 	{
 		stack st(L);
 
-		push_ref();
+		st.push(*this);
 		st.push(key);
 		st.push(value);
 		st.set_table_field(-3);
@@ -114,7 +117,7 @@ public:
 	{
 		stack st(L);
 
-		push_ref();
+		st.push(*this);
 		st.push(key);
 		st.raw_get_table_field(-2);
 
@@ -128,7 +131,7 @@ public:
 	{
 		stack st(L);
 
-		push_ref();
+		st.push(*this);
 		st.push(key);
 		st.push(value);
 		st.raw_set_table_field(-3);
@@ -143,9 +146,8 @@ public:
 	template<typename T1>
 	reference operator()(const T1& arg1)
 	{
-		push_ref();
-
 		stack st(L);
+		st.push(*this);
 
 		st.push(arg1);
 
@@ -161,9 +163,8 @@ public:
 	template<typename T1, typename T2>
 	reference operator()(const T1& arg1, const T2& arg2)
 	{
-		push_ref();
-
 		stack st(L);
+		st.push(*this);
 
 		st.push(arg1);
 		st.push(arg2);
@@ -180,9 +181,8 @@ public:
 	template<typename T1, typename T2, typename T3>
 	reference operator()(const T1& arg1, const T2& arg2, const T3& arg3)
 	{
-		push_ref();
-
 		stack st(L);
+		st.push(*this);
 
 		st.push(arg1);
 		st.push(arg2);
@@ -200,9 +200,8 @@ public:
 	template<typename T1, typename T2, typename T3, typename T4>
 	reference operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4)
 	{
-		push_ref();
-
 		stack st(L);
+		st.push(*this);
 
 		st.push(arg1);
 		st.push(arg2);
@@ -221,9 +220,8 @@ public:
 	template<typename T1, typename T2, typename T3, typename T4, typename T5>
 	reference operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5)
 	{
-		push_ref();
-
 		stack st(L);
+		st.push(*this);
 
 		st.push(arg1);
 		st.push(arg2);
@@ -243,9 +241,8 @@ public:
 	template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
 	reference operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5, const T6& arg6)
 	{
-		push_ref();
-
 		stack st(L);
+		st.push(*this);
 
 		st.push(arg1);
 		st.push(arg2);
@@ -266,9 +263,8 @@ public:
 	template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
 	reference operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5, const T6& arg6, const T7& arg7)
 	{
-		push_ref();
-
 		stack st(L);
+		st.push(*this);
 
 		st.push(arg1);
 		st.push(arg2);
@@ -290,9 +286,8 @@ public:
 	template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
 	reference operator()(const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5, const T6& arg6, const T7& arg7, const T8& arg8)
 	{
-		push_ref();
-
 		stack st(L);
+		st.push(*this);
 
 		st.push(arg1);
 		st.push(arg2);
@@ -320,7 +315,7 @@ public:
 	{
 		stack st(L);
 
-		push_ref();
+		st.push(*this);
 
 		stack::type t = st.element_type(stack::top);
 
@@ -331,7 +326,6 @@ public:
 
 protected:
 	void set_ref();
-	void push_ref() const;
 
 	lua_State* const L;
 
@@ -339,10 +333,12 @@ protected:
 private:
 	int ref;
 
-	friend class stack;
+	// FIXME: Why can't I make this more specific on GCC?
+	template<typename T> friend void stack::push(const T& ref) const;
 };
 
 std::ostream& operator<<(std::ostream& stream, const reference& ref);
+
 template<typename T>
 void stack::push(const T& val) const
 {
@@ -352,6 +348,8 @@ void stack::push(const T& val) const
 
 	push(ud);
 }
+
+template<> void stack::push<object_index>(const object_index& idx) const;
 
 class object_index
 {
@@ -440,6 +438,9 @@ public:
 private:
 	reference owner_table;
 	reference ref;
+
+	// FIXME: Why can't I make this more specific on GCC?
+	template<typename T> friend void stack::push(const T& idx) const;
 };
 
 template<typename T>
