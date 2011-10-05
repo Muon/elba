@@ -28,6 +28,8 @@ public:
 	reference(const reference& other);
 	~reference();
 
+	void swap(reference& other);
+
 	reference& operator=(const reference& other);
 	template<typename T>
 	reference& operator=(const T& val)
@@ -327,7 +329,7 @@ public:
 private:
 	void set_ref();
 
-	lua_State* const L;
+	lua_State* L;
 
 	int ref;
 
@@ -337,6 +339,13 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& stream, const reference& ref);
+
+}
+
+namespace std { template<> inline void swap<elba::reference>(elba::reference& a, elba::reference& b) { a.swap(b); } }
+
+namespace elba
+{
 
 template<typename T>
 void stack::push(const T& val) const

@@ -6,7 +6,9 @@ extern "C"
 #include <lauxlib.h>
 }
 
+#include <algorithm>
 #include <cstring>
+#include <cassert>
 
 namespace elba
 {
@@ -46,6 +48,12 @@ reference::reference(const reference& other)
 reference::~reference()
 {
 	luaL_unref(L, LUA_REGISTRYINDEX, ref);
+}
+
+void reference::swap(reference& other)
+{
+	std::swap(L, other.L);
+	std::swap(ref, other.ref);
 }
 
 bool reference::operator==(const reference& other) const
