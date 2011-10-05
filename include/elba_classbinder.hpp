@@ -79,11 +79,12 @@ public:
 	{
 		metatable.set("__gc", finalizer);
 	}
+private:
+	lua_State* const L;
 
 	reference metatable;
 	reference methods;
-private:
-	lua_State* const L;
+
 	// FIXME: Why can't I make this more specific on GCC?
 	template<typename T> friend void stack::push(const T& binder) const;
 };
