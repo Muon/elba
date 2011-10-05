@@ -62,7 +62,12 @@ public:
 	void push(void* data) const;
 
 	template<typename T>
-	void push(const T& val) const;
+	void push(const T& val) const
+	{
+		void* ud = create_userdata(sizeof(T));
+
+		new(ud) T(val);
+	}
 
 	template<typename T>
 	void push(T* ptr) const

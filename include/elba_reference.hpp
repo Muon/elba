@@ -367,14 +367,6 @@ namespace std { template<> inline void swap<elba::reference>(elba::reference& a,
 namespace elba
 {
 
-template<typename T>
-void stack::push(const T& val) const
-{
-	void* ud = create_userdata(sizeof(T));
-
-	new(ud) T(val);
-}
-
 template<> void stack::push<object_index>(const object_index& idx) const;
 
 class object_index
