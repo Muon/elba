@@ -116,9 +116,16 @@ reference reference::metatable() const
 
 void reference::set_ref()
 {
-	luaL_unref(L, LUA_REGISTRYINDEX, ref);
+	if(ref != LUA_REFNIL && ref != LUA_NOREF)
+	{
+		lua_rawseti(L, LUA_REGISTRYINDEX, ref);
+	}
+	else
+	{
+		luaL_unref(L, LUA_REGISTRYINDEX, ref);
 
-	ref = luaL_ref(L, LUA_REGISTRYINDEX);
+		ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	}
 }
 
 std::ostream& operator<<(std::ostream& stream, const reference& ref)
