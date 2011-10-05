@@ -333,7 +333,6 @@ private:
 
 	int ref;
 
-	friend class object_index;
 	// FIXME: Why can't I make this more specific on GCC?
 	template<typename T> friend void stack::push(const T& ref) const;
 };
