@@ -27,6 +27,8 @@ public:
 
 	reference create_table() const;
 private:
+	state(const state& other);
+	state& operator=(const state& other);
 
 	// ensure that the state is destroyed after the table
 	struct state_destruction_deferral
