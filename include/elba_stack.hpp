@@ -8,9 +8,6 @@ struct lua_State;
 namespace elba
 {
 
-class reference;
-class object_index;
-class class_binder;
 struct nil_type;
 
 class stack
@@ -1498,7 +1495,6 @@ struct stack::get_resolver<T&>
 
 template<> std::string stack::get<std::string>(int idx) const;
 template<> const char* stack::get<const char*>(int idx) const;
-template<> reference stack::get<reference>(int idx) const;
 template<> void* stack::get<void*>(int idx) const;
 template<> char stack::get<char>(int idx) const;
 template<> int stack::get<int>(int idx) const;

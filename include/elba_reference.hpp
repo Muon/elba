@@ -19,6 +19,7 @@ struct nil_type;
 class reference;
 
 template<> void stack::push<reference>(const reference& ref) const;
+template<> reference stack::get<reference>(int idx) const;
 
 class reference
 {

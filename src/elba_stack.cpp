@@ -206,12 +206,6 @@ bool stack::get<bool>(int idx) const
 	return lua_toboolean(L, idx);
 }
 
-template<>
-reference stack::get<reference>(int idx) const
-{
-	return reference(L, idx);
-}
-
 void stack::push(const nil_type& n) const
 {
 	static_cast<void>(n);

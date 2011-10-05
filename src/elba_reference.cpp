@@ -19,6 +19,12 @@ void stack::push<reference>(const reference& ref) const
 	lua_rawgeti(L, LUA_REGISTRYINDEX, ref.ref);
 }
 
+template<>
+reference stack::get<reference>(int idx) const
+{
+	return reference(L, idx);
+}
+
 reference::reference(lua_State* L)
 	: L(L)
 	, ref(LUA_REFNIL)
