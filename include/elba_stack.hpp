@@ -1420,8 +1420,8 @@ public:
 
 	type element_type(int index) const;
 
-	reference create_userdata(std::size_t size) const;
-	reference create_table() const;
+	void* create_userdata(std::size_t size) const;
+	void create_table() const;
 
 	void get_table_field(int t) const;
 	void set_table_field(int t) const;

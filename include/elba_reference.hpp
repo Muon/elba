@@ -339,6 +339,26 @@ private:
 
 std::ostream& operator<<(std::ostream& stream, const reference& ref);
 
+inline reference make_table(lua_State* L)
+{
+	stack st(L);
+	st.create_table();
+	reference ref(L, -1);
+	st.pop(1);
+
+	return ref;
+}
+
+inline reference make_userdata(lua_State* L, std::size_t size)
+{
+	stack st(L);
+	st.create_userdata(size);
+	reference ref(L, -1);
+	st.pop(1);
+
+	return ref;
+}
+
 }
 
 namespace std { template<> inline void swap<elba::reference>(elba::reference& a, elba::reference& b) { a.swap(b); } }
@@ -349,11 +369,9 @@ namespace elba
 template<typename T>
 void stack::push(const T& val) const
 {
-	reference ud = create_userdata(sizeof(T));
+	void* ud = create_userdata(sizeof(T));
 
-	new(static_cast<void*>(ud)) T(val);
-
-	push(ud);
+	new(ud) T(val);
 }
 
 template<> void stack::push<object_index>(const object_index& idx) const;

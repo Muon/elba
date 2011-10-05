@@ -24,7 +24,7 @@ public:
 			{
 				stack st(L);
 
-				reference ud = st.create_userdata(sizeof(T));
+				reference ud = make_userdata(L, sizeof(T));
 
 				new(static_cast<void*>(ud)) T();
 
@@ -38,7 +38,7 @@ public:
 		st.push(metatable);
 		st.push(initializer::initialize, 1);
 
-		methods.set("new", reference(L, stack::top));;
+		methods.set("new", reference(L, stack::top));
 
 		st.pop(1);
 

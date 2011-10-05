@@ -297,23 +297,17 @@ stack::type stack::element_type(int index) const
 	return static_cast<stack::type>(lua_type(L, index));
 }
 
-reference stack::create_userdata(std::size_t size) const
+void* stack::create_userdata(std::size_t size) const
 {
 	void* data = lua_newuserdata(L, size);
 	assert(data != NULL);
-	reference ud(L, stack::top);
-	pop(1);
 
-	return ud;
+	return data;
 }
 
-reference stack::create_table() const
+void stack::create_table() const
 {
 	lua_newtable(L);
-	reference t(L, stack::top);
-	pop(1);
-
-	return t;
 }
 
 void stack::get_table_field(int t) const
