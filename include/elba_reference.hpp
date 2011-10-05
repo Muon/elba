@@ -30,7 +30,7 @@ public:
 
 	void swap(reference& other);
 
-	reference& operator=(const reference& other);
+	reference& operator=(elba::reference other);
 	template<typename T>
 	reference& operator=(const T& val)
 	{

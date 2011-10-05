@@ -33,21 +33,24 @@ reference::reference(lua_State* L, int index)
 	set_ref();
 }
 
-reference& reference::operator=(const reference& other)
-{
-	return operator=<reference>(other);
-}
-
 reference::reference(const reference& other)
 	: L(other.L)
 	, ref(LUA_REFNIL)
 {
-	*this = other;
+	stack st(L);
+	st.push(other);
+	set_ref();
 }
 
 reference::~reference()
 {
 	luaL_unref(L, LUA_REGISTRYINDEX, ref);
+}
+
+reference& reference::operator=(reference other)
+{
+	swap(other);
+	return *this;
 }
 
 void reference::swap(reference& other)
