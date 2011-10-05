@@ -354,12 +354,10 @@ template<> void stack::push<object_index>(const object_index& idx) const;
 class object_index
 {
 public:
-	template<typename T>
-	object_index(const reference& owner, const T& key)
+	object_index(const reference& owner, const reference& key)
 		: owner_table(owner)
-		, ref(owner_table.L)
+		, ref(key)
 	{
-		ref = key;
 	}
 
 	template<typename T>
@@ -446,7 +444,10 @@ private:
 template<typename T>
 object_index reference::operator[](const T& key) const
 {
-	return object_index(*this, key);
+	reference k(L);
+	k = key;
+
+	return object_index(*this, k);
 }
 
 std::ostream& operator<<(std::ostream& stream, const object_index& idx);
