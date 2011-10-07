@@ -128,8 +128,6 @@ void reference::set_ref()
 	}
 	else
 	{
-		luaL_unref(L, LUA_REGISTRYINDEX, ref);
-
 		ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 }
