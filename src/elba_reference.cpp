@@ -27,13 +27,13 @@ reference stack::get<reference>(int idx) const
 
 reference::reference(lua_State* L)
 	: L(L)
-	, ref(LUA_REFNIL)
+	, ref(LUA_NOREF)
 {
 }
 
 reference::reference(lua_State* L, int index)
 	: L(L)
-	, ref(LUA_REFNIL)
+	, ref(LUA_NOREF)
 {
 	lua_pushvalue(L, index);
 	set_ref();
@@ -41,7 +41,7 @@ reference::reference(lua_State* L, int index)
 
 reference::reference(const reference& other)
 	: L(other.L)
-	, ref(LUA_REFNIL)
+	, ref(LUA_NOREF)
 {
 	stack st(L);
 	st.push(other);
