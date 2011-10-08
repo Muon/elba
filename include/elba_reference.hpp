@@ -2,6 +2,7 @@
 #define ELBA_REFERENCE_HPP
 
 #include "elba_stack.hpp"
+#include "elba_nil.hpp"
 
 #include <boost/utility/enable_if.hpp>
 #include <boost/type_traits/is_pointer.hpp>
@@ -15,7 +16,6 @@ namespace elba
 {
 
 class object_index;
-struct nil_type;
 class reference;
 
 template<> void stack::push<reference>(const reference& ref) const;
@@ -56,7 +56,6 @@ public:
 		return result;
 	}
 	bool operator==(const reference& other) const;
-	bool operator==(const nil_type& n) const { static_cast<void>(n); return type() == stack::nil; }
 
 	template<typename T> bool operator!=(const T& val) const { return !(*this == val); }
 
@@ -340,6 +339,8 @@ private:
 
 std::ostream& operator<<(std::ostream& stream, const reference& ref);
 
+template<> inline bool operator==<reference>(const nil_type& n, const reference& val) { static_cast<void>(n); return val.type() == stack::nil; }
+
 inline reference make_table(lua_State* L)
 {
 	stack st(L);
@@ -458,6 +459,8 @@ private:
 	// FIXME: Why can't I make this more specific on GCC?
 	template<typename T> friend void stack::push(const T& idx) const;
 };
+
+template<> inline bool operator==<object_index>(const nil_type& n, const object_index& val) { return val.operator==(n); }
 
 template<typename T>
 object_index reference::operator[](const T& key) const

@@ -1,20 +1,20 @@
 print_test.o: ../tests/print_test.cpp ../include/elba.hpp \
  ../include/elba_state.hpp ../include/elba_reference.hpp \
- ../include/elba_stack.hpp ../include/elba_classbinder.hpp \
- ../include/elba_nil.hpp
+ ../include/elba_stack.hpp ../include/elba_nil.hpp \
+ ../include/elba_classbinder.hpp
 set_test.o: ../tests/set_test.cpp ../include/elba.hpp \
  ../include/elba_state.hpp ../include/elba_reference.hpp \
- ../include/elba_stack.hpp ../include/elba_classbinder.hpp \
- ../include/elba_nil.hpp
+ ../include/elba_stack.hpp ../include/elba_nil.hpp \
+ ../include/elba_classbinder.hpp
 free_function_test.o: ../tests/free_function_test.cpp ../include/elba.hpp \
  ../include/elba_state.hpp ../include/elba_reference.hpp \
- ../include/elba_stack.hpp ../include/elba_classbinder.hpp \
- ../include/elba_nil.hpp
+ ../include/elba_stack.hpp ../include/elba_nil.hpp \
+ ../include/elba_classbinder.hpp
 class_binding_test.o: ../tests/class_binding_test.cpp ../include/elba.hpp \
  ../include/elba_state.hpp ../include/elba_reference.hpp \
- ../include/elba_stack.hpp ../include/elba_classbinder.hpp \
- ../include/elba_nil.hpp
+ ../include/elba_stack.hpp ../include/elba_nil.hpp \
+ ../include/elba_classbinder.hpp
 nil_test.o: ../tests/nil_test.cpp ../include/elba.hpp \
  ../include/elba_state.hpp ../include/elba_reference.hpp \
- ../include/elba_stack.hpp ../include/elba_classbinder.hpp \
- ../include/elba_nil.hpp
+ ../include/elba_stack.hpp ../include/elba_nil.hpp \
+ ../include/elba_classbinder.hpp
