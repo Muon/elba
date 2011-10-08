@@ -21,6 +21,8 @@ class reference;
 template<> void stack::push<reference>(const reference& ref) const;
 template<> reference stack::get<reference>(int idx) const;
 
+template<> bool operator==<reference>(const nil_type& n, const reference& val);
+
 class reference
 {
 public:
@@ -335,11 +337,10 @@ private:
 
 	// FIXME: Why can't I make this more specific on GCC?
 	template<typename T> friend void stack::push(const T& ref) const;
+	template<typename T> friend bool ::elba::operator==(const nil_type& n, const T& val);
 };
 
 std::ostream& operator<<(std::ostream& stream, const reference& ref);
-
-template<> inline bool operator==<reference>(const nil_type& n, const reference& val) { static_cast<void>(n); return val.type() == stack::nil; }
 
 inline reference make_table(lua_State* L)
 {

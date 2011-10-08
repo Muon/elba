@@ -25,6 +25,11 @@ reference stack::get<reference>(int idx) const
 	return reference(L, idx);
 }
 
+template<> bool operator==<reference>(const nil_type& n, const reference& val)
+{
+	return val.ref == LUA_REFNIL;
+}
+
 reference::reference(lua_State* L)
 	: L(L)
 	, ref(LUA_NOREF)
