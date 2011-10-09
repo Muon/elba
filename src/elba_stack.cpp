@@ -8,6 +8,7 @@ extern "C"
 }
 
 #include <cassert>
+#include <stdexcept>
 
 // copied verbatim from Lua's source; see Lua 5.1 license for copyright info
 // needed for tostring stringification semantics
@@ -305,6 +306,22 @@ void stack::create_table() const
 void stack::get_table_field(int t) const
 {
 	lua_gettable(L, t);
+}
+
+void stack::create_function(const std::string& buffer) const
+{
+	create_function(buffer, buffer);
+}
+
+void stack::create_function(const std::string& buffer, const std::string& name) const
+{
+	int ret = luaL_loadbuffer(L, buffer.data(), buffer.size(), name.c_str());
+	if(ret != 0)
+	{
+		std::string msg = get<std::string>(-1);
+		pop(1);
+		throw std::runtime_error(msg);
+	}
 }
 
 void stack::set_table_field(int t) const

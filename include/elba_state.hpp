@@ -17,7 +17,7 @@ public:
 	operator lua_State* () const;
 
 	void open_libs() const;
-	void do_string(const char* string) const;
+	void do_string(const std::string& string) const;
 
 	template<typename T>
 	class_binder bind_class() const

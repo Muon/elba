@@ -1424,6 +1424,8 @@ public:
 
 	void* create_userdata(std::size_t size) const;
 	void create_table() const;
+	void create_function(const std::string& buffer) const;
+	void create_function(const std::string& buffer, const std::string& name) const;
 
 	void get_table_field(int t) const;
 	void set_table_field(int t) const;

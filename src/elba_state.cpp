@@ -51,67 +51,11 @@ void state::open_libs() const
 	luaL_openlibs(state_container.L);
 }
 
-void state::do_string(const char* string) const
+void state::do_string(const std::string& string) const
 {
-	int ret = luaL_loadstring(state_container.L, string);
-
-	if(ret == 0)
-	{
-		ret = lua_pcall(state_container.L, 0, LUA_MULTRET, 0);
-
-		if(ret == 0)
-		{
-			return;
-		}
-		else
-		{
-			std::size_t len;
-			const char* error = lua_tolstring(state_container.L, -1, &len);
-			if(len > 0)
-			{
-				throw std::runtime_error(error);
-			}
-
-			if(ret == LUA_ERRRUN)
-			{
-				throw std::runtime_error("runtime error while executing string");
-			}
-			else if(ret == LUA_ERRMEM)
-			{
-				throw std::runtime_error("ran out of memory while executing string");
-			}
-			else if(ret == LUA_ERRERR)
-			{
-				throw std::runtime_error("error occurred running the error handler while executing string");
-			}
-			else
-			{
-				throw std::runtime_error("unknown error occurred while executing string");
-			}
-		}
-	}
-	else
-	{
-		std::size_t len;
-		const char* error = lua_tolstring(state_container.L, -1, &len);
-		if(len > 0)
-		{
-			throw std::runtime_error(error);
-		}
-
-		if(ret == LUA_ERRSYNTAX)
-		{
-			throw std::runtime_error("syntax error in string");
-		}
-		else if(ret == LUA_ERRMEM)
-		{
-			throw std::runtime_error("ran out of memory while parsing string");
-		}
-		else
-		{
-			throw std::runtime_error("unknown error occurred while parsing string");
-		}
-	}
+	stack st(*this);
+	st.create_function(string);
+	st.call(0, 0);
 }
 
 reference state::create_table() const
