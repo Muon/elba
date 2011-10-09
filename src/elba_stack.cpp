@@ -84,6 +84,17 @@ char stack::get<char>(int idx) const
 	return get<const char*>(idx)[0];
 }
 
+void stack::push(signed char integer) const
+{
+	lua_pushinteger(L, integer);
+}
+
+template<>
+signed char stack::get<signed char>(int idx) const
+{
+	return lua_tointeger(L, idx);
+}
+
 void stack::push(short integer) const
 {
 	lua_pushinteger(L, integer);

@@ -38,6 +38,8 @@ public:
 	stack(lua_State* L) : L(L) {}
 
 	void push(char c) const;
+
+	void push(signed char integer) const;
 	void push(short integer) const;
 	void push(int integer) const;
 	void push(long integer) const;
@@ -1504,6 +1506,7 @@ template<> std::string stack::get<std::string>(int idx) const;
 template<> const char* stack::get<const char*>(int idx) const;
 template<> void* stack::get<void*>(int idx) const;
 template<> char stack::get<char>(int idx) const;
+template<> signed char stack::get<signed char>(int idx) const;
 template<> int stack::get<int>(int idx) const;
 template<> short stack::get<short>(int idx) const;
 template<> long stack::get<long>(int idx) const;
