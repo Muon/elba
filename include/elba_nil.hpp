@@ -11,6 +11,7 @@ struct nil_type
 	operator bool() const { return false; }
 
 	bool operator==(const nil_type& n) const { static_cast<void>(n); return true; }
+	bool operator!=(const nil_type& n) const { return !(*this == n); }
 };
 
 template<typename T> bool operator==(const nil_type& n, const T& val) { static_cast<void>(n); static_cast<void>(val); return false; }
