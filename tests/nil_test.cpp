@@ -1,8 +1,5 @@
 #include <elba.hpp>
-#include <cassert>
-
-#define assert_equal(a, b) assert((a) == (b)), assert((b) == (a))
-#define assert_not_equal(a, b) assert((a) != (b)), assert((b) != (a))
+#include "test_utilities.hpp"
 
 int main()
 {
@@ -11,7 +8,7 @@ int main()
 	assert_not_equal(elba::nil, lua);
 	assert_not_equal(elba::nil, true);
 	assert_equal(elba::nil, elba::nil);
-	assert(!elba::nil);
+	assert_false(elba::nil);
 	assert_not_equal(elba::nil, lua.globals);
 	assert_equal(lua.globals[1], elba::nil);
 	assert_not_equal(elba::nil, 1);
