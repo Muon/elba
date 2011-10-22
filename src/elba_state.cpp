@@ -1,5 +1,6 @@
 #include <elba_state.hpp>
 #include <elba_stack.hpp>
+#include <elba_error.hpp>
 
 extern "C"
 {
@@ -8,8 +9,6 @@ extern "C"
 #include <lualib.h>
 }
 
-#include <stdexcept>
-
 namespace elba
 {
 
@@ -17,7 +16,7 @@ state::state_destruction_deferral::state_destruction_deferral()
 	: L(luaL_newstate())
 {
 	if(!L)
-		throw std::runtime_error("ran out of memory while creating Lua state");
+		throw elba::out_of_memory_error(L, "ran out of memory while creating Lua state");
 }
 
 state::state_destruction_deferral::~state_destruction_deferral()
