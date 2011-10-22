@@ -2,6 +2,6 @@
 #define ELBA_HPP
 
 #include "elba_state.hpp"
-#include "elba_nil.hpp"
+#include "elba_error.hpp"
 
 #endif

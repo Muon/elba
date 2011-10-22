@@ -2,7 +2,8 @@ elba_state.o: ../src/elba_state.cpp ../include/elba_state.hpp \
  ../include/elba_reference.hpp ../include/elba_stack.hpp \
  ../include/elba_nil.hpp ../include/elba_classbinder.hpp \
  ../include/elba_stack.hpp
-elba_stack.o: ../src/elba_stack.cpp ../include/elba_stack.hpp
+elba_stack.o: ../src/elba_stack.cpp ../include/elba_stack.hpp \
+ ../include/elba_error.hpp ../include/elba_activation_record.hpp
 elba_reference.o: ../src/elba_reference.cpp ../include/elba_reference.hpp \
  ../include/elba_stack.hpp ../include/elba_nil.hpp
 elba_classbinder.o: ../src/elba_classbinder.cpp \
@@ -11,3 +12,7 @@ elba_classbinder.o: ../src/elba_classbinder.cpp \
 elba_nil.o: ../src/elba_nil.cpp ../include/elba_nil.hpp \
  ../include/elba_reference.hpp ../include/elba_stack.hpp \
  ../include/elba_nil.hpp
+elba_error.o: ../src/elba_error.cpp ../include/elba_error.hpp \
+ ../include/elba_activation_record.hpp
+elba_activation_record.o: ../src/elba_activation_record.cpp \
+ ../include/elba_activation_record.hpp

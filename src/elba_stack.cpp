@@ -1,4 +1,5 @@
 #include <elba_stack.hpp>
+#include <elba_error.hpp>
 
 extern "C"
 {
@@ -329,9 +330,20 @@ void stack::create_function(const std::string& buffer, const std::string& name) 
 	int ret = luaL_loadbuffer(L, buffer.data(), buffer.size(), name.c_str());
 	if(ret != 0)
 	{
-		std::string msg = get<std::string>(-1);
-		pop(1);
-		throw std::runtime_error(msg);
+		if(ret == LUA_ERRSYNTAX)
+		{
+			std::string msg = get<const char*>(-1);
+			pop(1);
+
+			throw syntax_error(L, msg);
+		}
+		else if(ret == LUA_ERRMEM)
+		{
+			pop(1);
+			throw out_of_memory_error(L);
+		}
+		else
+			assert(false);
 	}
 }
 
@@ -350,9 +362,57 @@ void stack::raw_set_table_field(int t) const
 	lua_rawset(L, t);
 }
 
+static int error_handler(lua_State* L)
+{
+	stack st(L);
+
+	st.push(runtime_error(L, st.get<const char*>(1)));
+
+	return 1;
+}
+
 void stack::call(int nargs, int nresults) const
 {
-	lua_call(L, nargs, nresults);
+	int sz = size();
+
+	push(error_handler);
+	lua_insert(L, -nargs - 2);
+
+	int ret = lua_pcall(L, nargs, nresults, -nargs - 2);
+
+	if(ret == 0)
+	{
+		lua_remove(L, -nresults - 1);
+	}
+	else
+	{
+		if(ret == LUA_ERRRUN)
+		{
+			runtime_error err = get<runtime_error>(-1);
+			pop(2);
+
+			throw err;
+		}
+		else
+		{
+			if(ret == LUA_ERRMEM)
+			{
+				pop(2);
+				throw out_of_memory_error(L);
+			}
+			else if(ret == LUA_ERRERR)
+			{
+				std::string msg = get<const char*>(-1);
+				pop(2);
+
+				throw error_handler_error(L, msg);
+			}
+			else
+				assert(false);
+		}
+	}
+
+	assert(size() == sz - (nargs + 1) + nresults);
 }
 
 }

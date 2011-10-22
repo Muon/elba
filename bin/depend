@@ -1,20 +1,25 @@
 print_test.o: ../tests/print_test.cpp ../include/elba.hpp \
  ../include/elba_state.hpp ../include/elba_reference.hpp \
  ../include/elba_stack.hpp ../include/elba_nil.hpp \
- ../include/elba_classbinder.hpp
+ ../include/elba_classbinder.hpp ../include/elba_error.hpp \
+ ../include/elba_activation_record.hpp
 set_test.o: ../tests/set_test.cpp ../include/elba.hpp \
  ../include/elba_state.hpp ../include/elba_reference.hpp \
  ../include/elba_stack.hpp ../include/elba_nil.hpp \
- ../include/elba_classbinder.hpp
+ ../include/elba_classbinder.hpp ../include/elba_error.hpp \
+ ../include/elba_activation_record.hpp
 free_function_test.o: ../tests/free_function_test.cpp ../include/elba.hpp \
  ../include/elba_state.hpp ../include/elba_reference.hpp \
  ../include/elba_stack.hpp ../include/elba_nil.hpp \
- ../include/elba_classbinder.hpp
+ ../include/elba_classbinder.hpp ../include/elba_error.hpp \
+ ../include/elba_activation_record.hpp
 class_binding_test.o: ../tests/class_binding_test.cpp ../include/elba.hpp \
  ../include/elba_state.hpp ../include/elba_reference.hpp \
  ../include/elba_stack.hpp ../include/elba_nil.hpp \
- ../include/elba_classbinder.hpp
+ ../include/elba_classbinder.hpp ../include/elba_error.hpp \
+ ../include/elba_activation_record.hpp
 nil_test.o: ../tests/nil_test.cpp ../include/elba.hpp \
  ../include/elba_state.hpp ../include/elba_reference.hpp \
  ../include/elba_stack.hpp ../include/elba_nil.hpp \
- ../include/elba_classbinder.hpp ../tests/test_utilities.hpp
+ ../include/elba_classbinder.hpp ../include/elba_error.hpp \
+ ../include/elba_activation_record.hpp ../tests/test_utilities.hpp
