@@ -13,23 +13,11 @@ extern "C"
 namespace elba
 {
 
-static int panic(lua_State* L)
-{
-	stack st(L);
-
-	std::string error_message = st.get<std::string>(stack::top);
-	st.pop(1);
-
-	throw std::runtime_error(error_message);
-}
-
 state::state_destruction_deferral::state_destruction_deferral()
 	: L(luaL_newstate())
 {
 	if(!L)
 		throw std::runtime_error("ran out of memory while creating Lua state");
-
-	lua_atpanic(L, panic);
 }
 
 state::state_destruction_deferral::~state_destruction_deferral()
