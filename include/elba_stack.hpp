@@ -236,7 +236,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1>
+	template<typename C, typename T1>
 	void push(void (C::*func_ptr)(T1) ) const
 	{
 		struct wrapper_creator
@@ -253,7 +253,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2)));
+				((object->*func)(st.get<T1>(2)));
 
 				return 1;
 			}
@@ -262,7 +262,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1>
+	template<typename C, typename T1>
 	void push(void (C::*func_ptr)(T1) const) const
 	{
 		struct wrapper_creator
@@ -279,7 +279,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2)));
+				((object->*func)(st.get<T1>(2)));
 
 				return 1;
 			}
@@ -340,7 +340,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1, typename T2>
+	template<typename C, typename T1, typename T2>
 	void push(void (C::*func_ptr)(T1, T2) ) const
 	{
 		struct wrapper_creator
@@ -357,7 +357,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3)));
+				((object->*func)(st.get<T1>(2), st.get<T2>(3)));
 
 				return 1;
 			}
@@ -366,7 +366,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1, typename T2>
+	template<typename C, typename T1, typename T2>
 	void push(void (C::*func_ptr)(T1, T2) const) const
 	{
 		struct wrapper_creator
@@ -383,7 +383,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3)));
+				((object->*func)(st.get<T1>(2), st.get<T2>(3)));
 
 				return 1;
 			}
@@ -444,7 +444,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1, typename T2, typename T3>
+	template<typename C, typename T1, typename T2, typename T3>
 	void push(void (C::*func_ptr)(T1, T2, T3) ) const
 	{
 		struct wrapper_creator
@@ -461,7 +461,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4)));
+				((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4)));
 
 				return 1;
 			}
@@ -470,7 +470,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1, typename T2, typename T3>
+	template<typename C, typename T1, typename T2, typename T3>
 	void push(void (C::*func_ptr)(T1, T2, T3) const) const
 	{
 		struct wrapper_creator
@@ -487,7 +487,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4)));
+				((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4)));
 
 				return 1;
 			}
@@ -548,7 +548,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4>
+	template<typename C, typename T1, typename T2, typename T3, typename T4>
 	void push(void (C::*func_ptr)(T1, T2, T3, T4) ) const
 	{
 		struct wrapper_creator
@@ -565,7 +565,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5)));
+				((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5)));
 
 				return 1;
 			}
@@ -574,7 +574,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4>
+	template<typename C, typename T1, typename T2, typename T3, typename T4>
 	void push(void (C::*func_ptr)(T1, T2, T3, T4) const) const
 	{
 		struct wrapper_creator
@@ -591,7 +591,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5)));
+				((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5)));
 
 				return 1;
 			}
@@ -652,7 +652,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5>
+	template<typename C, typename T1, typename T2, typename T3, typename T4, typename T5>
 	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5) ) const
 	{
 		struct wrapper_creator
@@ -669,7 +669,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6)));
+				((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6)));
 
 				return 1;
 			}
@@ -678,7 +678,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5>
+	template<typename C, typename T1, typename T2, typename T3, typename T4, typename T5>
 	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5) const) const
 	{
 		struct wrapper_creator
@@ -695,7 +695,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6)));
+				((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6)));
 
 				return 1;
 			}
@@ -756,7 +756,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+	template<typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
 	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5, T6) ) const
 	{
 		struct wrapper_creator
@@ -773,7 +773,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7)));
+				((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7)));
 
 				return 1;
 			}
@@ -782,7 +782,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+	template<typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
 	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5, T6) const) const
 	{
 		struct wrapper_creator
@@ -799,7 +799,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7)));
+				((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7)));
 
 				return 1;
 			}
@@ -860,7 +860,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+	template<typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
 	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5, T6, T7) ) const
 	{
 		struct wrapper_creator
@@ -877,7 +877,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8)));
+				((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8)));
 
 				return 1;
 			}
@@ -886,7 +886,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+	template<typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
 	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5, T6, T7) const) const
 	{
 		struct wrapper_creator
@@ -903,7 +903,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8)));
+				((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8)));
 
 				return 1;
 			}
@@ -964,7 +964,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+	template<typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
 	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5, T6, T7, T8) ) const
 	{
 		struct wrapper_creator
@@ -981,7 +981,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8), st.get<T8>(9)));
+				((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8), st.get<T8>(9)));
 
 				return 1;
 			}
@@ -990,7 +990,7 @@ public:
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
 	}
 
-	template<typename R, typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+	template<typename C, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
 	void push(void (C::*func_ptr)(T1, T2, T3, T4, T5, T6, T7, T8) const) const
 	{
 		struct wrapper_creator
@@ -1007,7 +1007,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8), st.get<T8>(9)));
+				((object->*func)(st.get<T1>(2), st.get<T2>(3), st.get<T3>(4), st.get<T4>(5), st.get<T5>(6), st.get<T6>(7), st.get<T7>(8), st.get<T8>(9)));
 
 				return 1;
 			}

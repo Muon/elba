@@ -25,7 +25,7 @@ for n in range(1, total + 1):
 		return "{} (C::*{})({}) {}".format("void" if void_return else "R", name, ", ".join(typenames), "const" if const else "")
 
 	def add_pusher(is_const, returns_void):
-		functions.append("""	template<typename R, typename C, {}>
+		functions.append("""	template<{}typename C, {}>
 	void push({}) const
 	{{
 		struct wrapper_creator
@@ -42,17 +42,18 @@ for n in range(1, total + 1):
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)({}));
+				{}((object->*func)({}));
 
 				return 1;
 			}}
 		}};
 
 		push_memfun_wrapper(wrapper_creator::wrapper, func_ptr);
-	}}""".format(
+	}}""".format(	"typename R, " if not returns_void else "",
 			", ".join("typename {}".format(T) for T in typenames),
 			funcptr_signature("func_ptr", returns_void, is_const),
 			funcptr_signature("memfunptr", returns_void, is_const),
+			"st.push" if not returns_void else "",
 			", ".join("st.get<T{0}>({1})".format(i, i + 1) for i in range(1, n + 1))
 		))
 
