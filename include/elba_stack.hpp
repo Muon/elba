@@ -1411,8 +1411,11 @@ public:
 		push(wrapper_creator::wrapper, 1);
 	}
 // END FREE FUNC GLUE
-
 	void repush(int index) const;
+
+	void insert(int index) const;
+
+	void remove(int index) const;
 
 	void pop(int num) const;
 

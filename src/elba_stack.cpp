@@ -267,6 +267,16 @@ void stack::repush(int index) const
 	lua_pushvalue(L, index);
 }
 
+void stack::insert(int index) const
+{
+	lua_insert(L, index);
+}
+
+void stack::remove(int index) const
+{
+	lua_remove(L, index);
+}
+
 int stack::size() const
 {
 	return lua_gettop(L);
@@ -376,13 +386,13 @@ void stack::call(int nargs, int nresults) const
 	int sz = size();
 
 	push(error_handler);
-	lua_insert(L, -nargs - 2);
+	insert(-nargs - 2);
 
 	int ret = lua_pcall(L, nargs, nresults, -nargs - 2);
 
 	if(ret == 0)
 	{
-		lua_remove(L, -nresults - 1);
+		remove(-nresults - 1);
 	}
 	else
 	{
