@@ -381,6 +381,16 @@ static int error_handler(lua_State* L)
 	return 1;
 }
 
+bool stack::get_metatable(int t) const
+{
+	return lua_getmetatable(L, t);
+}
+
+void stack::set_metatable(int t) const
+{
+	lua_setmetatable(L, t);
+}
+
 void stack::call(int nargs, int nresults) const
 {
 	int sz = size();

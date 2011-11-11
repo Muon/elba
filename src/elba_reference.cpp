@@ -104,8 +104,7 @@ void reference::metatable(const elba::reference& mt) const
 	stack st(L);
 	st.push(*this);
 	st.push(mt);
-
-	lua_setmetatable(L, -2);
+	st.set_metatable(-2);
 }
 
 reference reference::metatable() const
@@ -114,7 +113,7 @@ reference reference::metatable() const
 
 	st.push(*this);
 
-	if(!lua_getmetatable(L, -1))
+	if(!st.get_metatable(-1))
 	{
 		st.pop(1);
 		return reference(L);

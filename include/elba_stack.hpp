@@ -1438,6 +1438,9 @@ public:
 	void raw_get_table_field(int t) const;
 	void raw_set_table_field(int t) const;
 
+	bool get_metatable(int t) const;
+	void set_metatable(int t) const;
+
 	void call(int nargs, int nresults) const;
 private:
 	lua_State* const L;
