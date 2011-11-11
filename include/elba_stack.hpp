@@ -149,7 +149,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)());
+				(object->*func)();
 
 				return 1;
 			}
@@ -174,7 +174,7 @@ public:
 
 				memfunptr func = *func_ptrptr;
 
-				st.push((object->*func)());
+				(object->*func)();
 
 				return 1;
 			}
