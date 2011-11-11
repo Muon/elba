@@ -1442,6 +1442,8 @@ public:
 	void set_metatable(int t) const;
 
 	void call(int nargs, int nresults) const;
+
+	void raise_error() const;
 private:
 	lua_State* const L;
 

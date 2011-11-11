@@ -435,4 +435,9 @@ void stack::call(int nargs, int nresults) const
 	assert(size() == sz - (nargs + 1) + nresults);
 }
 
+void stack::raise_error() const
+{
+	lua_error(L);
+}
+
 }
