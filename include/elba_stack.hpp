@@ -8,6 +8,9 @@ struct lua_State;
 namespace elba
 {
 
+typedef void* class_id_type;
+template<typename T> class_id_type class_id() { static const char c = 0; return reinterpret_cast<class_id_type>(const_cast<char*>(&c)); }
+
 struct nil_type;
 
 class stack
