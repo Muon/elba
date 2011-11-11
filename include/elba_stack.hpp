@@ -1474,7 +1474,7 @@ struct stack::get_resolver<T* const>
 {
 	static T* get(const stack& st, int idx)
 	{
-		return static_cast<T* const>(st.get<void*>(idx));
+		return st.get<T*>(idx);
 	}
 };
 
@@ -1483,7 +1483,7 @@ struct stack::get_resolver<T* volatile>
 {
 	static T* get(const stack& st, int idx)
 	{
-		return static_cast<T* volatile>(st.get<void*>(idx));
+		return st.get<T*>(idx);
 	}
 };
 
@@ -1492,7 +1492,7 @@ struct stack::get_resolver<T* const volatile>
 {
 	static T* get(const stack& st, int idx)
 	{
-		return static_cast<T* const volatile>(st.get<void*>(idx));
+		return st.get<T*>(idx);
 	}
 };
 
