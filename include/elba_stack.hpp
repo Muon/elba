@@ -100,7 +100,7 @@ public:
 	template<typename R, typename C>
 	void push(R (C::*func_ptr)()) const
 	{
-		typedef R (C::*memfunptr)() const;
+		typedef R (C::*memfunptr)();
 		struct wrapper_creator
 		{
 			static int wrapper(lua_State* L)
@@ -150,7 +150,7 @@ public:
 	template<typename C>
 	void push(void (C::*func_ptr)()) const
 	{
-		typedef void (C::*memfunptr)() const;
+		typedef void (C::*memfunptr)();
 		struct wrapper_creator
 		{
 			static int wrapper(lua_State* L)
