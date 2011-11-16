@@ -30,8 +30,20 @@
 			static int wrapper(lua_State* L) \
 			{ \
 				stack st(L); \
-				funcptr_type func = reinterpret_cast<funcptr_type>(st.get<bindable_funcptr>(st.upvalue_index(1))); \
-				BOOST_PP_EXPR_IF(BOOST_PP_NOT(voidness), st.push)(func(GET_ARGUMENTS(nargs))); \
+				bool exception_thrown = false; \
+				\
+				try \
+				{ \
+					funcptr_type func = reinterpret_cast<funcptr_type>(st.get<bindable_funcptr>(st.upvalue_index(1))); \
+					BOOST_PP_EXPR_IF(BOOST_PP_NOT(voidness), st.push)(func(GET_ARGUMENTS(nargs))); \
+				} \
+				catch(...) \
+				{ \
+					exception_thrown = true; \
+					st.handle_active_exception(); \
+				} \
+				if(exception_thrown) \
+					st.raise_error(); \
 				return BOOST_PP_IF(voidness, 0, 1); \
 			} \
 		}; \

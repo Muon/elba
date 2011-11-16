@@ -413,6 +413,22 @@ void stack::call(int nargs, int nresults) const
 	assert(size() == sz - (nargs + 1) + nresults);
 }
 
+void stack::handle_active_exception() const
+{
+	try
+	{
+		throw;
+	}
+	catch(const std::exception& e)
+	{
+		push(e.what());
+	}
+	catch(...)
+	{
+		push("unknown C++ exception caught");
+	}
+}
+
 void stack::raise_error() const
 {
 	lua_error(L);

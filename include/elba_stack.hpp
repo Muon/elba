@@ -132,6 +132,7 @@ public:
 
 	void call(int nargs, int nresults) const;
 
+	void handle_active_exception() const;
 	void raise_error() const;
 private:
 	lua_State* const L;
