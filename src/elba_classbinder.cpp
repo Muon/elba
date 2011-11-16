@@ -5,12 +5,10 @@ namespace elba
 
 class_binder::class_binder(lua_State* L)
 	: L(L)
-	, metatable(L)
-	, methods(L)
+	, metatable(make_table(L))
+	, methods(make_table(L))
 {
-	metatable = make_table(L);
-	metatable.set("__index", make_table(L));
-	methods = metatable.get<reference>("__index");
+	metatable.set("__index", methods);
 }
 
 template<>
