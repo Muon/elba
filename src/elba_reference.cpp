@@ -84,21 +84,6 @@ bool reference::operator==(const reference& other) const
 	return result;
 }
 
-reference reference::operator()()
-{
-	stack st(L);
-
-	st.push(*this);
-
-	st.call(0, 1);
-
-	reference ref(L, stack::top);
-
-	st.pop(1);
-
-	return ref;
-}
-
 void reference::metatable(const elba::reference& mt) const
 {
 	stack st(L);

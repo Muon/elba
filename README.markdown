@@ -11,7 +11,7 @@ Features
 
 * `operator[]`-style table manipulation
 * primitive type and std::string assignment/retrieval
-* binding free functions (Python script generates the template functions)
+* binding functions
 * retrieval of functions from the Lua state
 * class binding
 
