@@ -4,7 +4,7 @@
 struct B
 {
 	B() : truth(false) {}
-	B(const B& b) { std::cout << "copying B" << std::endl; }
+	B(const B& b) : truth(b.truth) { std::cout << "copying B" << std::endl; }
 
 	bool truth;
 };
