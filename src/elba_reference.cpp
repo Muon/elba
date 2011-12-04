@@ -90,6 +90,7 @@ void reference::metatable(const elba::reference& mt) const
 	st.push(*this);
 	st.push(mt);
 	st.set_metatable(-2);
+	st.pop(1);
 }
 
 reference reference::metatable() const
