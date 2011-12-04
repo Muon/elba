@@ -386,7 +386,9 @@ void stack::call(int nargs, int nresults) const
 	{
 		if(ret == LUA_ERRRUN)
 		{
-			runtime_error err = get<runtime_error>(-1);
+			// we're not binding elba::runtime_error so we have to
+			// avoid the checking mechanism
+			runtime_error err = *(static_cast<runtime_error*>(get<void*>(-1)));
 			pop(2);
 
 			throw err;
@@ -411,6 +413,46 @@ void stack::call(int nargs, int nresults) const
 	}
 
 	assert(size() == sz - (nargs + 1) + nresults);
+}
+
+bool stack::is_of_base_type(int t, class_id_type type) const
+{
+	if(get_metatable(t))
+	{
+		get_table_field(-1, "types");
+		get_table_field(-1, type);
+
+		bool result = get<bool>(-1);
+
+		pop(3);
+
+		return result;
+	}
+
+	return false;
+}
+
+bool stack::convert_to(int t, class_id_type type) const
+{
+	if(get_metatable(t))
+	{
+		get_table_field(-1, "convops");
+		get_table_field(-1, type);
+
+		if(element_type(-1) == ::elba::stack::function)
+		{
+			repush(t);
+			call(1, 1);
+			insert(-3);
+			pop(2);
+
+			return true;
+		}
+
+		pop(3);
+	}
+
+	return false;
 }
 
 void stack::handle_active_exception() const
@@ -442,6 +484,51 @@ int stack::registry_index()
 int stack::globals_index()
 {
 	return LUA_GLOBALSINDEX;
+}
+
+const char* stack::type_name(type t) const
+{
+	return lua_typename(L, t);
+}
+
+std::string stack::get_element_name(int idx) const
+{
+	if(element_type(idx) == userdata)
+	{
+		if(get_metatable(idx))
+		{
+			push("name");
+			get_table_field(-2);
+
+			std::string tmp = get<std::string>(-1);
+
+			pop(2);
+
+			return tmp;
+		}
+
+		return "(unknown)";
+	}
+
+	return type_name(element_type(idx));
+}
+
+std::string stack::bound_type_name(class_id_type t) const
+{
+	get_table_field(registry_index(), t);
+	if(element_type(-1) == ::elba::stack::nil)
+	{
+		pop(1);
+		return "(unknown)";
+	}
+
+	get_table_field(-1, "name");
+
+	std::string name = get<std::string>(-1);
+
+	pop(2);
+
+	return name;
 }
 
 }

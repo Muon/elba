@@ -1,10 +1,13 @@
 #include <elba.hpp>
 #include <iostream>
+#include <stdexcept>
 
 struct B
 {
 	B() : truth(false) {}
 	B(const B& b) : truth(b.truth) { std::cout << "copying B" << std::endl; }
+
+	void examine(B x) { std::cout << "examining " << x.truth << std::endl; if(x.truth) throw std::runtime_error("the truth is true"); }
 
 	bool truth;
 };
@@ -13,6 +16,8 @@ struct A
 {
 	A() : a(1) { std::cout << "initializing" << std::endl; }
 	~A() { std::cout << "finalizing" << std::endl; }
+
+	operator B() { B tmp; std::cout << "converting to B" << std::endl; tmp.truth = a; return tmp; }
 
 	int assess_truth(B b) const { return b.truth ? a : 0; }
 	bool determine(const B& b) { return b.truth; }
@@ -26,16 +31,18 @@ int main()
 	elba::state L;
 	L.open_libs();
 
-	L.globals["A"] = L.bind_class<A>()
-		.constructor<A>()
+	elba::class_binder<A>(L, "A")
+		.constructor()
 		.method("assess_truth", &A::assess_truth)
 		.method("determine", &A::determine)
-		.method("modify", &A::modify);
+		.method("modify", &A::modify)
+		.conversion_operator<B>();
 
-	L.globals["B"] = L.bind_class<B>()
-		.constructor<B>();
+	elba::class_binder<B>(L, "B")
+		.constructor()
+		.method("examine", &B::examine);
 
-	L.do_string("a = A.new()\nb = B.new()\nprint(a:assess_truth(b))\na:modify(b)\nprint(not a:determine(b))");
+	L.do_string("a = A.new()\nb = B.new()\nprint(a:assess_truth(a))\nb:examine(a)\na:modify(b)\nprint(not a:determine(b))");
 
 	std::cout << L.globals["a"]["assess_truth"](L.globals["a"], L.globals["b"]) << std::endl;
 }

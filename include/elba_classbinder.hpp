@@ -3,19 +3,56 @@
 
 #include "elba_reference.hpp"
 
+#include <boost/type_traits/is_member_function_pointer.hpp>
+#include <boost/utility/enable_if.hpp>
+
 namespace elba
 {
 
-class class_binder;
-
-template<> void stack::push<class_binder>(const class_binder& binder) const;
-
+template<typename T>
 class class_binder
 {
 public:
-	class_binder(lua_State* L);
+	class_binder(lua_State* L, const char* name)
+		: L(L)
+		, metatable(make_table(L))
+		, methods(make_table(L))
+		, types(make_table(L))
+		, convops(make_table(L))
+		, statics(make_table(L))
+	{
+		stack st(L);
+		st.push(metatable);
 
-	template<typename T>
+		st.set_table_field(-1, "__index", methods);
+		st.set_table_field(-1, "__gc", finalize);
+
+		st.set_table_field(-1, "convops", convops);
+		st.set_table_field(-1, "name", name);
+
+		st.push("types");
+			st.push(types);
+			st.set_table_field(-1, class_id<T>(), true);
+		st.set_table_field(-3);
+
+		st.pop(1);
+	}
+
+	~class_binder()
+	{
+		stack st(L);
+
+		st.set_table_field(stack::registry_index(), class_id<T>(), metatable);
+
+		st.push(metatable);
+		st.get_table_field(-1, "name");
+		st.push(statics);
+		st.set_table_field(stack::globals_index());
+
+		st.pop(1);
+
+	}
+
 	class_binder& constructor()
 	{
 		struct initializer
@@ -23,70 +60,76 @@ public:
 			static int initialize(lua_State* L)
 			{
 				stack st(L);
+				new(st.create_userdata(sizeof(T))) T();
 
-				reference ud = make_userdata(L, sizeof(T));
-
-				new(static_cast<void*>(ud)) T();
-
-				ud.metatable(reference(L, st.upvalue_index(1)));
+				st.repush(st.upvalue_index(1));
+				st.set_metatable(-2);
 
 				return 1;
 			}
 		};
 
 		stack st(L);
+
+		st.push(statics);
+
+		st.push("new");
+
 		st.push(metatable);
 		st.push(initializer::initialize, 1);
 
-		methods.set("new", reference(L, stack::top));
+		st.set_table_field(-3);
 
 		st.pop(1);
 
 		return *this;
 	}
 
-	template<typename T, typename U>
-	class_binder& set(T name, U val)
+	template<typename U, typename V>
+	typename boost::enable_if<boost::is_member_function_pointer<V>,
+		class_binder<T>&>::type set(U name, V val)
+	{
+		return method(name, val);
+	}
+
+	template<typename U, typename V>
+	typename boost::disable_if<boost::is_member_function_pointer<V>,
+		class_binder<T>&>::type set(U name, V val)
+	{
+		return static_(name, val);
+	}
+
+	template<typename U, typename V>
+	class_binder<T>& method(U name, V val)
 	{
 		methods.set(name, val);
 		return *this;
 	}
 
-	template<typename T, typename U>
-	class_binder& method(T name, U func)
+	template<typename U, typename V>
+	class_binder<T>& static_(U name, V val)
 	{
-		return set(name, func);
-	}
-
-	template<typename T>
-	class_binder& destructor()
-	{
-		struct finalizer
-		{
-			static void finalize(T* object)
-			{
-				object->~T();
-			}
-		};
-
-		destructor(finalizer::finalize);
-
+		statics.set(name, val);
 		return *this;
 	}
 
-	template<typename T>
-	void destructor(void (*finalizer)(T*))
+	template<typename U>
+	class_binder<T>& conversion_operator(U (T::*func)() = &T::operator U)
 	{
-		metatable.set("__gc", finalizer);
+		convops.set(class_id<U>(), func);
+		return *this;
 	}
+
 private:
+	static void finalize(T* object) { object->~T(); }
+
 	lua_State* const L;
 
 	reference metatable;
 	reference methods;
-
-	// FIXME: Why can't I make this more specific on GCC?
-	template<typename T> friend void stack::push(const T& binder) const;
+	reference types;
+	reference convops;
+	reference statics;
 };
 
 }

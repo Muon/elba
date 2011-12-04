@@ -1,6 +1,8 @@
 #ifndef ELBA_STACK_HPP
 #define ELBA_STACK_HPP
 
+#include "elba_error.hpp"
+
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_reference.hpp>
 
@@ -20,7 +22,9 @@ template<typename T> struct recursively_remove_pointer<T* const volatile> { type
 template<typename T> struct clean_type { typedef typename boost::remove_cv<typename recursively_remove_pointer<typename boost::remove_reference<T>::type>::type>::type type; };
 
 typedef void* class_id_type;
-template<typename T> class_id_type class_id() { static const char c = 0; return reinterpret_cast<class_id_type>(const_cast<char*>(&c)); }
+template<typename T> class_id_type class_id_() { static const char c = 0; return reinterpret_cast<class_id_type>(const_cast<char*>(&c)); }
+
+template<typename T> class_id_type class_id() { return class_id_<typename clean_type<T>::type>(); }
 
 struct nil_type;
 
@@ -83,6 +87,9 @@ public:
 		void* ud = create_userdata(sizeof(T));
 
 		new(ud) T(val);
+
+		get_table_field(registry_index(), class_id<T>());
+		set_metatable(-2);
 	}
 
 	template<typename T>
@@ -162,13 +169,21 @@ public:
 
 	void call(int nargs, int nresults) const;
 
+	bool is_of_base_type(int t, class_id_type type) const;
+	bool convert_to(int t, class_id_type type) const;
+
 	void handle_active_exception() const;
 	void raise_error() const;
 
 	static int registry_index();
 	static int globals_index();
+
+	const char* type_name(elba::stack::type t) const;
 private:
 	lua_State* const L;
+
+	std::string get_element_name(int idx) const;
+	std::string bound_type_name(class_id_type t) const;
 
 	bool is_pseudo_index(int idx) const { return idx <= registry_index(); }
 	int offset_index(int idx, int offset) const
@@ -191,8 +206,19 @@ private:
 	{
 		static T get(const stack& st, int idx)
 		{
-			T* p = st.get<T*>(idx);
-			return *p;
+			if(st.element_type(idx) != stack::userdata || st.is_of_base_type(idx, class_id<T>()))
+				return *(st.get<T*>(idx));
+
+			if(st.convert_to(idx, class_id<T>()))
+			{
+				T tmp = *(st.get<T*>(-1));
+
+				st.pop(1);
+
+				return tmp;
+			}
+
+			throw elba::conversion_error(st.L, "conversion from " + st.get_element_name(idx) + " to " + st.bound_type_name(class_id<T>()) + " failed");
 		}
 	};
 };
@@ -202,7 +228,10 @@ struct stack::get_resolver<T*>
 {
 	static T* get(const stack& st, int idx)
 	{
-		return static_cast<T*>(st.get<void*>(idx));
+		if(st.element_type(idx) != stack::userdata || st.is_of_base_type(idx, class_id<T>()))
+			return static_cast<T*>(st.get<void*>(idx));
+
+		throw elba::conversion_error(st.L, "conversion from " + st.get_element_name(idx) + " to " + st.bound_type_name(class_id<T>()) + " failed");
 	}
 };
 

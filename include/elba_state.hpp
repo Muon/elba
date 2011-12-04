@@ -19,12 +19,6 @@ public:
 	void open_libs() const;
 	void do_string(const std::string& string) const;
 
-	template<typename T>
-	class_binder bind_class() const
-	{
-		return class_binder(state_container.L).destructor<T>();
-	}
-
 	reference create_table() const;
 private:
 	state(const state& other);

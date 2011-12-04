@@ -56,6 +56,12 @@ private:
 	call_stack_type call_stack_;
 };
 
+class conversion_error : public std::runtime_error, public error
+{
+public:
+	conversion_error(lua_State* L, const std::string& msg = "type conversion failed") : runtime_error(msg), error(L) {}
+};
+
 }
 
 #endif // ELBA_ERROR_HPP

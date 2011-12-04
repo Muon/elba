@@ -33,7 +33,7 @@
 				\
 				try \
 				{ \
-					funcptr_type func = *(st.get<funcptr_type*>(st.upvalue_index(1))); \
+					funcptr_type func = *(static_cast<funcptr_type*>(st.get<void*>(st.upvalue_index(1)))); \
 					C* object = st.get<C*>(1); \
 					BOOST_PP_EXPR_IF(BOOST_PP_NOT(voidness), st.push)((object->*func)( \
 						GET_ARGUMENTS(nargs) \

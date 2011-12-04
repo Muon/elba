@@ -24,6 +24,7 @@ int main()
 	lua.globals["truth"] = true;
 
 	A x(1);
+	elba::class_binder<A>(lua, "A");
 	lua.globals["struct"] = A(2);
 	lua.globals["struct1"] = &x;
 	A ref = lua.globals["struct"];
