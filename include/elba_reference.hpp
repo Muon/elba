@@ -93,8 +93,7 @@ public:
 		stack st(L);
 
 		st.push(*this);
-		st.push(key);
-		st.get_table_field(-2);
+		st.get_table_field(-1, key);
 
 		Value val = st.get<Value>(stack::top);
 
@@ -109,25 +108,27 @@ public:
 		stack st(L);
 
 		st.push(*this);
-		st.push(key);
-		st.push(value);
-		st.set_table_field(-3);
+		st.set_table_field(-1, key, value);
 
 		st.pop(1);
 	}
 
-	template<typename T, typename U>
-	void raw_get(const T& key, U& value) const
+	template<typename Value, typename Key>
+	typename boost::disable_if_c<
+		boost::is_pointer<Value>::value &&
+		boost::is_same<typename boost::remove_cv<typename boost::remove_pointer<Value>::type>::type, char>::value
+	, Value>::type raw_get(const Key& key) const
 	{
 		stack st(L);
 
 		st.push(*this);
-		st.push(key);
-		st.raw_get_table_field(-2);
+		st.raw_get_table_field(-1, key);
 
-		st.get(value, stack::top);
+		Value val = st.get<Value>(stack::top);
 
-		st.pop(1);
+		st.pop(2);
+
+		return val;
 	}
 
 	template<typename T, typename U>
@@ -136,9 +137,7 @@ public:
 		stack st(L);
 
 		st.push(*this);
-		st.push(key);
-		st.push(value);
-		st.raw_set_table_field(-3);
+		st.raw_set_table_field(-1, key, value);
 
 		st.pop(1);
 	}

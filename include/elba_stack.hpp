@@ -124,8 +124,38 @@ public:
 	void get_table_field(int t) const;
 	void set_table_field(int t) const;
 
+	template<typename Key, typename Value>
+	void set_table_field(int t, const Key& key, const Value& value) const
+	{
+		push(key);
+		push(value);
+		set_table_field(offset_index(t, 2));
+	}
+
+	template<typename Key>
+	void get_table_field(int t, const Key& key) const
+	{
+		push(key);
+		get_table_field(offset_index(t, 1));
+	}
+
 	void raw_get_table_field(int t) const;
 	void raw_set_table_field(int t) const;
+
+	template<typename Key, typename Value>
+	void raw_set_table_field(int t, const Key& key, const Value& value) const
+	{
+		push(key);
+		push(value);
+		raw_set_table_field(offset_index(t, 2));
+	}
+
+	template<typename Key>
+	void raw_get_table_field(int t, const Key& key) const
+	{
+		push(key);
+		raw_get_table_field(offset_index(t, 1));
+	}
 
 	bool get_metatable(int t) const;
 	void set_metatable(int t) const;
@@ -139,6 +169,15 @@ public:
 	static int globals_index();
 private:
 	lua_State* const L;
+
+	bool is_pseudo_index(int idx) const { return idx <= registry_index(); }
+	int offset_index(int idx, int offset) const
+	{
+		if(is_pseudo_index(idx) || idx >= 0)
+			return idx;
+
+		return idx - offset;
+	}
 
 	template<typename Memfun>
 	void push_memfun_wrapper(bindable_funcptr wrapper, Memfun memfun) const
