@@ -269,6 +269,9 @@ int stack::normalize_index(int index) const
 {
 	assert(index != 0);
 
+	if(index <= registry_index())
+		return index;
+
 	if(index > 0)
 		return index;
 
