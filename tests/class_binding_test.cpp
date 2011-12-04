@@ -33,14 +33,14 @@ int main()
 
 	elba::class_binder<A>(L, "A")
 		.constructor()
-		.method("assess_truth", &A::assess_truth)
-		.method("determine", &A::determine)
-		.method("modify", &A::modify)
+		.set("assess_truth", &A::assess_truth)
+		.set("determine", &A::determine)
+		.set("modify", &A::modify)
 		.conversion_operator<B>();
 
 	elba::class_binder<B>(L, "B")
 		.constructor()
-		.method("examine", &B::examine);
+		.set("examine", &B::examine);
 
 	L.do_string("a = A.new()\nb = B.new()\nprint(a:assess_truth(a))\nb:examine(a)\na:modify(b)\nprint(not a:determine(b))");
 
