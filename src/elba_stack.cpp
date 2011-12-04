@@ -434,4 +434,14 @@ void stack::raise_error() const
 	lua_error(L);
 }
 
+int stack::registry_index()
+{
+	return LUA_REGISTRYINDEX;
+}
+
+int stack::globals_index()
+{
+	return LUA_GLOBALSINDEX;
+}
+
 }

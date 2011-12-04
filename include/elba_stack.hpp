@@ -134,6 +134,9 @@ public:
 
 	void handle_active_exception() const;
 	void raise_error() const;
+
+	static int registry_index();
+	static int globals_index();
 private:
 	lua_State* const L;
 
