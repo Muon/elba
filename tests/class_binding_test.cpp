@@ -44,5 +44,6 @@ int main()
 
 	L.do_string("a = A.new()\nb = B.new()\nprint(a:assess_truth(a))\nb:examine(a)\na:modify(b)\nprint(not a:determine(b))");
 
-	std::cout << L.globals["a"]["assess_truth"](L.globals["a"], L.globals["b"]) << std::endl;
+	elba::reference globals = L.globals();
+	std::cout << globals["a"]["assess_truth"](globals["a"], globals["b"]) << std::endl;
 }

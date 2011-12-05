@@ -20,15 +20,16 @@ void h(int a)
 int main()
 {
 	elba::state L;
+	elba::reference globals = L.globals();
 	L.open_libs();
 
-	L.globals["f"] = f;
-	L.globals["g"] = g;
-	L.globals["h"] = h;
+	globals["f"] = f;
+	globals["g"] = g;
+	globals["h"] = h;
 
 	L.do_string("print(f(-12))\nprint(g(\"I am bound!\"))\nprint(h())");
 
-	elba::reference print = L.globals["print"];
+	elba::reference print = globals["print"];
 
 	int p = print("I am being called from C++!");
 	p = print("I am being called from C++, too!");
