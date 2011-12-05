@@ -31,6 +31,7 @@ struct nil_type;
 class stack
 {
 public:
+	typedef long integer_type;
 	typedef int(*bindable_funcptr)(lua_State*);
 
 	enum position
@@ -57,15 +58,15 @@ public:
 
 	void push(char c) const;
 
-	void push(signed char integer) const;
-	void push(short integer) const;
-	void push(int integer) const;
+	void push(signed char integer) const { push(static_cast<integer_type>(integer)); }
+	void push(short integer) const { push(static_cast<integer_type>(integer)); }
+	void push(int integer) const { push(static_cast<integer_type>(integer)); }
 	void push(long integer) const;
 
-	void push(unsigned char c) const;
-	void push(unsigned short integer) const;
-	void push(unsigned int integer) const;
-	void push(unsigned long integer) const;
+	void push(unsigned char c) const { push(static_cast<integer_type>(c)); }
+	void push(unsigned short integer) const { push(static_cast<integer_type>(integer)); }
+	void push(unsigned int integer) const { push(static_cast<integer_type>(integer)); }
+	void push(unsigned long integer) const { push(static_cast<integer_type>(integer)); }
 
 	void push(double number) const;
 	void push(float number) const;

@@ -85,20 +85,10 @@ char stack::get<char>(int idx) const
 	return get<const char*>(idx)[0];
 }
 
-void stack::push(signed char integer) const
-{
-	lua_pushinteger(L, integer);
-}
-
 template<>
 signed char stack::get<signed char>(int idx) const
 {
 	return lua_tointeger(L, idx);
-}
-
-void stack::push(short integer) const
-{
-	lua_pushinteger(L, integer);
 }
 
 template<>
@@ -107,20 +97,10 @@ short stack::get<short>(int idx) const
 	return lua_tointeger(L, idx);
 }
 
-void stack::push(int integer) const
-{
-	lua_pushinteger(L, integer);
-}
-
 template<>
 int stack::get<int>(int idx) const
 {
 	return lua_tointeger(L, idx);
-}
-
-void stack::push(long int integer) const
-{
-	lua_pushinteger(L, integer);
 }
 
 template<>
@@ -129,20 +109,10 @@ long stack::get<long>(int idx) const
 	return lua_tointeger(L, idx);
 }
 
-void stack::push(unsigned char c) const
-{
-	lua_pushinteger(L, c);
-}
-
 template<>
 unsigned char stack::get<unsigned char>(int idx) const
 {
 	return lua_tointeger(L, idx);
-}
-
-void stack::push(unsigned short integer) const
-{
-	lua_pushinteger(L, integer);
 }
 
 template<>
@@ -151,26 +121,21 @@ unsigned short stack::get<unsigned short>(int idx) const
 	return lua_tointeger(L, idx);
 }
 
-void stack::push(unsigned int integer) const
-{
-	lua_pushinteger(L, integer);
-}
-
 template<>
 unsigned int stack::get<unsigned int>(int idx) const
 {
 	return lua_tointeger(L, idx);
 }
 
-void stack::push(unsigned long int integer) const
-{
-	lua_pushinteger(L, integer);
-}
-
 template<>
 unsigned long stack::get<unsigned long>(int idx) const
 {
 	return lua_tointeger(L, idx);
+}
+
+void stack::push(integer_type integer) const
+{
+	lua_pushinteger(L, integer);
 }
 
 void stack::push(double number) const
