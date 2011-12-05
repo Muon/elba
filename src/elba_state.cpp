@@ -8,8 +8,6 @@ extern "C"
 #include <lualib.h>
 }
 
-#include <iostream>
-
 namespace elba
 {
 
@@ -21,7 +19,6 @@ state::state() : L(luaL_newstate())
 
 state::~state()
 {
-	std::cout << "state destroyed" << std::endl;
 	lua_close(L);
 }
 
