@@ -32,6 +32,9 @@ class stack
 {
 public:
 	typedef long integer_type;
+	typedef unsigned long unsigned_integer_type;
+	typedef double number_type;
+
 	typedef int(*bindable_funcptr)(lua_State*);
 
 	enum position
@@ -58,15 +61,16 @@ public:
 
 	void push(char c) const;
 
-	void push(signed char integer) const { push(static_cast<integer_type>(integer)); }
-	void push(short integer) const { push(static_cast<integer_type>(integer)); }
-	void push(int integer) const { push(static_cast<integer_type>(integer)); }
 	void push(long integer) const;
-
-	void push(unsigned char c) const { push(static_cast<integer_type>(c)); }
-	void push(unsigned short integer) const { push(static_cast<integer_type>(integer)); }
-	void push(unsigned int integer) const { push(static_cast<integer_type>(integer)); }
-	void push(unsigned long integer) const { push(static_cast<integer_type>(integer)); }
+#define ELBA_DEFINE_INTEGER_PUSHER(type) void push(type integer) const { push(static_cast<integer_type>(integer)); }
+	ELBA_DEFINE_INTEGER_PUSHER(signed char)
+	ELBA_DEFINE_INTEGER_PUSHER(short)
+	ELBA_DEFINE_INTEGER_PUSHER(int)
+	ELBA_DEFINE_INTEGER_PUSHER(unsigned char)
+	ELBA_DEFINE_INTEGER_PUSHER(unsigned short)
+	ELBA_DEFINE_INTEGER_PUSHER(unsigned int)
+	ELBA_DEFINE_INTEGER_PUSHER(unsigned long)
+#undef ELBA_DEFINE_INTEGER_PUSHER
 
 	void push(double number) const;
 	void push(float number) const;
@@ -272,21 +276,35 @@ struct stack::get_resolver<T&>
 	}
 };
 
-template<> std::string stack::get<std::string>(int idx) const;
-template<> const char* stack::get<const char*>(int idx) const;
-template<> void* stack::get<void*>(int idx) const;
-template<> char stack::get<char>(int idx) const;
-template<> signed char stack::get<signed char>(int idx) const;
-template<> int stack::get<int>(int idx) const;
-template<> short stack::get<short>(int idx) const;
-template<> long stack::get<long>(int idx) const;
-template<> unsigned char stack::get<unsigned char>(int idx) const;
-template<> unsigned short stack::get<unsigned short>(int idx) const;
-template<> unsigned int stack::get<unsigned int>(int idx) const;
-template<> unsigned long stack::get<unsigned long>(int idx) const;
-template<> float stack::get<float>(int idx) const;
-template<> bool stack::get<bool>(int idx) const;
-template<> stack::bindable_funcptr stack::get<stack::bindable_funcptr>(int idx) const;
+#define ELBA_DECLARE_STACK_GETTER(type) template<> type stack::get<type>(int idx) const;
+ELBA_DECLARE_STACK_GETTER(char)
+ELBA_DECLARE_STACK_GETTER(const char*)
+ELBA_DECLARE_STACK_GETTER(std::string)
+
+ELBA_DECLARE_STACK_GETTER(void*)
+
+ELBA_DECLARE_STACK_GETTER(long)
+ELBA_DECLARE_STACK_GETTER(unsigned long)
+
+ELBA_DECLARE_STACK_GETTER(double)
+ELBA_DECLARE_STACK_GETTER(float)
+ELBA_DECLARE_STACK_GETTER(bool)
+ELBA_DECLARE_STACK_GETTER(stack::bindable_funcptr)
+#undef ELBA_DECLARE_STACK_GETTER
+
+#define ELBA_INLINE_STACK_GETTER(type) template<> inline type stack::get<type>(int idx) const
+#define ELBA_INTEGER_STACK_GETTER(type) ELBA_INLINE_STACK_GETTER(type) { return get<integer_type>(idx); }
+ELBA_INTEGER_STACK_GETTER(signed char)
+ELBA_INTEGER_STACK_GETTER(short)
+ELBA_INTEGER_STACK_GETTER(int)
+#undef ELBA_INTEGER_STACK_GETTER
+
+#define ELBA_UINTEGER_STACK_GETTER(type) ELBA_INLINE_STACK_GETTER(type) { return get<unsigned_integer_type>(idx); }
+ELBA_UINTEGER_STACK_GETTER(unsigned char)
+ELBA_UINTEGER_STACK_GETTER(unsigned short)
+ELBA_UINTEGER_STACK_GETTER(unsigned int)
+#undef ELBA_UINTEGER_STACK_GETTER
+#undef ELBA_INLINE_STACK_GETTER
 
 #include "elba_free_functions.inc.hpp"
 

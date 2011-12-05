@@ -40,10 +40,29 @@ static int luaB_tostring (lua_State *L) {
 namespace elba
 {
 
-void stack::push(const std::string& string) const
-{
-	lua_pushlstring(L, string.data(), string.size());
-}
+#define MAKE_STACK_GETTER(type, expr) template<> type stack::get<type>(int idx) const { return expr; }
+MAKE_STACK_GETTER(long, lua_tointeger(L, idx))
+MAKE_STACK_GETTER(unsigned long, get<long>(idx))
+MAKE_STACK_GETTER(double, lua_tonumber(L, idx))
+MAKE_STACK_GETTER(float, get<number_type>(idx))
+MAKE_STACK_GETTER(bool, lua_toboolean(L, idx))
+MAKE_STACK_GETTER(void*, lua_touserdata(L, idx))
+MAKE_STACK_GETTER(const char*, lua_tostring(L, idx))
+MAKE_STACK_GETTER(char, get<const char*>(idx)[0])
+MAKE_STACK_GETTER(stack::bindable_funcptr, lua_tocfunction(L, idx))
+#undef MAKE_STACK_GETTER
+
+#define MAKE_STACK_PUSHER(type, expr) void stack::push(type value) const { expr; }
+MAKE_STACK_PUSHER(const std::string&, lua_pushlstring(L, value.data(), value.size()))
+MAKE_STACK_PUSHER(const char*, lua_pushstring(L, value))
+MAKE_STACK_PUSHER(char, lua_pushlstring(L, &value, 1))
+MAKE_STACK_PUSHER(long, lua_pushinteger(L, value))
+MAKE_STACK_PUSHER(double, lua_pushnumber(L, value))
+MAKE_STACK_PUSHER(float, push(static_cast<double>(value)))
+MAKE_STACK_PUSHER(bool, lua_pushboolean(L, value))
+MAKE_STACK_PUSHER(const nil_type&, lua_pushnil(L))
+MAKE_STACK_PUSHER(void*, lua_pushlightuserdata(L, value))
+#undef MAKE_STACK_PUSHER
 
 template<>
 std::string stack::get<std::string>(int idx) const
@@ -62,147 +81,14 @@ std::string stack::get<std::string>(int idx) const
 	return tmp;
 }
 
-
-void stack::push(const char* string) const
-{
-	lua_pushstring(L, string);
-}
-
-template<>
-const char* stack::get<const char*>(int idx) const
-{
-	return lua_tostring(L, idx);
-}
-
-void stack::push(char c) const
-{
-	lua_pushlstring(L, &c, sizeof c);
-}
-
-template<>
-char stack::get<char>(int idx) const
-{
-	return get<const char*>(idx)[0];
-}
-
-template<>
-signed char stack::get<signed char>(int idx) const
-{
-	return lua_tointeger(L, idx);
-}
-
-template<>
-short stack::get<short>(int idx) const
-{
-	return lua_tointeger(L, idx);
-}
-
-template<>
-int stack::get<int>(int idx) const
-{
-	return lua_tointeger(L, idx);
-}
-
-template<>
-long stack::get<long>(int idx) const
-{
-	return lua_tointeger(L, idx);
-}
-
-template<>
-unsigned char stack::get<unsigned char>(int idx) const
-{
-	return lua_tointeger(L, idx);
-}
-
-template<>
-unsigned short stack::get<unsigned short>(int idx) const
-{
-	return lua_tointeger(L, idx);
-}
-
-template<>
-unsigned int stack::get<unsigned int>(int idx) const
-{
-	return lua_tointeger(L, idx);
-}
-
-template<>
-unsigned long stack::get<unsigned long>(int idx) const
-{
-	return lua_tointeger(L, idx);
-}
-
-void stack::push(integer_type integer) const
-{
-	lua_pushinteger(L, integer);
-}
-
-void stack::push(double number) const
-{
-	lua_pushnumber(L, number);
-}
-
-template<>
-double stack::get<double>(int idx) const
-{
-	return lua_tonumber(L, idx);
-}
-
-
-void stack::push(float number) const
-{
-	lua_pushnumber(L, number);
-}
-
-template<>
-float stack::get<float>(int idx) const
-{
-	return lua_tonumber(L, idx);
-}
-
-void stack::pop(int num) const
-{
-	lua_pop(L, num);
-}
-
 void stack::push(const stack::bindable_funcptr ptr, int num_upvalues) const
 {
 	lua_pushcclosure(L, ptr, num_upvalues);
 }
 
-void stack::push(bool boolean) const
+void stack::pop(int num) const
 {
-	lua_pushboolean(L, boolean);
-}
-
-template<>
-bool stack::get<bool>(int idx) const
-{
-	return lua_toboolean(L, idx);
-}
-
-void stack::push(const nil_type& n) const
-{
-	static_cast<void>(n);
-	lua_pushnil(L);
-}
-
-void stack::push(void* data) const
-{
-	lua_pushlightuserdata(L, data);
-}
-
-template<>
-void* stack::get<void*>(int idx) const
-{
-	return lua_touserdata(L, idx);
-}
-
-template<>
-stack::bindable_funcptr stack::get<stack::bindable_funcptr>(int idx) const
-{
-	return lua_tocfunction(L, idx);
+	lua_pop(L, num);
 }
 
 void stack::repush(int index) const
