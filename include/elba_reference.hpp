@@ -21,7 +21,10 @@ class reference;
 template<> void stack::push<reference>(const reference& ref) const;
 template<> reference stack::get<reference>(int idx) const;
 
-template<> bool operator==<reference>(const nil_type& n, const reference& val);
+bool operator==(const reference& val, const nil_type&);
+inline bool operator==(const nil_type& n, const reference& val) { return val == n; }
+inline bool operator!=(const reference& val, const nil_type& n) { return !(val == n); }
+inline bool operator!=(const nil_type& n, const reference& val) { return !(val == n); }
 
 class reference
 {
@@ -169,7 +172,7 @@ private:
 
 	// FIXME: Why can't I make this more specific on GCC?
 	template<typename T> friend void stack::push(const T& ref) const;
-	template<typename T> friend bool ::elba::operator==(const nil_type& n, const T& val);
+	friend bool operator==(const reference& val, const nil_type&);
 };
 
 std::ostream& operator<<(std::ostream& stream, const reference& ref);
@@ -247,8 +250,6 @@ private:
 	// FIXME: Why can't I make this more specific on GCC?
 	template<typename T> friend void stack::push(const T& idx) const;
 };
-
-template<> inline bool operator==<object_index>(const nil_type& n, const object_index& val) { return val.operator==(n); }
 
 template<typename T>
 object_index reference::operator[](const T& key) const

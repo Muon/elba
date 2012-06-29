@@ -25,9 +25,8 @@ reference stack::get<reference>(int idx) const
 	return reference(L, idx);
 }
 
-template<> bool operator==<reference>(const nil_type& n, const reference& val)
+bool operator==(const reference& val, const nil_type&)
 {
-	static_cast<void>(n);
 	return val.ref == LUA_REFNIL;
 }
 

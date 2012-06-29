@@ -6,18 +6,7 @@ namespace elba
 
 struct nil_type
 {
-	nil_type() {}
-
-	operator bool() const { return false; }
-
-	bool operator==(const nil_type& n) const { static_cast<void>(n); return true; }
-	bool operator!=(const nil_type& n) const { return !(*this == n); }
 };
-
-template<typename T> bool operator==(const nil_type& n, const T& val) { static_cast<void>(n); static_cast<void>(val); return false; }
-template<typename T> bool operator!=(const nil_type& n, const T& val) { return !(n == val); }
-template<typename T> bool operator==(const T& val, const nil_type& n) { return n == val; }
-template<typename T> bool operator!=(const T& val, const nil_type& n) { return n != val; }
 
 extern const nil_type nil;
 
