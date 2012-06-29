@@ -4,8 +4,6 @@
 #define ELBA_LUA_FUNCTIONS_INDEX_INC_HPP
 
 #include <boost/preprocessor/control/expr_if.hpp>
-#include <boost/preprocessor/repetition/repeat.hpp>
-#include <boost/preprocessor/facilities/empty.hpp>
 #include <boost/preprocessor/repetition/enum.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/iteration/iterate.hpp>
