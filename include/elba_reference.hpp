@@ -209,12 +209,6 @@ template<> void stack::push<object_index>(const object_index& idx) const;
 class object_index
 {
 public:
-	object_index(const reference& owner, const reference& key)
-		: owner_table(owner)
-		, ref(key)
-	{
-	}
-
 	template<typename T>
 	operator T() const
 	{
@@ -244,11 +238,18 @@ public:
 #include "elba_lua_functions_index.inc.hpp"
 
 private:
+	object_index(const reference& owner, const reference& key)
+	: owner_table(owner)
+	, ref(key)
+	{
+	}
+
 	reference owner_table;
 	reference ref;
 
 	// FIXME: Why can't I make this more specific on GCC?
 	template<typename T> friend void stack::push(const T& idx) const;
+	friend class reference;
 };
 
 template<typename T>
