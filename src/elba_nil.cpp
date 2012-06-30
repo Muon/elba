@@ -1,5 +1,4 @@
 #include <elba_nil.hpp>
-#include <elba_reference.hpp>
 
 namespace elba
 {
