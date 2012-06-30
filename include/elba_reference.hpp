@@ -60,7 +60,6 @@ public:
 
 		return result;
 	}
-	bool operator==(const reference& other) const;
 
 	template<typename T> bool operator!=(const T& val) const { return !(*this == val); }
 

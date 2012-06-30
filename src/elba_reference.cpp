@@ -70,19 +70,6 @@ void reference::swap(reference& other)
 	std::swap(ref, other.ref);
 }
 
-bool reference::operator==(const reference& other) const
-{
-	stack st(L);
-	st.push(*this);
-	st.push(other);
-
-	bool result = st.are_equal(-1, -2);
-
-	st.pop(2);
-
-	return result;
-}
-
 void reference::metatable(const elba::reference& mt) const
 {
 	stack st(L);
