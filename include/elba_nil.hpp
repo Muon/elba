@@ -6,6 +6,7 @@ namespace elba
 
 struct nil_type
 {
+	nil_type() {}
 };
 
 extern const nil_type nil;
