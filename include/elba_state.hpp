@@ -2,7 +2,6 @@
 #define ELBA_STATE_HPP
 
 #include "elba_reference.hpp"
-#include "elba_classbinder.hpp"
 
 struct lua_State;
 

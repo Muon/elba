@@ -3,5 +3,6 @@
 
 #include "elba_state.hpp"
 #include "elba_error.hpp"
+#include "elba_classbinder.hpp"
 
 #endif
