@@ -1,3 +1,6 @@
+#ifndef ELBA_TEST_HPP
+#define ELBA_TEST_HPP
+
 #include <elba.hpp>
 #include <gtest/gtest.h>
 
@@ -10,3 +13,5 @@ public:
 	elba::state state;
 	elba::stack st;
 };
+
+#endif

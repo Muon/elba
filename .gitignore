@@ -10,3 +10,4 @@ elba.kdev4
 *.so
 elba.sublime-project
 elba.sublime-workspace
+bin/elba_test_suite

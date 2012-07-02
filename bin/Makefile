@@ -4,32 +4,25 @@ include $(TOP_DIR)/Makefile.defaults
 
 VPATH = $(TOP_DIR)/$(INC_DIR) $(TOP_DIR)/$(TEST_DIR)
 
-CXXFLAGS += -L$(TOP_DIR)/$(LIB_DIR)
+ELBA_A = $(TOP_DIR)/$(LIB_DIR)/libelba.a
 
-LIBS = -lelba -lgtest -lgtest_main
-#LIBS = $(TOP_DIR)/$(LIB_DIR)/libelba.a -llua
+LIBS = $(ELBA_A) -llua -lgtest -lgtest_main
 
 TESTS_SRC = state_test.cpp reference_test.cpp
+TESTS_O = $(TESTS_SRC:%.cpp=%.o)
+TESTS_BIN = elba_test_suite
 
-TESTS =  $(TESTS_SRC:%.cpp=%)
+test: $(TESTS_BIN)
+	@./$(TESTS_BIN)
 
-test: $(TESTS)
-	@$(foreach TEST,$(TESTS),\
-		$(ECHO) $(TEST)\ ; \
-		((LD_LIBRARY_PATH=$(TOP_DIR)/$(LIB_DIR) ./$(TEST)) \
-		&& $(ECHO) test suite passed) \
-		|| ($(ECHO) test suite failed && false);)
+$(TESTS_BIN): $(ELBA_A) $(TESTS_O)
+	$(CXX) $(TESTS_O) $(LIBS) -o $@
 
-$(TESTS): $(TOP_DIR)/$(LIB_DIR)/libelba.so
-
-$(TOP_DIR)/$(LIB_DIR)/libelba.so:
+$(ELBA_A):
 	$(MAKE) -C $(TOP_DIR)/$(LIB_DIR)
 
-%_test: %_test.cpp
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< $(LIBS) -o $@
-
 clean:
-	$(RM) $(TESTS) depend
+	$(RM) $(TESTS_BIN) $(TESTS_O) depend
 
 depend: $(TESTS_SRC)
 	@$(ECHO) -n "Building dependencies... "
