@@ -68,7 +68,7 @@ public:
 
 		st.push(*this);
 
-		T tmp = st.get<T>(stack::top);
+		T tmp = st.get<T>(-1);
 
 		st.pop(1);
 
@@ -92,7 +92,7 @@ public:
 		st.push(*this);
 		st.get_table_field(-1, key);
 
-		Value val = st.get<Value>(stack::top);
+		Value val = st.get<Value>(-1);
 
 		st.pop(2);
 
@@ -121,7 +121,7 @@ public:
 		st.push(*this);
 		st.raw_get_table_field(-1, key);
 
-		Value val = st.get<Value>(stack::top);
+		Value val = st.get<Value>(-1);
 
 		st.pop(2);
 
@@ -150,7 +150,7 @@ public:
 
 		st.push(*this);
 
-		stack::type t = st.element_type(stack::top);
+		stack::type t = st.element_type(-1);
 
 		st.pop(1);
 

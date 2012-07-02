@@ -37,12 +37,6 @@ public:
 
 	typedef int(*bindable_funcptr)(lua_State*);
 
-	enum position
-	{
-		top = -1,
-		bottom = 1
-	};
-
 	enum type
 	{
 		none = -1,
@@ -104,7 +98,7 @@ public:
 	}
 
 	template<typename T>
-	T get(int idx = stack::top) const
+	T get(int idx = -1) const
 	{
 		return get_resolver<T>::get(*this, idx);
 	}
