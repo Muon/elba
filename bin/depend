@@ -8,3 +8,13 @@ state_test.o: ../tests/state_test.cpp ../tests/elba_test.hpp \
  ../include/elba_lua_functions.inc.hpp \
  ../include/elba_lua_functions_index.inc.hpp \
  ../include/elba_classbinder.hpp
+reference_test.o: ../tests/reference_test.cpp ../tests/elba_test.hpp \
+ ../include/elba.hpp ../include/elba_state.hpp \
+ ../include/elba_reference.hpp ../include/elba_stack.hpp \
+ ../include/elba_error.hpp ../include/elba_activation_record.hpp \
+ ../include/elba_member_functions.inc.hpp \
+ ../include/elba_free_functions_fwd_decl.inc.hpp \
+ ../include/elba_free_functions.inc.hpp ../include/elba_nil.hpp \
+ ../include/elba_lua_functions.inc.hpp \
+ ../include/elba_lua_functions_index.inc.hpp \
+ ../include/elba_classbinder.hpp

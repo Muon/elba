@@ -25,20 +25,15 @@ reference stack::get<reference>(int idx) const
 	return reference(L, idx);
 }
 
-bool operator==(const reference& val, const nil_type&)
-{
-	return val.ref == LUA_REFNIL;
-}
-
 reference::reference(lua_State* L)
 	: L(L)
-	, ref(LUA_NOREF)
+	, ref(LUA_REFNIL)
 {
 }
 
 reference::reference(lua_State* L, int index)
 	: L(L)
-	, ref(LUA_NOREF)
+	, ref(LUA_REFNIL)
 {
 	lua_pushvalue(L, index);
 	set_ref();
@@ -46,7 +41,7 @@ reference::reference(lua_State* L, int index)
 
 reference::reference(const reference& other)
 	: L(other.L)
-	, ref(LUA_NOREF)
+	, ref(LUA_REFNIL)
 {
 	stack st(L);
 	st.push(other);
@@ -62,6 +57,11 @@ reference& reference::operator=(reference other)
 {
 	swap(other);
 	return *this;
+}
+
+bool reference::equals(const nil_type&) const
+{
+	return ref == LUA_REFNIL;
 }
 
 void reference::swap(reference& other)

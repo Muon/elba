@@ -9,7 +9,7 @@ CXXFLAGS += -L$(TOP_DIR)/$(LIB_DIR)
 LIBS = -lelba -lgtest -lgtest_main
 #LIBS = $(TOP_DIR)/$(LIB_DIR)/libelba.a -llua
 
-TESTS_SRC = state_test.cpp
+TESTS_SRC = state_test.cpp reference_test.cpp
 
 TESTS =  $(TESTS_SRC:%.cpp=%)
 

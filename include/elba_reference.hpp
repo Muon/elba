@@ -21,11 +21,6 @@ class reference;
 template<> void stack::push<reference>(const reference& ref) const;
 template<> reference stack::get<reference>(int idx) const;
 
-bool operator==(const reference& val, const nil_type&);
-inline bool operator==(const nil_type& n, const reference& val) { return val == n; }
-inline bool operator!=(const reference& val, const nil_type& n) { return !(val == n); }
-inline bool operator!=(const nil_type& n, const reference& val) { return !(val == n); }
-
 class reference
 {
 public:
@@ -48,7 +43,7 @@ public:
 	}
 
 	template<typename T>
-	bool operator==(const T& val) const
+	bool equals(const T& val) const
 	{
 		stack st(L);
 		st.push(val);
@@ -61,7 +56,7 @@ public:
 		return result;
 	}
 
-	template<typename T> bool operator!=(const T& val) const { return !(*this == val); }
+	bool equals(const nil_type&) const;
 
 	template<typename T>
 	typename boost::disable_if_c<
@@ -171,8 +166,15 @@ private:
 
 	// FIXME: Why can't I make this more specific on GCC?
 	template<typename T> friend void stack::push(const T& ref) const;
-	friend bool operator==(const reference& val, const nil_type&);
 };
+
+inline bool operator==(const reference& ref1, const reference& ref2) { return ref1.equals(ref2); }
+inline bool operator!=(const reference& ref1, const reference& ref2) { return !(ref1 == ref2); }
+
+template<typename T> bool operator==(const reference& ref, const T& val) { return ref.equals(val); }
+template<typename T> bool operator==(const T& val, const reference& ref) { return ref.equals(val); }
+template<typename T> bool operator!=(const reference& ref, const T& val) { return !(ref == val); }
+template<typename T> bool operator!=(const T& val, const reference& ref) { return !(ref == val); }
 
 std::ostream& operator<<(std::ostream& stream, const reference& ref);
 
