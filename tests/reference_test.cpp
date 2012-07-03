@@ -146,3 +146,43 @@ TEST_F(ReferenceTest, TableIndexSetGet)
 	table["foo"] = "bar";
 	EXPECT_EQ("bar", table["foo"]);
 }
+
+TEST_F(ReferenceTest, EmptyRefMetatableGet)
+{
+	EXPECT_EQ(elba::nil, elba::make_table(state).metatable());
+}
+
+class RefMetatableTest : public ReferenceTest
+{
+public:
+	RefMetatableTest()
+	: table(elba::make_table(state))
+	, metatable(elba::make_table(state))
+	{
+		table.metatable(metatable);
+
+		elba::reference index = elba::make_table(state);
+		index.set("foo", "bar");
+		metatable.set("__index", index);
+	}
+
+	elba::reference table;
+	elba::reference metatable;
+};
+
+TEST_F(RefMetatableTest, RefMetatableSetGet)
+{
+	EXPECT_EQ(metatable, table.metatable());
+}
+
+TEST_F(RefMetatableTest, RefRawGet)
+{
+	EXPECT_EQ("bar", table.get<std::string>("foo"));
+	EXPECT_EQ(elba::nil, table.raw_get<elba::reference>("foo"));
+}
+
+TEST_F(RefMetatableTest, RefRawSet)
+{
+	table.raw_set("foo", "quux");
+	EXPECT_EQ("quux", table.get<std::string>("foo"));
+}
