@@ -211,9 +211,15 @@ class object_index
 {
 public:
 	template<typename T>
-	operator T() const
+	T get() const
 	{
 		return owner_table.get<T>(ref);
+	}
+
+	template<typename T>
+	operator T() const
+	{
+		return get<T>();
 	}
 
 	template<typename T>
@@ -231,9 +237,14 @@ public:
 	}
 
 	template<typename T>
-	bool operator==(const T& val) const
+	bool equals(const T& val) const
 	{
-		return owner_table.get<reference>(ref) == val;
+		return get<reference>() == val;
+	}
+
+	bool equals(const object_index& other) const
+	{
+		return get<reference>() == other.get<reference>();
 	}
 
 #include "elba_lua_functions_index.inc.hpp"
@@ -252,6 +263,19 @@ private:
 	template<typename T> friend void stack::push(const T& idx) const;
 	friend class reference;
 };
+
+inline bool operator==(const object_index& ref1, const object_index& ref2) { return ref1.equals(ref2); }
+inline bool operator!=(const object_index& ref1, const object_index& ref2) { return !(ref1 == ref2); }
+
+template<typename T> bool operator==(const object_index& ref, const T& val) { return ref.equals(val); }
+template<typename T> bool operator==(const T& val, const object_index& ref) { return ref.equals(val); }
+template<typename T> bool operator!=(const object_index& ref, const T& val) { return !(ref == val); }
+template<typename T> bool operator!=(const T& val, const object_index& ref) { return !(ref == val); }
+
+inline bool operator==(const object_index& ref1, const reference& ref2) { return ref1.equals(ref2); }
+inline bool operator==(const reference& ref1, const object_index& ref2) { return ref1.equals(ref2); }
+inline bool operator!=(const object_index& ref1, const reference& ref2) { return !(ref1 == ref2); }
+inline bool operator!=(const reference& ref1, const object_index& ref2) { return !(ref1 == ref2); }
 
 template<typename T>
 object_index reference::operator[](const T& key) const
