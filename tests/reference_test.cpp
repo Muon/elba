@@ -10,10 +10,16 @@ class ReferenceTest : public TestBase
 #define REF_EQ(expected, value) EXPECT_TRUE(REF_EQ_(expected, value) && !REF_NE_(expected, value))
 #define REF_NE(expected, value) EXPECT_TRUE(REF_NE_(expected, value) && !REF_EQ_(expected, value))
 
-TEST_F(ReferenceTest, EmptyRefIsNil)
+class SingleRefTest : public ReferenceTest
 {
-	elba::reference ref(state);
+public:
+	SingleRefTest() : ref(elba::reference(state)) {}
 
+	elba::reference ref;
+};
+
+TEST_F(SingleRefTest, EmptyRefIsNil)
+{
 	EXPECT_EQ(elba::stack::nil, ref.type()) << "where ref is of type " << st.type_name(ref.type());
 	REF_EQ(elba::nil, ref);
 }
@@ -28,43 +34,36 @@ TEST_F(ReferenceTest, RefIsConstructibleFromStack)
 
 TEST_F(ReferenceTest, EqualRefRefComparison)
 {
-	st.push("foo");
-	elba::reference ref1(state, -1);
-	elba::reference ref2(state, -1);
+	elba::reference ref1(state);
+	ref1 = "foo";
+	elba::reference ref2(state);
+	ref2 = "foo";
 	REF_EQ(ref1, ref2);
-	st.pop(1);
 }
 
 TEST_F(ReferenceTest, UnequalRefRefComparison)
 {
-	st.push("foo");
-	elba::reference ref1(state, -1);
-	st.push("bar");
-	elba::reference ref2(state, -1);
+	elba::reference ref1(state);
+	ref1 = "foo";
+	elba::reference ref2(state);
+	ref2 = "bar";
 	REF_NE(ref1, ref2);
-	st.pop(2);
 }
 
-
-TEST_F(ReferenceTest, EqualRefValComparison)
+TEST_F(SingleRefTest, EqualRefValComparison)
 {
-	st.push("foo");
-	elba::reference ref(state, -1);
+	ref = "foo";
 	REF_EQ("foo", ref);
-	st.pop(1);
 }
 
-TEST_F(ReferenceTest, UnequalRefValComparison)
+TEST_F(SingleRefTest, UnequalRefValComparison)
 {
-	st.push("foo");
-	elba::reference ref(state, -1);
+	ref = "foo";
 	REF_NE("bar", ref);
-	st.pop(1);
 }
 
-TEST_F(ReferenceTest, PrimitiveAssignment)
+TEST_F(SingleRefTest, PrimitiveAssignment)
 {
-	elba::reference ref(state);
 	ref = "foo";
 	EXPECT_EQ("foo", ref);
 }
@@ -80,119 +79,106 @@ TEST_F(ReferenceTest, RefCopying)
 	EXPECT_EQ(ref1, ref2);
 }
 
-TEST_F(ReferenceTest, RefGetting)
+TEST_F(SingleRefTest, RefGetting)
 {
-	elba::reference ref(state);
 	ref = "foo";
 	EXPECT_EQ("foo", ref.get<std::string>());
 }
 
-TEST_F(ReferenceTest, RefCasting)
+TEST_F(SingleRefTest, RefCasting)
 {
-	elba::reference ref(state);
 	ref = "foo";
 	std::string value = ref;
 	EXPECT_EQ("foo", value);
 }
 
-TEST_F(ReferenceTest, MakeTable)
+class RefTableTest : public ReferenceTest
 {
-	elba::reference table = elba::make_table(state);
+public:
+	RefTableTest() : table(elba::make_table(state))
+	{
+		table.set("foo", "bar");
+	}
+	elba::reference table;
+};
+
+TEST_F(RefTableTest, MakeTable)
+{
 	EXPECT_EQ(elba::stack::table, table.type());
 }
 
-TEST_F(ReferenceTest, TableSetGet)
+TEST_F(RefTableTest, TableSetGet)
 {
-	elba::reference table = elba::make_table(state);
-	table.set("foo", "bar");
 	EXPECT_EQ("bar", table.get<elba::reference>("foo"));
 }
 
-TEST_F(ReferenceTest, EqualIndexIndexComparison)
+TEST_F(RefTableTest, EqualIndexIndexComparison)
 {
-	elba::reference table = elba::make_table(state);
-	table["foo"] = "bar";
 	REF_EQ(table["foo"], table["foo"]);
 }
 
-TEST_F(ReferenceTest, UnequalIndexIndexComparison)
+TEST_F(RefTableTest, UnequalIndexIndexComparison)
 {
-	elba::reference table = elba::make_table(state);
-	table["foo"] = "bar";
 	table["quux"] = "xyzzy";
 	REF_NE(table["quux"], table["foo"]);
 }
 
-TEST_F(ReferenceTest, EqualIndexValComparison)
+TEST_F(RefTableTest, EqualIndexValComparison)
 {
-	elba::reference table = elba::make_table(state);
-	table["foo"] = "bar";
 	REF_EQ("bar", table["foo"]);
 }
 
-TEST_F(ReferenceTest, UnequalIndexValComparison)
+TEST_F(RefTableTest, UnequalIndexValComparison)
 {
-	elba::reference table = elba::make_table(state);
-	table["foo"] = "bar";
 	REF_NE("quux", table["foo"]);
 }
 
-TEST_F(ReferenceTest, EqualIndexRefComparison)
+TEST_F(RefTableTest, EqualIndexRefComparison)
 {
-	elba::reference table = elba::make_table(state);
-	table["foo"] = "bar";
 	elba::reference ref(state);
 	ref = "bar";
 	REF_EQ(ref, table["foo"]);
 }
 
-TEST_F(ReferenceTest, UnequalIndexRefComparison)
+TEST_F(RefTableTest, UnequalIndexRefComparison)
 {
-	elba::reference table = elba::make_table(state);
-	table["foo"] = "bar";
 	elba::reference ref(state);
 	ref = "quux";
 	REF_NE(ref, table["foo"]);
 }
 
-TEST_F(ReferenceTest, TableIndexSetGet)
+TEST_F(RefTableTest, TableIndexSetGet)
 {
-	elba::reference table = elba::make_table(state);
-	table["foo"] = "bar";
 	EXPECT_EQ("bar", table["foo"]);
 }
 
-TEST_F(ReferenceTest, TableIndexSubindexSetGet)
+TEST_F(RefTableTest, TableIndexSubindexSetGet)
 {
-	elba::reference parent = elba::make_table(state);
 	{
 		elba::reference child = elba::make_table(state);
 		child["bar"] = "quux";
-		parent["foo"] = child;
+		table["foo"] = child;
 	}
-	EXPECT_EQ("quux", parent["foo"]["bar"]);
+	EXPECT_EQ("quux", table["foo"]["bar"]);
 }
 
-TEST_F(ReferenceTest, EmptyRefMetatableGet)
+TEST_F(RefTableTest, EmptyRefMetatableGet)
 {
-	EXPECT_EQ(elba::nil, elba::make_table(state).metatable());
+	EXPECT_EQ(elba::nil, table.metatable());
 }
 
-class RefMetatableTest : public ReferenceTest
+class RefMetatableTest : public RefTableTest
 {
 public:
-	RefMetatableTest()
-	: table(elba::make_table(state))
-	, metatable(elba::make_table(state))
+	RefMetatableTest() : metatable(elba::make_table(state))
 	{
 		table.metatable(metatable);
 
 		elba::reference index = elba::make_table(state);
-		index.set("foo", "bar");
+		index.set("xyzzy", "bar");
 		metatable.set("__index", index);
 	}
 
-	elba::reference table;
 	elba::reference metatable;
 };
 
@@ -203,8 +189,8 @@ TEST_F(RefMetatableTest, RefMetatableSetGet)
 
 TEST_F(RefMetatableTest, RefRawGet)
 {
-	EXPECT_EQ("bar", table.get<std::string>("foo"));
-	EXPECT_EQ(elba::nil, table.raw_get<elba::reference>("foo"));
+	EXPECT_EQ("bar", table.get<std::string>("xyzzy"));
+	EXPECT_EQ(elba::nil, table.raw_get<elba::reference>("xyzzy"));
 }
 
 TEST_F(RefMetatableTest, RefRawSet)
