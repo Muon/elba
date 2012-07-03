@@ -198,3 +198,17 @@ TEST_F(RefMetatableTest, RefRawSet)
 	table.raw_set("foo", "quux");
 	EXPECT_EQ("quux", table.get<std::string>("foo"));
 }
+
+TEST_F(ReferenceTest, CallNullary)
+{
+	state.do_string("function f() return \"foo\" end");
+	elba::reference func = state.globals()["f"];
+	EXPECT_EQ("foo", func());
+}
+
+TEST_F(ReferenceTest, CallUnary)
+{
+	state.do_string("function f(a) return a end");
+	elba::reference func = state.globals()["f"];
+	EXPECT_EQ("foo", func("foo"));
+}
