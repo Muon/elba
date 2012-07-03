@@ -111,20 +111,18 @@ void reference::set_ref()
 
 std::ostream& operator<<(std::ostream& stream, const reference& ref)
 {
-	std::string str = ref;
-	return stream << str;
+	return stream << ref.get<std::string>();
 }
 
 template<>
 void stack::push<object_index>(const object_index& idx) const
 {
-	push(idx.operator reference());
+	push(idx.get<reference>());
 }
 
 std::ostream& operator<<(std::ostream& stream, const object_index& idx)
 {
-	std::string str = idx;
-	return stream << str;
+	return stream << idx.get<std::string>();
 }
 
 
