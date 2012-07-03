@@ -80,6 +80,21 @@ TEST_F(ReferenceTest, RefCopying)
 	EXPECT_EQ(ref1, ref2);
 }
 
+TEST_F(ReferenceTest, RefGetting)
+{
+	elba::reference ref(state);
+	ref = "foo";
+	EXPECT_EQ("foo", ref.get<std::string>());
+}
+
+TEST_F(ReferenceTest, RefCasting)
+{
+	elba::reference ref(state);
+	ref = "foo";
+	std::string value = ref;
+	EXPECT_EQ("foo", value);
+}
+
 TEST_F(ReferenceTest, MakeTable)
 {
 	elba::reference table = elba::make_table(state);
