@@ -147,6 +147,17 @@ TEST_F(ReferenceTest, TableIndexSetGet)
 	EXPECT_EQ("bar", table["foo"]);
 }
 
+TEST_F(ReferenceTest, TableIndexSubindexSetGet)
+{
+	elba::reference parent = elba::make_table(state);
+	{
+		elba::reference child = elba::make_table(state);
+		child["bar"] = "quux";
+		parent["foo"] = child;
+	}
+	EXPECT_EQ("quux", parent["foo"]["bar"]);
+}
+
 TEST_F(ReferenceTest, EmptyRefMetatableGet)
 {
 	EXPECT_EQ(elba::nil, elba::make_table(state).metatable());
