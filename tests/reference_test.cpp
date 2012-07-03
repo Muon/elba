@@ -5,8 +5,10 @@ class ReferenceTest : public TestBase
 };
 
 // REF_EQ() is for testing operator==() reflexivity, which I have had problems with before
-#define REF_EQ(expected, value) EXPECT_TRUE(((expected) == (value)) && ((value) == (expected)))
-#define REF_NE(expected, value) EXPECT_TRUE(((expected) != (value)) && ((value) != (expected)))
+#define REF_EQ_(expected, value) (((expected) == (value)) && ((value) == (expected)))
+#define REF_NE_(expected, value) (((expected) != (value)) && ((value) != (expected)))
+#define REF_EQ(expected, value) EXPECT_TRUE(REF_EQ_(expected, value) && !REF_NE_(expected, value))
+#define REF_NE(expected, value) EXPECT_TRUE(REF_NE_(expected, value) && !REF_EQ_(expected, value))
 
 TEST_F(ReferenceTest, EmptyRefIsNil)
 {
