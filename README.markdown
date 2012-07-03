@@ -3,11 +3,10 @@ Elba
 
 Elba is a simple-to-use library designed to enable the easy bridging of the
 chasm between the worlds of C++ and Lua. Elba is only partially complete at the
-moment, not properly tested and lacks documentation, so it is in no way
-recommended for production *anything* right now.
-
-~~**Elba development is currently on hold due to Lua 5.2. Will be back as soon as I get 5.2 in my repos.**~~
-No Lua 5.2 for the foreseeable future, carrying on.
+moment, ~~not~~only beginning to be properly tested and lacks documentation, so
+it is in no way recommended for production *anything* right now. ~~**Elba
+development is currently on hold due to Lua 5.2. Will be back as soon as I get
+5.2 in my repos.**~~ No Lua 5.2 for the foreseeable future, carrying on.
 
 Features
 --------
