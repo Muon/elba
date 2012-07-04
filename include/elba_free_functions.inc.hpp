@@ -10,7 +10,7 @@
 #include <boost/preprocessor/repetition/enum.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
 
-#define GET_ARGUMENT(z, n, data) st.get<T ## n>(BOOST_PP_ADD(n, 2))
+#define GET_ARGUMENT(z, n, data) st.get<T ## n>(BOOST_PP_ADD(n, 1))
 #define GET_ARGUMENTS(n) BOOST_PP_ENUM(n, GET_ARGUMENT, BOOST_PP_EMPTY)
 
 #define PTR_SIGNATURE(name, nargs, voidness) \

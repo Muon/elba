@@ -8,7 +8,7 @@ ELBA_A = $(TOP_DIR)/$(LIB_DIR)/libelba.a
 
 LIBS = $(ELBA_A) -llua -lgtest -lgtest_main
 
-TESTS_SRC = state_test.cpp reference_test.cpp
+TESTS_SRC = state_test.cpp reference_test.cpp stack_test.cpp
 TESTS_O = $(TESTS_SRC:%.cpp=%.o)
 TESTS_BIN = elba_test_suite
 
