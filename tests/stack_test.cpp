@@ -84,7 +84,17 @@ public:
 	}
 
 	A tmp;
+
+	template<typename T>
+	void TestImproperMemFunCall(const T& memfun)
+	{
+		st.push(memfun);
+		st.push("foo");
+		ASSERT_THROW(st.call(1, 1), elba::runtime_error);
+	}
 };
+
+#define TEST_IMPROPER(test, memfun) TEST_F(MemFunStackTest, ImproperlyCall ## test) { TestImproperMemFunCall(&A::memfun); }
 
 TEST_F(MemFunStackTest, PushNullaryNonvoidNonconstMemberFunction)
 {
@@ -95,12 +105,7 @@ TEST_F(MemFunStackTest, PushNullaryNonvoidNonconstMemberFunction)
 	st.pop(1);
 }
 
-TEST_F(MemFunStackTest, ImproperlyCallNullaryNonvoidNonconstMemberFunction)
-{
-	st.push(&A::f);
-	st.push("foo");
-	ASSERT_THROW(st.call(1, 1), elba::runtime_error);
-}
+TEST_IMPROPER(NullaryNonvoidNonconstMemberFunction, f)
 
 TEST_F(MemFunStackTest, PushNullaryNonvoidConstMemberFunction)
 {
@@ -111,6 +116,8 @@ TEST_F(MemFunStackTest, PushNullaryNonvoidConstMemberFunction)
 	st.pop(1);
 }
 
+TEST_IMPROPER(NullaryNonvoidConstMemberFunction, g)
+
 TEST_F(MemFunStackTest, PushNullaryVoidNonconstMemberFunction)
 {
 	st.push(&A::h);
@@ -119,6 +126,8 @@ TEST_F(MemFunStackTest, PushNullaryVoidNonconstMemberFunction)
 	EXPECT_EQ(0xCAFEBABE, tmp.sentinel);
 }
 
+TEST_IMPROPER(NullaryVoidNonconstMemberFunction, h)
+
 TEST_F(MemFunStackTest, PushNullaryVoidConstMemberFunction)
 {
 	st.push(&A::i);
@@ -126,6 +135,8 @@ TEST_F(MemFunStackTest, PushNullaryVoidConstMemberFunction)
 	st.call(1, 0);
 	EXPECT_EQ(0xCAFED00D, tmp.sentinel);
 }
+
+TEST_IMPROPER(NullaryVoidConstMemberFunction, i)
 
 TEST_F(MemFunStackTest, PushUnaryNonvoidNonconstMemberFunction)
 {
@@ -137,6 +148,8 @@ TEST_F(MemFunStackTest, PushUnaryNonvoidNonconstMemberFunction)
 	st.pop(1);
 }
 
+TEST_IMPROPER(UnaryNonvoidNonconstMemberFunction, j)
+
 TEST_F(MemFunStackTest, PushUnaryNonvoidConstMemberFunction)
 {
 	st.push(&A::k);
@@ -147,6 +160,8 @@ TEST_F(MemFunStackTest, PushUnaryNonvoidConstMemberFunction)
 	st.pop(1);
 }
 
+TEST_IMPROPER(UnaryNonvoidConstMemberFunction, k)
+
 TEST_F(MemFunStackTest, PushUnaryVoidNonconstMemberFunction)
 {
 	st.push(&A::l);
@@ -156,6 +171,8 @@ TEST_F(MemFunStackTest, PushUnaryVoidNonconstMemberFunction)
 	EXPECT_EQ(0xCAFEBABE, tmp.sentinel);
 }
 
+TEST_IMPROPER(UnaryVoidNonconstMemberFunction, l)
+
 TEST_F(MemFunStackTest, PushUnaryVoidConstMemberFunction)
 {
 	st.push(&A::m);
@@ -164,3 +181,5 @@ TEST_F(MemFunStackTest, PushUnaryVoidConstMemberFunction)
 	st.call(2, 0);
 	EXPECT_EQ(0xCAFED00D, tmp.sentinel);
 }
+
+TEST_IMPROPER(UnaryVoidConstMemberFunction, m)
