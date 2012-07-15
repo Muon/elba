@@ -374,4 +374,12 @@ std::string stack::bound_type_name(class_id_type t) const
 	return name;
 }
 
+void stack::push_typed_pointer(void* ptr, class_id_type type) const
+{
+	create_table();
+	set_table_field(-1, "__self", ptr);
+	get_table_field(registry_index, type);
+	set_metatable(-2);
+}
+
 }

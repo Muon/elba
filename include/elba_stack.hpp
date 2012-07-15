@@ -87,10 +87,7 @@ public:
 	template<typename T>
 	void push(T* ptr) const
 	{
-		create_table();
-		set_table_field(-1, "__self", static_cast<void*>(ptr));
-		get_table_field(registry_index, class_id<T>());
-		set_metatable(-2);
+		push_typed_pointer(ptr, class_id<T>());
 	}
 
 	template<typename T>
@@ -195,6 +192,8 @@ private:
 		push<Memfun>(memfun);
 		push(wrapper, 1);
 	}
+
+	void push_typed_pointer(void* ptr, class_id_type type) const;
 
 	template<typename T>
 	struct get_resolver
