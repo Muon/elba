@@ -4,7 +4,6 @@
 #include "elba_error.hpp"
 
 #include <boost/type_traits/remove_cv.hpp>
-#include <boost/type_traits/remove_reference.hpp>
 
 #include <string>
 
@@ -13,13 +12,7 @@ struct lua_State;
 namespace elba
 {
 
-template<typename T> struct recursively_remove_pointer { typedef T type; };
-template<typename T> struct recursively_remove_pointer<T*> { typedef typename recursively_remove_pointer<T>::type type; };
-template<typename T> struct recursively_remove_pointer<T* const> { typedef typename recursively_remove_pointer<T>::type type; };
-template<typename T> struct recursively_remove_pointer<T* volatile> { typedef typename recursively_remove_pointer<T>::type type; };
-template<typename T> struct recursively_remove_pointer<T* const volatile> { typedef typename recursively_remove_pointer<T>::type type; };
-
-template<typename T> struct clean_type { typedef typename boost::remove_cv<typename recursively_remove_pointer<typename boost::remove_reference<T>::type>::type>::type type; };
+template<typename T> struct clean_type { typedef typename boost::remove_cv<T>::type type; };
 
 typedef void* class_id_type;
 template<typename T> class_id_type class_id_() { static const char c = 0; return reinterpret_cast<class_id_type>(const_cast<char*>(&c)); }
