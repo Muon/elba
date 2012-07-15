@@ -30,11 +30,6 @@ public:
 		st.set_table_field(-1, "convops", convops);
 		st.set_table_field(-1, "name", name);
 
-		st.push("types");
-			st.push(types);
-			st.set_table_field(-1, class_id<T>(), true);
-		st.set_table_field(-3);
-
 		st.pop(1);
 	}
 

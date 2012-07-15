@@ -94,7 +94,10 @@ public:
 	template<typename T>
 	void push(T* ptr) const
 	{
-		push(static_cast<void*>(ptr));
+		create_table();
+		set_table_field(-1, "__self", static_cast<void*>(ptr));
+		get_table_field(registry_index(), class_id<T>());
+		set_metatable(-2);
 	}
 
 	template<typename T>
@@ -168,7 +171,7 @@ public:
 
 	void call(int nargs, int nresults) const;
 
-	bool is_of_base_type(int t, class_id_type type) const;
+	bool is_of_bound_type(int t, class_id_type type) const;
 	bool convert_to(int t, class_id_type type) const;
 
 	void handle_active_exception() const;
@@ -205,7 +208,7 @@ private:
 	{
 		static T get(const stack& st, int idx)
 		{
-			if(st.element_type(idx) != stack::userdata || st.is_of_base_type(idx, class_id<T>()))
+			if(st.is_of_bound_type(idx, class_id<T>()))
 				return *(st.get<T*>(idx));
 
 			if(st.convert_to(idx, class_id<T>()))
@@ -227,8 +230,20 @@ struct stack::get_resolver<T*>
 {
 	static T* get(const stack& st, int idx)
 	{
-		if(st.element_type(idx) != stack::userdata || st.is_of_base_type(idx, class_id<T>()))
-			return static_cast<T*>(st.get<void*>(idx));
+		if(st.is_of_bound_type(idx, class_id<T>()))
+		{
+			if(st.element_type(idx) == table)
+			{
+				st.get_table_field(idx, "__self");
+				T* tmp = static_cast<T*>(st.get<void*>(-1));
+				st.pop(1);
+				return tmp;
+			}
+			else
+			{
+				return static_cast<T*>(st.get<void*>(idx));
+			}
+		}
 
 		throw elba::conversion_error(st.L, "conversion from " + st.get_element_name(idx) + " to " + st.bound_type_name(class_id<T>()) + " failed");
 	}

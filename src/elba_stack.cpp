@@ -269,20 +269,16 @@ void stack::call(int nargs, int nresults) const
 	assert(size() == sz - (nargs + 1) + nresults);
 }
 
-bool stack::is_of_base_type(int t, class_id_type type) const
+bool stack::is_of_bound_type(int t, class_id_type type) const
 {
 	if(get_metatable(t))
 	{
-		get_table_field(-1, "types");
-		get_table_field(-1, type);
-
-		bool result = get<bool>(-1);
-
-		pop(3);
-
+		push(type);
+		raw_get_table_field(registry_index());
+		bool result = are_equal(-1, -2);
+		pop(2);
 		return result;
 	}
-
 	return false;
 }
 

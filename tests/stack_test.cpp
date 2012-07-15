@@ -68,48 +68,68 @@ struct A
 	mutable int sentinel;
 };
 
-TEST_F(StackTest, PushNullaryNonvoidNonconstMemberFunction)
+class MemFunStackTest : public StackTest
+{
+public:
+	MemFunStackTest()
+	{
+		st.push(elba::class_id<A>());
+		st.create_table();
+		st.set_table_field(-1, "name", "A");
+		st.set_table_field(st.registry_index());
+
+		st.get_table_field(st.registry_index(), elba::class_id<A>());
+		EXPECT_EQ(elba::stack::table, st.element_type(-1));
+		st.pop(1);
+	}
+
+	A tmp;
+};
+
+TEST_F(MemFunStackTest, PushNullaryNonvoidNonconstMemberFunction)
 {
 	st.push(&A::f);
-	A tmp;
 	st.push(&tmp);
 	st.call(1, 1);
 	EXPECT_STREQ("foo", st.get<const char*>(-1));
 	st.pop(1);
 }
 
-TEST_F(StackTest, PushNullaryNonvoidConstMemberFunction)
+TEST_F(MemFunStackTest, ImproperlyCallNullaryNonvoidNonconstMemberFunction)
+{
+	st.push(&A::f);
+	st.push("foo");
+	ASSERT_THROW(st.call(1, 1), elba::runtime_error);
+}
+
+TEST_F(MemFunStackTest, PushNullaryNonvoidConstMemberFunction)
 {
 	st.push(&A::g);
-	A tmp;
 	st.push(&tmp);
 	st.call(1, 1);
 	EXPECT_STREQ("bar", st.get<const char*>(-1));
 	st.pop(1);
 }
 
-TEST_F(StackTest, PushNullaryVoidNonconstMemberFunction)
+TEST_F(MemFunStackTest, PushNullaryVoidNonconstMemberFunction)
 {
 	st.push(&A::h);
-	A tmp;
 	st.push(&tmp);
 	st.call(1, 0);
 	EXPECT_EQ(0xCAFEBABE, tmp.sentinel);
 }
 
-TEST_F(StackTest, PushNullaryVoidConstMemberFunction)
+TEST_F(MemFunStackTest, PushNullaryVoidConstMemberFunction)
 {
 	st.push(&A::i);
-	A tmp;
 	st.push(&tmp);
 	st.call(1, 0);
 	EXPECT_EQ(0xCAFED00D, tmp.sentinel);
 }
 
-TEST_F(StackTest, PushUnaryNonvoidNonconstMemberFunction)
+TEST_F(MemFunStackTest, PushUnaryNonvoidNonconstMemberFunction)
 {
 	st.push(&A::j);
-	A tmp;
 	st.push(&tmp);
 	st.push("foo");
 	st.call(2, 1);
@@ -117,10 +137,9 @@ TEST_F(StackTest, PushUnaryNonvoidNonconstMemberFunction)
 	st.pop(1);
 }
 
-TEST_F(StackTest, PushUnaryNonvoidConstMemberFunction)
+TEST_F(MemFunStackTest, PushUnaryNonvoidConstMemberFunction)
 {
 	st.push(&A::k);
-	A tmp;
 	st.push(&tmp);
 	st.push("bar");
 	st.call(2, 1);
@@ -128,20 +147,18 @@ TEST_F(StackTest, PushUnaryNonvoidConstMemberFunction)
 	st.pop(1);
 }
 
-TEST_F(StackTest, PushUnaryVoidNonconstMemberFunction)
+TEST_F(MemFunStackTest, PushUnaryVoidNonconstMemberFunction)
 {
 	st.push(&A::l);
-	A tmp;
 	st.push(&tmp);
 	st.push("foo");
 	st.call(2, 0);
 	EXPECT_EQ(0xCAFEBABE, tmp.sentinel);
 }
 
-TEST_F(StackTest, PushUnaryVoidConstMemberFunction)
+TEST_F(MemFunStackTest, PushUnaryVoidConstMemberFunction)
 {
 	st.push(&A::m);
-	A tmp;
 	st.push(&tmp);
 	st.push("bar");
 	st.call(2, 0);
