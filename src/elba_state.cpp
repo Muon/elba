@@ -41,7 +41,7 @@ void state::do_string(const std::string& string) const
 
 reference state::globals() const
 {
-	return reference(L, stack::globals_index());
+	return reference(L, stack::globals_index);
 }
 
 reference state::create_table() const

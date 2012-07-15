@@ -120,7 +120,7 @@ int stack::normalize_index(int index) const
 {
 	assert(index != 0);
 
-	if(index <= registry_index())
+	if(index <= registry_index)
 		return index;
 
 	if(index > 0)
@@ -274,7 +274,7 @@ bool stack::is_of_bound_type(int t, class_id_type type) const
 	if(get_metatable(t))
 	{
 		push(type);
-		raw_get_table_field(registry_index());
+		raw_get_table_field(registry_index);
 		bool result = are_equal(-1, -2);
 		pop(2);
 		return result;
@@ -326,15 +326,8 @@ void stack::raise_error() const
 	lua_error(L);
 }
 
-int stack::registry_index()
-{
-	return LUA_REGISTRYINDEX;
-}
-
-int stack::globals_index()
-{
-	return LUA_GLOBALSINDEX;
-}
+const int stack::registry_index = LUA_REGISTRYINDEX;
+const int stack::globals_index = LUA_GLOBALSINDEX;
 
 const char* stack::type_name(type t) const
 {
@@ -365,7 +358,7 @@ std::string stack::get_element_name(int idx) const
 
 std::string stack::bound_type_name(class_id_type t) const
 {
-	get_table_field(registry_index(), t);
+	get_table_field(registry_index, t);
 	if(element_type(-1) == ::elba::stack::nil)
 	{
 		pop(1);

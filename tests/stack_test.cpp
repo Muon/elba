@@ -76,9 +76,9 @@ public:
 		st.push(elba::class_id<A>());
 		st.create_table();
 		st.set_table_field(-1, "name", "A");
-		st.set_table_field(st.registry_index());
+		st.set_table_field(st.registry_index);
 
-		st.get_table_field(st.registry_index(), elba::class_id<A>());
+		st.get_table_field(st.registry_index, elba::class_id<A>());
 		EXPECT_EQ(elba::stack::table, st.element_type(-1));
 		st.pop(1);
 	}

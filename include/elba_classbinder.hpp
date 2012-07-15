@@ -37,12 +37,12 @@ public:
 	{
 		stack st(L);
 
-		st.set_table_field(stack::registry_index(), class_id<T>(), metatable);
+		st.set_table_field(stack::registry_index, class_id<T>(), metatable);
 
 		st.push(metatable);
 		st.get_table_field(-1, "name");
 		st.push(statics);
-		st.set_table_field(stack::globals_index());
+		st.set_table_field(stack::globals_index);
 
 		st.pop(1);
 

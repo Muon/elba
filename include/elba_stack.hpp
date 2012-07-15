@@ -80,7 +80,7 @@ public:
 
 		new(ud) T(val);
 
-		get_table_field(registry_index(), class_id<T>());
+		get_table_field(registry_index, class_id<T>());
 		set_metatable(-2);
 	}
 
@@ -89,7 +89,7 @@ public:
 	{
 		create_table();
 		set_table_field(-1, "__self", static_cast<void*>(ptr));
-		get_table_field(registry_index(), class_id<T>());
+		get_table_field(registry_index, class_id<T>());
 		set_metatable(-2);
 	}
 
@@ -170,8 +170,8 @@ public:
 	void handle_active_exception() const;
 	void raise_error() const;
 
-	static int registry_index();
-	static int globals_index();
+	static const int registry_index;
+	static const int globals_index;
 
 	const char* type_name(elba::stack::type t) const;
 private:
@@ -180,7 +180,7 @@ private:
 	std::string get_element_name(int idx) const;
 	std::string bound_type_name(class_id_type t) const;
 
-	bool is_pseudo_index(int idx) const { return idx <= registry_index(); }
+	bool is_pseudo_index(int idx) const { return idx <= registry_index; }
 	int offset_index(int idx, int offset) const
 	{
 		if(is_pseudo_index(idx) || idx >= 0)
