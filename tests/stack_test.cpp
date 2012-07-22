@@ -2,6 +2,19 @@
 
 class StackTest : public TestBase
 {
+protected:
+	template<typename T>
+	void simple_class_bind(const char* name) const
+	{
+		st.push(elba::class_id<T>());
+		st.create_table();
+		st.set_table_field(-1, "name", name);
+		st.set_table_field(st.registry_index);
+
+		st.get_table_field(st.registry_index, elba::class_id<T>());
+		EXPECT_EQ(elba::stack::table, st.element_type(-1));
+		st.pop(1);
+	}
 };
 
 const char* f() { return "foo"; }
@@ -73,14 +86,7 @@ class MemFunStackTest : public StackTest
 public:
 	MemFunStackTest()
 	{
-		st.push(elba::class_id<A>());
-		st.create_table();
-		st.set_table_field(-1, "name", "A");
-		st.set_table_field(st.registry_index);
-
-		st.get_table_field(st.registry_index, elba::class_id<A>());
-		EXPECT_EQ(elba::stack::table, st.element_type(-1));
-		st.pop(1);
+		simple_class_bind<A>("A");
 	}
 
 	A tmp;
@@ -183,3 +189,47 @@ TEST_F(MemFunStackTest, PushUnaryVoidConstMemberFunction)
 }
 
 TEST_IMPROPER(UnaryVoidConstMemberFunction, m)
+
+struct C { C(int a) : x(a) {} int x; };
+
+struct B
+{
+	B(int a_) : a(a_) {}
+	operator C() const { return C(a); }
+	int a;
+};
+
+class ImplicitConversionTest : public StackTest
+{
+public:
+	ImplicitConversionTest()
+	{
+		simple_class_bind<C>("C");
+
+		st.push(elba::class_id<B>());
+		st.create_table();
+		st.set_table_field(-1, "name", "B");
+		st.push("convops");
+		st.create_table();
+		st.set_table_field(-1, elba::class_id<C>(), &B::operator C);
+		st.set_table_field(-3);
+		st.set_table_field(st.registry_index);
+
+		st.push(B(0xFEEDF00D));
+	}
+
+	void TearDown()
+	{
+		st.pop(1);
+	}
+};
+
+TEST_F(ImplicitConversionTest, PerformImplicitConversion)
+{
+	EXPECT_EQ(0xFEEDF00D, st.get<C>(-1).x);
+}
+
+TEST_F(ImplicitConversionTest, AttemptBadImplicitConversion)
+{
+	EXPECT_THROW(st.get<A>(-1), elba::conversion_error);
+}

@@ -284,6 +284,7 @@ bool stack::is_of_bound_type(int t, class_id_type type) const
 
 bool stack::convert_to(int t, class_id_type type) const
 {
+	t = normalize_index(t);
 	if(get_metatable(t))
 	{
 		get_table_field(-1, "convops");
