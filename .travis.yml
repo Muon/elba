@@ -1,0 +1,8 @@
+language: cpp
+compiler:
+  - clang
+  - gcc
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install liblua5.1 liblua5.1-dev libgtest-dev
+script: make test

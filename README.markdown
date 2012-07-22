@@ -1,6 +1,8 @@
 Elba
 ====
 
+[![Build Status](https://secure.travis-ci.org/Muon/elba.png)](http://travis-ci.org/Muon/elba)
+
 Elba is a simple-to-use library designed to enable the easy bridging of the
 chasm between the worlds of C++ and Lua 5.1. Elba is only partially complete at
 the moment, lacks documentation and is only just beginning to be properly
