@@ -8,8 +8,8 @@ ELBA_SRC = elba_state.cpp elba_stack.cpp elba_reference.cpp elba_nil.cpp elba_er
 ELBA_O = $(ELBA_SRC:%.cpp=%.o)
 ELBA_A = libelba.a
 ELBA_SO = libelba.so
-LIBS = $(shell pkg-config lua --libs)
-CXXFLAGS += $(shell pkg-config lua --cflags)
+LIBS = $(shell pkg-config lua5.1 --exists && pkg-config lua5.1 --libs || pkg-config lua --libs)
+CXXFLAGS += $(shell pkg-config lua5.1 --exists && pkg-config lua5.1 --cflags || pkg-config lua --cflags)
 
 ifeq ($(shell uname -m),x86_64)
   CXXFLAGS += -fPIC
