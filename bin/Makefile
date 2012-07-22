@@ -6,7 +6,7 @@ VPATH = $(TOP_DIR)/$(INC_DIR) $(TOP_DIR)/$(TEST_DIR)
 
 ELBA_A = $(TOP_DIR)/$(LIB_DIR)/libelba.a
 
-LIBS = $(ELBA_A) -llua -lgtest -lgtest_main
+LIBS = $(ELBA_A) $(LUA_LIBS) -lgtest -lgtest_main
 
 TESTS_SRC = state_test.cpp reference_test.cpp stack_test.cpp
 TESTS_O = $(TESTS_SRC:%.cpp=%.o)
