@@ -16,7 +16,7 @@ test: $(TESTS_BIN)
 	@./$(TESTS_BIN)
 
 $(TESTS_BIN): $(ELBA_A) $(TESTS_O)
-	$(CXX) $(TESTS_O) $(LIBS) -o $@
+	$(CXX) $(LDFLAGS) $(TESTS_O) $(LIBS) -o $@
 
 $(ELBA_A):
 	$(MAKE) -C $(TOP_DIR)/$(LIB_DIR)

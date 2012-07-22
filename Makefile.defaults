@@ -10,6 +10,7 @@ TEST_DIR = tests
 
 
 CPPFLAGS = -I$(TOP_DIR)/$(INC_DIR)
-CXXFLAGS = -g -Wall -Wextra -pedantic -std=c++98 -pipe
+CXXFLAGS = -g -Wall -Wextra -pedantic -std=c++98 -pipe -pthread
+LDFLAGS = -pthread
 
 LUA_LIBS = $(shell pkg-config lua5.1 --exists && pkg-config lua5.1 --libs || pkg-config lua --libs)

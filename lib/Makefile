@@ -22,7 +22,7 @@ shared: $(ELBA_SO)
 static: $(ELBA_A)
 
 $(ELBA_SO): $(ELBA_O)
-	$(CXX) -shared $(ELBA_O) $(LIBS) -o $@
+	$(CXX) $(LDFLAGS) -shared $(ELBA_O) $(LIBS) -o $@
 
 $(ELBA_A): $(ELBA_A)($(ELBA_O))
 	$(RANLIB) $@
