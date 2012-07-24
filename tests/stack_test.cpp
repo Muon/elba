@@ -199,10 +199,10 @@ struct B
 	int a;
 };
 
-class ImplicitConversionTest : public StackTest
+class ConversionTest : public StackTest
 {
 public:
-	ImplicitConversionTest()
+	ConversionTest()
 	{
 		simple_class_bind<C>("C");
 
@@ -218,18 +218,30 @@ public:
 		st.push(B(0xFEEDF00D));
 	}
 
-	~ImplicitConversionTest()
+	~ConversionTest()
 	{
 		st.pop(1);
 	}
 };
 
-TEST_F(ImplicitConversionTest, PerformImplicitConversion)
+TEST_F(ConversionTest, PerformExplicitConversion)
+{
+	ASSERT_TRUE(st.convert_to(-1, elba::class_id<C>()));
+	EXPECT_EQ(0xFEEDF00D, st.get<C*>(-1)->x);
+	st.pop(1);
+}
+
+TEST_F(ConversionTest, AttemptBadExplicitConversion)
+{
+	ASSERT_FALSE(st.convert_to(-1, elba::class_id<A>()));
+}
+
+TEST_F(ConversionTest, PerformImplicitConversion)
 {
 	EXPECT_EQ(0xFEEDF00D, st.get<C>(-1).x);
 }
 
-TEST_F(ImplicitConversionTest, AttemptBadImplicitConversion)
+TEST_F(ConversionTest, AttemptBadImplicitConversion)
 {
 	EXPECT_THROW(st.get<A>(-1), elba::conversion_error);
 }
