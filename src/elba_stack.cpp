@@ -146,10 +146,7 @@ stack::type stack::element_type(int index) const
 
 void* stack::create_userdata(std::size_t size) const
 {
-	void* data = lua_newuserdata(L, size);
-	assert(data != NULL);
-
-	return data;
+	return lua_newuserdata(L, size);
 }
 
 void stack::create_table() const
