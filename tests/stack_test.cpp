@@ -233,3 +233,11 @@ TEST_F(ImplicitConversionTest, AttemptBadImplicitConversion)
 {
 	EXPECT_THROW(st.get<A>(-1), elba::conversion_error);
 }
+
+TEST_F(StackTest, SimpleBindTest)
+{
+	simple_class_bind<A>("A");
+	st.push(A());
+	EXPECT_TRUE(st.is_of_bound_type(-1, elba::class_id<A>()));
+	st.pop(1);
+}
