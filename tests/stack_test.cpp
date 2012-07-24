@@ -218,7 +218,7 @@ public:
 		st.push(B(0xFEEDF00D));
 	}
 
-	void TearDown()
+	~ImplicitConversionTest()
 	{
 		st.pop(1);
 	}
