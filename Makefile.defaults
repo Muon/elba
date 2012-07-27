@@ -14,3 +14,4 @@ CXXFLAGS = -g -Wall -Wextra -pedantic -std=c++98 -pipe -pthread
 LDFLAGS = -pthread
 
 LUA_LIBS = $(shell pkg-config lua5.1 --exists && pkg-config lua5.1 --libs || pkg-config lua --libs)
+LUA_CXXFLAGS = $(shell pkg-config lua5.1 --exists && pkg-config lua5.1 --cflags || pkg-config lua --cflags)

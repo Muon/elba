@@ -109,7 +109,7 @@ public:
 	}
 
 	template<typename U>
-	class_binder<T>& conversion_operator(U (T::*func)() = &T::operator U)
+	class_binder<T>& conversion_operator(U (T::*func)() const = &T::operator U)
 	{
 		convops.set(class_id<U>(), func);
 		return *this;

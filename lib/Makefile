@@ -9,7 +9,7 @@ ELBA_O = $(ELBA_SRC:%.cpp=%.o)
 ELBA_A = libelba.a
 ELBA_SO = libelba.so
 LIBS = $(LUA_LIBS)
-CXXFLAGS += $(shell pkg-config lua5.1 --exists && pkg-config lua5.1 --cflags || pkg-config lua --cflags)
+CXXFLAGS += $(LUA_CXXFLAGS)
 
 ifeq ($(shell uname -m),x86_64)
   CXXFLAGS += -fPIC
