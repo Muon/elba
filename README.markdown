@@ -28,7 +28,7 @@ int main()
 	print("C++ to Lua, C++ to Lua, over *kzzzht*");
 
 	L.globals()["report"] = report;
-	L.do_string("report(\"Lua to C++, report! *kzzzht*\")");
+	L.do_string("report('Lua to C++, report! *kzzzht*')");
 
 	return 0;
 }
