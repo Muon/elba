@@ -8,6 +8,7 @@ ELBA_A = $(TOP_DIR)/$(LIB_DIR)/libelba.a
 
 LIBS = $(ELBA_A) $(LUA_LIBS) -lgtest -lgtest_main
 CXXFLAGS += $(LUA_CXXFLAGS)
+CPPFLAGS += $(LUA_CPPFLAGS)
 
 TESTS_SRC = state_test.cpp reference_test.cpp stack_test.cpp class_binder_test.cpp
 TESTS_O = $(TESTS_SRC:%.cpp=%.o)

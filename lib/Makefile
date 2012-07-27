@@ -10,6 +10,7 @@ ELBA_A = libelba.a
 ELBA_SO = libelba.so
 LIBS = $(LUA_LIBS)
 CXXFLAGS += $(LUA_CXXFLAGS)
+CPPFLAGS += $(LUA_CPPFLAGS)
 
 ifeq ($(shell uname -m),x86_64)
   CXXFLAGS += -fPIC
