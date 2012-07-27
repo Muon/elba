@@ -1,5 +1,4 @@
-Elba
-====
+# Elba
 
 [![Build Status](https://secure.travis-ci.org/Muon/elba.png)](http://travis-ci.org/Muon/elba)
 
@@ -7,8 +6,77 @@ Elba is a simple-to-use library designed to enable the easy bridging of the
 chasm between the worlds of C++ and Lua 5.1. At the moment, Elba is incomplete
 and lacks documentation, so it is not recommended for production usage.
 
-Features
---------
+## Example
+
+### Simple `elba::reference`-based manipulation
+
+```c++
+#include <elba.hpp>
+#include <iostream>
+
+void report(const char* str)
+{
+	std::cout << str << std::endl;
+}
+
+int main()
+{
+	elba::state L;
+	L.open_libs();
+
+	elba::reference print = L.globals()["print"];
+	print("C++ to Lua, C++ to Lua, over *kzzzht*");
+
+	L.globals()["report"] = report;
+	L.do_string("report(\"Lua to C++, report! *kzzzht*\")");
+
+	return 0;
+}
+```
+
+### Binding classes
+
+```c++
+#include <elba.hpp>
+
+class Counter
+{
+public:
+	Counter() : counter(0) {}
+
+	void increment() { ++counter; }
+	void decrement() { --counter; }
+	int count() const { return counter; }
+
+private:
+	int counter;
+};
+
+int main()
+{
+	elba::state L;
+	L.open_libs();
+
+	elba::class_binder<Counter>(L, "Counter")
+		.constructor()
+		.set("increment", &Counter::increment)
+		.set("decrement", &Counter::decrement)
+		.set("count", &Counter::count)
+		.set("primary_counter", Counter());
+
+	L.do_string(
+		"a = Counter.new() \
+		print(a:count()) \
+		a:increment() \
+		print(a:count()) \
+		print(Counter.primary_counter:count())"
+	);
+
+	return 0;
+}
+```
+
+## Features
 
 * `operator[]`-style table manipulation
 * primitive type and std::string assignment/retrieval
@@ -16,16 +84,14 @@ Features
 * retrieval of functions from the Lua state
 * class binding
 
-Todo
-----
+## Todo
 
 * class properties
 * table iterators
 * review code
 * write documentation
 
-License
--------
+## License
 
 Copyright (c) 2011-2012 Mak Nazečić-Andrlon
 
