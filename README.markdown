@@ -88,7 +88,6 @@ int main()
 
 * class properties
 * table iterators
-* review code
 * write documentation
 
 ## License
