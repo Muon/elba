@@ -32,9 +32,7 @@ public:
 
 		st.set_table_field(stack::registry_index, class_id<T>(), metatable);
 
-		st.get_table_field(-1, "name");
-		st.push(statics);
-		st.set_table_field(stack::globals_index);
+		st.set_table_field(stack::globals_index, name, statics);
 
 		st.pop(1);
 	}
