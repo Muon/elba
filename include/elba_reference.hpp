@@ -67,12 +67,9 @@ public:
 		stack st(L);
 
 		st.push(*this);
+		pop_guard guard(st, 1);
 
-		T tmp = st.get<T>(-1);
-
-		st.pop(1);
-
-		return tmp;
+		return st.get<T>(-1);
 	}
 
 	template<typename T> operator T() const { return get<T>(); }

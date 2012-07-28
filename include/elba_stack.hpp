@@ -163,6 +163,7 @@ public:
 
 	bool is_of_bound_type(int t, class_id_type type) const;
 	bool convert_to(int t, class_id_type type) const;
+	void* upcast(int t, class_id_type type) const;
 
 	void handle_active_exception() const;
 	void raise_error() const;
@@ -176,6 +177,8 @@ private:
 
 	std::string get_element_name(int idx) const;
 	std::string bound_type_name(class_id_type t) const;
+
+	void* perform_upcast(int mt, class_id_type type, void* data) const;
 
 	bool is_pseudo_index(int idx) const { return idx <= registry_index; }
 	int offset_index(int idx, int offset) const
@@ -236,6 +239,10 @@ struct stack::get_resolver<T*>
 				return static_cast<T*>(st.get<void*>(idx));
 			}
 		}
+		else if(void* base = st.upcast(idx, class_id<T>()))
+		{
+			return static_cast<T*>(base);
+		}
 
 		throw elba::conversion_error(st.L, "conversion from " + st.get_element_name(idx) + " to " + st.bound_type_name(class_id<T>()) + " failed");
 	}
@@ -275,6 +282,15 @@ struct stack::get_resolver<T&>
 	{
 		return *(st.get<T*>(idx));
 	}
+};
+
+struct pop_guard
+{
+	pop_guard(const stack& st_, int num_) : st(st_), num(num_) {}
+	~pop_guard() { st.pop(num); }
+
+	const stack& st;
+	int num;
 };
 
 #define ELBA_DECLARE_STACK_GETTER(type) template<> type stack::get<type>(int idx) const;

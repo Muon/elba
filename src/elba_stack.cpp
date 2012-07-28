@@ -380,4 +380,57 @@ void stack::push_typed_pointer(void* ptr, class_id_type type) const
 	set_metatable(-2);
 }
 
+void* stack::perform_upcast(int mt, class_id_type type, void* data) const
+{
+	typedef void*(*convertor)(void*);
+
+	get_table_field(mt, "bases");
+
+	{
+		get_table_field(-1, type);
+
+		convertor f = reinterpret_cast<convertor>(get<bindable_funcptr>(-1));
+		pop(1);
+
+		if(f)
+		{
+			pop(1);
+			return f(data);
+		}
+	}
+
+	int base_table_index = normalize_index(-1);
+
+	lua_pushnil(L);
+	while (lua_next(L, base_table_index) != 0)
+	{
+		convertor f = reinterpret_cast<convertor>(get<bindable_funcptr>(-1));
+		repush(-2);
+		get_table_field(registry_index);
+		if(void* result = perform_upcast(normalize_index(-1), type, f(data)))
+		{
+			pop(4);
+			return result;
+		}
+		pop(2);
+	}
+
+	pop(1);
+
+	return NULL;
+}
+
+void* stack::upcast(int t, class_id_type type) const
+{
+	void* result = NULL;
+	void* data = get<void*>(t);
+	if(get_metatable(t))
+	{
+		result = perform_upcast(normalize_index(-1), type, data);
+		pop(1);
+	}
+
+	return result;
+}
+
 }

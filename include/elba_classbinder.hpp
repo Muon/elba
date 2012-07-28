@@ -4,6 +4,7 @@
 #include "elba_reference.hpp"
 
 #include <boost/type_traits/is_member_function_pointer.hpp>
+#include <boost/type_traits/is_base_of.hpp>
 #include <boost/utility/enable_if.hpp>
 
 namespace elba
@@ -20,6 +21,7 @@ public:
 		, types(make_table(L))
 		, convops(make_table(L))
 		, statics(make_table(L))
+		, bases(make_table(L))
 	{
 		stack st(L);
 		st.push(metatable);
@@ -28,6 +30,7 @@ public:
 		st.set_table_field(-1, "__gc", finalize);
 
 		st.set_table_field(-1, "convops", convops);
+		st.set_table_field(-1, "bases", bases);
 		st.set_table_field(-1, "name", name);
 
 		st.set_table_field(stack::registry_index, class_id<T>(), metatable);
@@ -109,6 +112,22 @@ public:
 		return *this;
 	}
 
+	template<typename U>
+	typename boost::enable_if<boost::is_base_of<U, T>,
+		class_binder<T>&>::type base()
+	{
+		struct upcast
+		{
+			static void* cast(void* value)
+			{
+				return static_cast<U*>(static_cast<T*>(value));
+			}
+		};
+
+		bases.set(class_id<U>(), reinterpret_cast<stack::bindable_funcptr>(&upcast::cast));
+		return *this;
+	}
+
 private:
 	static void finalize(T* object) { object->~T(); }
 
@@ -119,6 +138,7 @@ private:
 	reference types;
 	reference convops;
 	reference statics;
+	reference bases;
 };
 
 }
