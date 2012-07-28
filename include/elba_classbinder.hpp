@@ -98,9 +98,14 @@ public:
 	}
 
 	template<typename U>
-	class_binder<T>& conversion_operator(U (T::*func)() const = &T::operator U)
+	class_binder<T>& conversion_operator()
 	{
-		convops.set(class_id<U>(), func);
+		struct implicit_conversion
+		{
+			static U convert(const T& value) { return static_cast<U>(value); }
+		};
+
+		convops.set(class_id<U>(), implicit_conversion::convert);
 		return *this;
 	}
 
